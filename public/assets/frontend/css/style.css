@@ -1,0 +1,107 @@
+@font-face {
+  font-family: 'Carisma';
+  src: url('../font/CarismaClassic-400Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'limerick';
+  src: url('../font/limerick-serial-bold.ttf') format('truetype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'grotesk';
+  src: url('../font/NiveauGroteskRegular.otf') format('truetype');
+  font-weight: normal;
+}
+
+/* PRELOADER */
+#preloader{
+  background: #fff url(../img/spiner.gif) no-repeat center center;
+  background-size: 5%;
+  position: fixed;
+  z-index: 10000;
+}
+
+.toScall{
+    transition: 0.25s ease;
+}
+.toScall:hover{
+    transform: scale(1.05);
+}
+
+.decaler{
+    text-decoration: underline;
+    text-decoration-thickness: 5px;
+}
+
+.accordion-button{
+  color: #000;
+}
+
+input[type="radio"].demo4 {
+    display: none;
+  }
+ 
+
+   input[type="checkbox"].avi + label::before { 
+    color: red ;
+   
+  }
+  input[type="checkbox"].avi:checked + label::before {
+    color: green ;
+  }
+
+
+  .pointeur:hover{
+    cursor: pointer;
+  }
+  
+  .bg-home{
+    background-image: url(../img/Fond-1.jpg);
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+.bg-other{
+  background-image: url(../img/fond2.jpg);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+.tab {
+  display: none;
+}
+.step{
+  opacity: 0.5;
+}
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #04AA6D;
+}
+
+.bienvenu{
+  font-family: limerick;
+}
+.textNormal{
+  font-family: Carisma;
+}
+.welcome .bienvenue{
+	font-size:50px;
+}
+/* 
+  *MON AVIS
+*/
+.couleursText{
+  color: #105095;
+}
+
+/*
+  REMERCIEMENT
+*/
+.merci{
+  font-size: 40px;
+}

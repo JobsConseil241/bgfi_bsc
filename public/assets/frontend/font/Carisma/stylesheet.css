@@ -1,0 +1,360 @@
+@font-face {
+    font-family: 'Carisma Inline';
+    src: url('CarismaInlineOblique.eot');
+    src: local('Carisma Inline Oblique'), local('CarismaInlineOblique'),
+        url('CarismaInlineOblique.eot?#iefix') format('embedded-opentype'),
+        url('CarismaInlineOblique.woff2') format('woff2'),
+        url('CarismaInlineOblique.woff') format('woff'),
+        url('CarismaInlineOblique.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 600';
+    src: url('CarismaClassic-600DemiBoldObl.eot');
+    src: local('CarismaClassic-600DemiBoldOblique'), local('CarismaClassic-600DemiBoldObl'),
+        url('CarismaClassic-600DemiBoldObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-600DemiBoldObl.woff2') format('woff2'),
+        url('CarismaClassic-600DemiBoldObl.woff') format('woff'),
+        url('CarismaClassic-600DemiBoldObl.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 400';
+    src: url('CarismaGothic-400RegularObl.eot');
+    src: local('CarismaGothic-400RegularOblique'), local('CarismaGothic-400RegularObl'),
+        url('CarismaGothic-400RegularObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-400RegularObl.woff2') format('woff2'),
+        url('CarismaGothic-400RegularObl.woff') format('woff'),
+        url('CarismaGothic-400RegularObl.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 600';
+    src: url('CarismaGothic-600DemiBold.eot');
+    src: local('CarismaGothic-600DemiBold'),
+        url('CarismaGothic-600DemiBold.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-600DemiBold.woff2') format('woff2'),
+        url('CarismaGothic-600DemiBold.woff') format('woff'),
+        url('CarismaGothic-600DemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 900';
+    src: url('CarismaGothic-900UltraBoldObl.eot');
+    src: local('CarismaGothic-900UltraBoldOblique'), local('CarismaGothic-900UltraBoldObl'),
+        url('CarismaGothic-900UltraBoldObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-900UltraBoldObl.woff2') format('woff2'),
+        url('CarismaGothic-900UltraBoldObl.woff') format('woff'),
+        url('CarismaGothic-900UltraBoldObl.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 300';
+    src: url('CarismaGothic-300Light.eot');
+    src: local('CarismaGothic-300Light'),
+        url('CarismaGothic-300Light.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-300Light.woff2') format('woff2'),
+        url('CarismaGothic-300Light.woff') format('woff'),
+        url('CarismaGothic-300Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Inline';
+    src: url('CarismaInline.eot');
+    src: local('Carisma Inline Regular'), local('CarismaInline'),
+        url('CarismaInline.eot?#iefix') format('embedded-opentype'),
+        url('CarismaInline.woff2') format('woff2'),
+        url('CarismaInline.woff') format('woff'),
+        url('CarismaInline.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 600';
+    src: url('CarismaClassic-600DemiBold.eot');
+    src: local('CarismaClassic-600DemiBold'),
+        url('CarismaClassic-600DemiBold.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-600DemiBold.woff2') format('woff2'),
+        url('CarismaClassic-600DemiBold.woff') format('woff'),
+        url('CarismaClassic-600DemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 800';
+    src: url('CarismaGothic-800ExtraBold.eot');
+    src: local('CarismaGothic-800ExtraBold'),
+        url('CarismaGothic-800ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-800ExtraBold.woff2') format('woff2'),
+        url('CarismaGothic-800ExtraBold.woff') format('woff'),
+        url('CarismaGothic-800ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 700';
+    src: url('CarismaGothic-700Bold.eot');
+    src: local('CarismaGothic-700Bold'),
+        url('CarismaGothic-700Bold.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-700Bold.woff2') format('woff2'),
+        url('CarismaGothic-700Bold.woff') format('woff'),
+        url('CarismaGothic-700Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 600';
+    src: url('CarismaGothic-600DemiBoldObl.eot');
+    src: local('CarismaGothic-600DemiBoldOblique'), local('CarismaGothic-600DemiBoldObl'),
+        url('CarismaGothic-600DemiBoldObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-600DemiBoldObl.woff2') format('woff2'),
+        url('CarismaGothic-600DemiBoldObl.woff') format('woff'),
+        url('CarismaGothic-600DemiBoldObl.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 400';
+    src: url('CarismaClassic-400Regular.eot');
+    src: local('CarismaClassic-400Regular'),
+        url('CarismaClassic-400Regular.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-400Regular.woff2') format('woff2'),
+        url('CarismaClassic-400Regular.woff') format('woff'),
+        url('CarismaClassic-400Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 700';
+    src: url('CarismaGothic-700BoldObl.eot');
+    src: local('CarismaGothic-700BoldOblique'), local('CarismaGothic-700BoldObl'),
+        url('CarismaGothic-700BoldObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-700BoldObl.woff2') format('woff2'),
+        url('CarismaGothic-700BoldObl.woff') format('woff'),
+        url('CarismaGothic-700BoldObl.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 300';
+    src: url('CarismaClassic-300Light.eot');
+    src: local('CarismaClassic-300Light'),
+        url('CarismaClassic-300Light.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-300Light.woff2') format('woff2'),
+        url('CarismaClassic-300Light.woff') format('woff'),
+        url('CarismaClassic-300Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 300';
+    src: url('CarismaGothic-300LightObl.eot');
+    src: local('CarismaGothic-300LightOblique'), local('CarismaGothic-300LightObl'),
+        url('CarismaGothic-300LightObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-300LightObl.woff2') format('woff2'),
+        url('CarismaGothic-300LightObl.woff') format('woff'),
+        url('CarismaGothic-300LightObl.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 200';
+    src: url('CarismaGothic-200ExtraLightObl.eot');
+    src: local('CarismaGothic-200ExtraLightOblique'), local('CarismaGothic-200ExtraLightObl'),
+        url('CarismaGothic-200ExtraLightObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-200ExtraLightObl.woff2') format('woff2'),
+        url('CarismaGothic-200ExtraLightObl.woff') format('woff'),
+        url('CarismaGothic-200ExtraLightObl.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 700';
+    src: url('CarismaClassic-700Bold.eot');
+    src: local('CarismaClassic-700Bold'),
+        url('CarismaClassic-700Bold.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-700Bold.woff2') format('woff2'),
+        url('CarismaClassic-700Bold.woff') format('woff'),
+        url('CarismaClassic-700Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 800';
+    src: url('CarismaGothic-800ExtraBoldObl.eot');
+    src: local('CarismaGothic-800ExtraBoldOblique'), local('CarismaGothic-800ExtraBoldObl'),
+        url('CarismaGothic-800ExtraBoldObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-800ExtraBoldObl.woff2') format('woff2'),
+        url('CarismaGothic-800ExtraBoldObl.woff') format('woff'),
+        url('CarismaGothic-800ExtraBoldObl.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 100 Hairline';
+    src: url('CarismaGothic-100HairlineObl.eot');
+    src: local('CarismaGothic-100HairlineOblique'), local('CarismaGothic-100HairlineObl'),
+        url('CarismaGothic-100HairlineObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-100HairlineObl.woff2') format('woff2'),
+        url('CarismaGothic-100HairlineObl.woff') format('woff'),
+        url('CarismaGothic-100HairlineObl.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 500';
+    src: url('CarismaClassic-500Medium.eot');
+    src: local('CarismaClassic-500Medium'),
+        url('CarismaClassic-500Medium.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-500Medium.woff2') format('woff2'),
+        url('CarismaClassic-500Medium.woff') format('woff'),
+        url('CarismaClassic-500Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 900';
+    src: url('CarismaGothic-900UltraBold.eot');
+    src: local('CarismaGothic-900UltraBold'),
+        url('CarismaGothic-900UltraBold.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-900UltraBold.woff2') format('woff2'),
+        url('CarismaGothic-900UltraBold.woff') format('woff'),
+        url('CarismaGothic-900UltraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 500';
+    src: url('CarismaGothic-500Medium.eot');
+    src: local('CarismaGothic-500Medium'),
+        url('CarismaGothic-500Medium.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-500Medium.woff2') format('woff2'),
+        url('CarismaGothic-500Medium.woff') format('woff'),
+        url('CarismaGothic-500Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 400';
+    src: url('CarismaClassic-400RegularObl.eot');
+    src: local('CarismaClassic-400RegularOblique'), local('CarismaClassic-400RegularObl'),
+        url('CarismaClassic-400RegularObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-400RegularObl.woff2') format('woff2'),
+        url('CarismaClassic-400RegularObl.woff') format('woff'),
+        url('CarismaClassic-400RegularObl.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 700';
+    src: url('CarismaClassic-700BoldObl.eot');
+    src: local('CarismaClassic-700BoldOblique'), local('CarismaClassic-700BoldObl'),
+        url('CarismaClassic-700BoldObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-700BoldObl.woff2') format('woff2'),
+        url('CarismaClassic-700BoldObl.woff') format('woff'),
+        url('CarismaClassic-700BoldObl.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 400';
+    src: url('CarismaGothic-400Regular.eot');
+    src: local('CarismaGothic-400Regular'),
+        url('CarismaGothic-400Regular.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-400Regular.woff2') format('woff2'),
+        url('CarismaGothic-400Regular.woff') format('woff'),
+        url('CarismaGothic-400Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 100 Hairline';
+    src: url('CarismaGothic-100Hairline.eot');
+    src: local('CarismaGothic-100Hairline'),
+        url('CarismaGothic-100Hairline.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-100Hairline.woff2') format('woff2'),
+        url('CarismaGothic-100Hairline.woff') format('woff'),
+        url('CarismaGothic-100Hairline.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 500';
+    src: url('CarismaClassic-500MediumObl.eot');
+    src: local('CarismaClassic-500MediumOblique'), local('CarismaClassic-500MediumObl'),
+        url('CarismaClassic-500MediumObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-500MediumObl.woff2') format('woff2'),
+        url('CarismaClassic-500MediumObl.woff') format('woff'),
+        url('CarismaClassic-500MediumObl.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 500';
+    src: url('CarismaGothic-500MediumObl.eot');
+    src: local('CarismaGothic-500MediumOblique'), local('CarismaGothic-500MediumObl'),
+        url('CarismaGothic-500MediumObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-500MediumObl.woff2') format('woff2'),
+        url('CarismaGothic-500MediumObl.woff') format('woff'),
+        url('CarismaGothic-500MediumObl.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Carisma Gothic 200';
+    src: url('CarismaGothic-200ExtraLight.eot');
+    src: local('CarismaGothic-200ExtraLight'),
+        url('CarismaGothic-200ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('CarismaGothic-200ExtraLight.woff2') format('woff2'),
+        url('CarismaGothic-200ExtraLight.woff') format('woff'),
+        url('CarismaGothic-200ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Carisma Classic 300';
+    src: url('CarismaClassic-300LightObl.eot');
+    src: local('CarismaClassic-300LightOblique'), local('CarismaClassic-300LightObl'),
+        url('CarismaClassic-300LightObl.eot?#iefix') format('embedded-opentype'),
+        url('CarismaClassic-300LightObl.woff2') format('woff2'),
+        url('CarismaClassic-300LightObl.woff') format('woff'),
+        url('CarismaClassic-300LightObl.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
