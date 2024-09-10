@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('has_consult')->default(false);
             $table->boolean('has_reclame')->default(false);
             $table->boolean('has_avis')->default(false);
+            $table->integer('delais')->default(0);
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

@@ -4,15 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Agence;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AgenceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $ags = 'active';
+        $title = 'Gestion Agences';
+        $data = Agence::all();
+        return view('dashboard.agences.index', compact('data', 'ags', 'title'));
     }
 
     /**
@@ -28,7 +37,24 @@ class AgenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $insertion = Agence::create([
+            'libelle' => $request->nom,
+            'has_faq' => $request->faq,
+            'has_consult' => $request->consult,
+            'has_reclame' => $request->recla,
+            'has_avis' => $request->avis,
+            'delais' => $request->delay,
+            'status' =>1,
+        ]);
+
+        if($insertion){
+            Session::flash('message', 'sauvegarde réussie!');
+            Session::flash('status', 'success');
+            return redirect()->route('indexAgences');
+        } else{
+
+        }
     }
 
     /**
@@ -50,9 +76,25 @@ class AgenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Agence $agence)
+    public function update(Request $request)
     {
-        //
+        $update = Agence::where('id',$request->id)->update([
+            'libelle' => $request->nome,
+            'has_faq' => $request->faqe,
+            'has_consult' => $request->consulte,
+            'has_reclame' => $request->reclae,
+            'has_avis' => $request->avise,
+            'delais' => $request->delaye,
+            'status' =>1,
+        ]);
+
+        if($update){
+            Session::flash('message', 'sauvegarde réussie!');
+            Session::flash('status', 'success');
+            return redirect()->route('indexAgences');
+        } else{
+
+        }
     }
 
     /**

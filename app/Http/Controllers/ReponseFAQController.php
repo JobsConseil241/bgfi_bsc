@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ReponseFAQ;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ReponseFAQController extends Controller
 {
@@ -26,9 +27,23 @@ class ReponseFAQController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function  store(Request $request)
     {
-        //
+        $insertion = ReponseFAQ::create([
+            'id_faq' => $request->id,
+            'reponse' => $request->response,
+            'status' =>1,
+        ]);
+
+        if($insertion){
+            Session::flash('message', 'sauvegarde réussie, reponse ajoutée avec succès!');
+            Session::flash('status', 'success');
+            return redirect()->route('indexFAQs');
+        } else{
+            Session::flash('message', 'sauvegarde échoué, réessayer plutard!');
+            Session::flash('status', 'danger');
+            return redirect()->route('indexFAQs');
+        }
     }
 
     /**

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('sender_no');
             $table->string('reponse');
             $table->integer('agence');
+            $table->string('adresse_ip');
             $table->integer('id_champs');
             $table->boolean('status')->default(false);
             $table->timestamps();
