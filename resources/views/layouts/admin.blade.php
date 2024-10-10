@@ -34,6 +34,7 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="/assets/backend/vendor/css/rtl/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="/assets/backend/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"  />
     <link rel="stylesheet" href="/assets/backend/css/demo.css" />
 
     <!-- Vendors CSS -->
@@ -64,7 +65,7 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
             <div class="app-brand demo">
-                <a href="index.html" class="app-brand-link">
+                <a href="/dashboard" class="app-brand-link">
                   <span class="app-brand-logo demo">
                     <img src="/assets/frontend/img/bgfi.jpg" alt="" srcset="" width="100" height="70">
                   </span>

@@ -18,8 +18,8 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $faqmngr = 'active';
-        $title = 'FAQ - Gestion';
+            $faqmngr = 'active';
+            $title = 'FAQ - Gestion';
         $data = Faq::all();
         return view('dashboard.faq.index', compact('data', 'faqmngr', 'title'));
     }

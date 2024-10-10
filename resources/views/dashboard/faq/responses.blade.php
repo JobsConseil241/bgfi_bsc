@@ -20,9 +20,8 @@
                             <th></th>
                             <th></th>
                             <th>id</th>
-                            <th>titre</th>
-                            <th>likes</th>
-                            <th>dislikes</th>
+                            <th>title</th>
+                            <th>id_faq</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -33,7 +32,7 @@
             <!-- Modal to add new record -->
             <div class="offcanvas offcanvas-end" id="add-new-record">
                 <div class="offcanvas-header border-bottom">
-                    <h5 class="offcanvas-title" id="exampleModalLabel">Nouveau FAQ</h5>
+                    <h5 class="offcanvas-title" id="exampleModalLabel">Nouvelle Reponse</h5>
                     <button
                         type="button"
                         class="btn-close text-reset"
@@ -42,39 +41,19 @@
                 </div>
 
                 <div class="offcanvas-body flex-grow-1">
-                    <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="post" action="{{ route('addFAQs') }}">
+                    <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="post" action="{{route('AddReponses', ['id' => $faqID->id])}}">
                         @csrf
                         <div class="col-sm-12">
-                            <label class="form-label" for="nom">Libelle</label>
-                            <div class="input-group input-group-merge">
-                                <input
-                                    type="text"
-                                    id="title"
-                                    class="form-control dt-full-nom"
-                                    name="title"
-                                    placeholder="pourquoi ....?"
-                                    required
-                                    aria-label="title"
-                                    aria-describedby="title" />
-                            </div>
-                            <div class="form-text">Le libellé de la question</div>
-                        </div>
-                        <div class="col-sm-12">
-                            <label class="form-label" for="email">Sous Titre</label>
-                            <div class="input-group input-group-merge">
-                                <input
-                                    type="text"
-                                    id="subtitle"
-                                    class="form-control dt-full-nom"
-                                    name="subtitle"
-                                    placeholder="pour plus...."
-                                    aria-label="subtitle"
-                                    aria-describedby="subtitle" />
+                            <div class="col-sm-12 mt-3">
+                                <label class="form-label" for="resp">Reponse associée</label>
+                                <div class="input-group input-group-merge">
+                                    <textarea class="form-control" id="resp" rows="3" name="response" required></textarea>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-12 mt-4">
                             <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">Enregistrer</button>
-                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Annuler</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Reinitialiser</button>
                         </div>
                     </form>
                 </div>
@@ -83,67 +62,54 @@
 
 
             <!-- Modal -->
-{{--            <div class="modal fade" id="AddRes" tabindex="-1" aria-hidden="true">--}}
-{{--                <div class="modal-dialog modal-dialog-centered" role="document">--}}
-{{--                    <div class="modal-content">--}}
-{{--                        <div class="modal-header">--}}
-{{--                            <h5 class="modal-title" id="modalCenterTitle">Ajouter Une Reponse</h5>--}}
-{{--                            <button--}}
-{{--                                type="button"--}}
-{{--                                class="btn-close"--}}
-{{--                                data-bs-dismiss="modal"--}}
-{{--                                aria-label="Close"></button>--}}
-{{--                        </div>--}}
-{{--                        <form class="add-new-record pt-0 row g-2" id="editForm" method="post" >--}}
-{{--                            @csrf--}}
-{{--                            <div class="modal-body">--}}
-{{--                                <div class="col-sm-12">--}}
-{{--                                    <label class="form-label" for="libelle">Libelle de la Question</label>--}}
-{{--                                    <div class="input-group input-group-merge">--}}
-{{--                                        <input--}}
-{{--                                            type="text"--}}
-{{--                                            id="libelle"--}}
-{{--                                            name="libelle"--}}
-{{--                                            disabled--}}
-{{--                                            class="form-control dt-delay"/>--}}
-
-{{--                                    </div>--}}
-{{--                                    <input--}}
-{{--                                        type="number"--}}
-{{--                                        id="id"--}}
-{{--                                        name="id"--}}
-{{--                                        class="form-control dt-delay"--}}
-{{--                                        placeholder="100"--}}
-{{--                                        aria-label="100"--}}
-{{--                                        aria-describedby="delay" style="display: none" />--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-12 mt-3">--}}
-{{--                                    <label class="form-label" for="resp">Reponse associée</label>--}}
-{{--                                    <div class="input-group input-group-merge">--}}
-{{--                                        <textarea class="form-control" id="resp" rows="3" name="response" required></textarea>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="modal-footer">--}}
-{{--                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">--}}
-{{--                                    Fermer--}}
-{{--                                </button>--}}
-{{--                                <button  type="submit" class="btn btn-primary">Enregistrer</button>--}}
-{{--                            </div>--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="modal fade" id="EditModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalCenterTitle">Modifier la Reponse</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <form class="add-new-record pt-0 row g-2" id="editForm" method="post" action="{{ route('EditResponses', ['id' => $faqID->id]) }}">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="resp">Reponse associée</label>
+                                    <div class="input-group input-group-merge">
+                                        <textarea class="form-control" id="respe" rows="3" name="response" required></textarea>
+                                    </div>
+                                </div>
+                                <input
+                                    type="number"
+                                    id="id_response"
+                                    name="id_response"
+                                    class="form-control dt-delay"
+                                    placeholder="100"
+                                    aria-label="100"
+                                    aria-describedby="delay" style="display: none" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                                    Fermer
+                                </button>
+                                <button  type="submit" class="btn btn-primary">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- / Content -->
     @push('scripts')
         <script>
 
-            /**
-             * DataTables Basic
-             */
-            let agences = {!! json_encode($data, JSON_UNESCAPED_SLASHES ); !!};
+
+            let reponses = {!! json_encode($reponses, JSON_UNESCAPED_SLASHES ); !!};
+            let faq = {!! json_encode($faqID, JSON_UNESCAPED_SLASHES ); !!};
 
             'use strict';
 
@@ -160,13 +126,7 @@
                         if (newRecord) {
                             newRecord.addEventListener('click', function () {
                                 offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
-                                // Empty fields on offCanvas open
-                                // (offCanvasElement.querySelector('.dt-full-nom').value = ''),
-                                // (offCanvasElement.querySelector('.dt-delay').value = ''),
-                                // (offCanvasElement.querySelector('.dt-full-faq').value = ''),
-                                // (offCanvasElement.querySelector('.dt-full-cons').value = ''),
-                                // (offCanvasElement.querySelector('.dt-full-recla').value = ''),
-                                // (offCanvasElement.querySelector('.dt-full-avis').value = ''),
+
                                 // Open offCanvas with form
                                 offCanvasEl.show();
                             });
@@ -187,14 +147,13 @@
                 if (dt_basic_table.length) {
                     dt_basic = dt_basic_table.DataTable({
                         // ajax: assetsPath + 'json/table-datatable.json',
-                        data: agences,
+                        data: reponses,
                         columns: [
                             { data: '' },
                             { data: 'id' },
                             { data: 'id' },
-                            { data: 'titre' },
-                            { data: 'likes' },
-                            { data: 'dislikes' },
+                            { data: 'reponse' },
+                            { data: 'id_faq' },
                             { data: 'status' },
                             { data: '' }
                         ],
@@ -225,24 +184,22 @@
                                 }
                             },
                             {
-                                targets: 2,
+                                targets: [2,4],
                                 searchable: false,
                                 visible: false
                             },
                             {
-                                targets: 3,
+                                targets: [3],
                                 render: function (data, type, full, meta) {
                                     return '<span class="" style="font-weight: bold">'+data+'</span>';
                                 }
                             },
                             {
-                                targets: [4,5],
+                                targets: [3],
                                 searchable: true,
-                                visible: true,
-                                render: function (data, type, full, meta) {
-                                    return '<span class="" style="font-weight: bold">'+data+'</span>';
-                                }
+                                visible: true
                             },
+
                             {
                                 // Label
                                 targets: -2,
@@ -251,7 +208,7 @@
                                     var $status = {
                                         1: { title: 'Active', class: 'bg-label-success' },
                                         2: { title: 'Professional', class: ' bg-label-primary' },
-                                        3: { title: 'Rejected', class: ' bg-label-danger' },
+                                        0: { title: 'Rejected', class: ' bg-label-danger' },
                                         4: { title: 'Resigned', class: ' bg-label-warning' },
                                         5: { title: 'Applied', class: ' bg-label-info' }
                                     };
@@ -269,17 +226,28 @@
                                 title: 'Actions',
                                 orderable: false,
                                 searchable: false,
-                                render: function (data, type, full, meta) {
-                                    return (
-                                        '<div class="d-inline-block">' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
-                                        '<ul class="dropdown-menu dropdown-menu-end m-0">'+
-                                        '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Supprimer</a></li>' +
-                                        '</ul>' +
-                                        '</div>' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-outline-primary waves-effect add-res">Ajouter Reponse</a>'
-                                    );
+                                render: function (data, type, row) {
+                                    if (row.type === 'checkbox' || row.type === 'radio') {
+                                        return (
+                                            '<div class="d-inline-block">' +
+                                            '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
+                                            '<ul class="dropdown-menu dropdown-menu-end m-0">'+
+                                            '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Supprimer</a></li>' +
+                                            '</ul>' +
+                                            '</div>' +
+                                            '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'
+                                        );
+                                    }else {
+                                        return (
+                                            '<div class="d-inline-block">' +
+                                            '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
+                                            '<ul class="dropdown-menu dropdown-menu-end m-0">'+
+                                            '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Supprimer</a></li>' +
+                                            '</ul>' +
+                                            '</div>'+
+                                            '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'
+                                        );
+                                    }
                                 }
                             }
                         ],
@@ -429,7 +397,7 @@
                                 ]
                             },
                             {
-                                text: '<i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Ajouter Une Question</span>',
+                                text: '<i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Ajouter Une Reponse</span>',
                                 className: 'create-new btn btn-primary waves-effect waves-light'
                             }
                         ],
@@ -466,7 +434,7 @@
                             }
                         }
                     });
-                    $('div.head-label').html('<h5 class="card-title mb-0">Liste des Questions/Reponses</h5>');
+                    $('div.head-label').html('<h5 class="card-title mb-0">'+ faq.titre +'</h5>');
                 }
 
                 // Delete Record
@@ -488,34 +456,24 @@
                     var rowData = $('.datatables-basic').DataTable().row(row).data();
 
                     // Now, you can use the rowData for editing
-                    // console.log($(this).closest('tr'));
                     console.log("Edit data:", rowData);
+                    // console.log($(this).closest('tr'));
 
                     // Example: Open a modal to edit the row's data
-                    $("#nome").val(rowData.libelle);
-                    $("#id").val(rowData.id);
-                    $("#delaye").val(rowData.delais);
-                    (rowData.has_avis == 1 ) ? $("#avis_ouie").prop('checked', true) : $("#avis_none").prop('checked', true);
-                    (rowData.has_consult == 1 ) ? $("#cons_ouie").prop('checked', true) : $("#cons_none").prop('checked', true);
-                    (rowData.has_faq == 1 ) ? $("#faq_ouie").prop('checked', true) : $("#faq_none").prop('checked', true);
-                    (rowData.has_reclame == 1 ) ? $("#recla_ouie").prop('checked', true) : $("#recla_none").prop('checked', true);
+                    $("#respe").val(rowData.reponse);
+                    $("#id_response").val(rowData.id);
+
                     $('#EditModal').modal('show');
                     // Populate the modal with rowData for editing
                 });
 
-
+                // Add an event listener for the edit button
                 $('.datatables-basic ').on('click', '.add-res', function() {
                     var row = $(this).closest('tr');
-                    var rowData = $('.datatables-basic').DataTable().row(row).data();
-
-                    // Now, you can use the rowData for editing
-                    // console.log("Edit data:", rowData);
-                    // console.log($(this).closest('tr'));
-
-
-                    window.location.replace("/dashboard/faq-manage/"+rowData.id+"/reponses" );
-                    // Populate the modal with rowData for editing
+                    var rowData = $('.-datatables-basic').DataTable().row(row).data();
+                    $('#AddRes').modal('show');
                 });
+
             });
 
         </script>

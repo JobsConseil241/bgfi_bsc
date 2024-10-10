@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\ReponseFAQ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -11,9 +12,15 @@ class ReponseFAQController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $faqID = Faq::where('id', $id)->first();
+        $reponses =  ReponseFAQ::where('id_faq', $faqID->id)->get();
+        $faqmngr = 'active';
+        $title = 'FAQ - Gestion';
+
+        return view('dashboard.faq.responses', compact('title', 'faqmngr', 'faqID', 'reponses'));
+
     }
 
     /**
@@ -27,10 +34,10 @@ class ReponseFAQController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function  store(Request $request)
+    public function  store(Request $request, $id)
     {
         $insertion = ReponseFAQ::create([
-            'id_faq' => $request->id,
+            'id_faq' => $id,
             'reponse' => $request->response,
             'status' =>1,
         ]);
@@ -38,11 +45,11 @@ class ReponseFAQController extends Controller
         if($insertion){
             Session::flash('message', 'sauvegarde réussie, reponse ajoutée avec succès!');
             Session::flash('status', 'success');
-            return redirect()->route('indexFAQs');
+            return  redirect()->back();
         } else{
             Session::flash('message', 'sauvegarde échoué, réessayer plutard!');
             Session::flash('status', 'danger');
-            return redirect()->route('indexFAQs');
+            return  redirect()->back();
         }
     }
 
@@ -57,9 +64,23 @@ class ReponseFAQController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ReponseFAQ $reponseFAQ)
+    public function edit(Request $request, $id)
     {
-        //
+        $update = ReponseFAQ::where('id',$request->id_response)->update([
+            'id_faq' => $id,
+            'reponse' => $request->response,
+            'status' =>1,
+        ]);
+
+        if($update){
+            Session::flash('message', 'sauvegarde réussie!');
+            Session::flash('status', 'success');
+            return redirect()->back();
+        } else{
+            Session::flash('message', 'sauvegarde échoué, réessayer plutard!');
+            Session::flash('status', 'danger');
+            return redirect()->back();
+        }
     }
 
     /**

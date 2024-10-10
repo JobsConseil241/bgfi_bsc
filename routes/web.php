@@ -25,7 +25,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/agence/{nom}', [WelcomeController::class, 'index'])->name('welcome');
+
 Route::get('/agence/{nom}/faq', [WelcomeController::class, 'indexFAQ'])->name('welcomeFAQ');
+Route::get('/agence/{nom}/reclamation', [WelcomeController::class, 'indexReclamation'])->name('welcomeReclamation');
 
 Auth::routes();
 
@@ -45,9 +47,15 @@ Route::post('/dashboard/agences/modify', [AgenceController::class, 'update'])->n
 
 Route::get('/dashboard/users-manage', [AdminController::class, 'indexUsers'])->name('indexUsers');
 
+
 Route::get('/dashboard/faq-manage', [FaqController::class, 'index'])->name('indexFAQs');
+Route::get('/dashboard/faq-manage/{id}/reponses', [ReponseFAQController::class, 'index'])->name('indexReponses');
+Route::post('/dashboard/faq-manage/{id}/reponses', [ReponseFAQController::class, 'store'])->name('AddReponses');
+Route::post('/dashboard/faq-manage/{id}/reponses/edit', [ReponseFAQController::class, 'edit'])->name('EditResponses');
+
+
 Route::post('/dashboard/faq-manage/add', [FaqController::class, 'store'])->name('addFAQs');
-Route::post('/dashboard/faq-manage/add-reponses', [ReponseFAQController::class, 'store'])->name('AddReponses');
+Route::post('/dashboard/faq-manage/add-reponses', [ReponseFAQController::class, 'store'])->name('');
 
 Route::get('/dashboard/page-manager', [SettingController::class, 'index'])->name('indexSetting');
 Route::get('/dashboard/page-manager/agence', [SettingController::class, 'show'])->name('indexPageSetting');
