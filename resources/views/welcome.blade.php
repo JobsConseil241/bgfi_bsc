@@ -127,28 +127,28 @@
         }
 
         .carousel-item:nth-child(1) {
-            background-image: url('/assets/frontend/img/advert/one.jpeg');
+            background-image: url('{{ asset('/public//assets/frontend/img/advert/one.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
         }
 
         .carousel-item:nth-child(2) {
-            background-image: url('/assets/frontend/img/advert/two.jpeg');
+            background-image: url('{{ asset('/public//assets/frontend/img/advert/two.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
         }
 
         .carousel-item:nth-child(3) {
-            background-image: url('/assets/frontend/img/advert/three.jpeg');
+            background-image: url('{{ asset('/public//assets/frontend/img/advert/three.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
         }
 
         .carousel-item:nth-child(4) {
-            background-image: url('/assets/frontend/img/advert/four.jpeg');
+            background-image: url('{{ asset('/public//assets/frontend/img/advert/four.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
@@ -313,8 +313,8 @@
 
                         </div>
 
-                        <img src="/assets/frontend/img/Les certificats.png" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
-                        <p><img src="/assets/frontend/img/Tarait.png" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
+                        <img src="{{ asset('/public/assets/frontend/img/Les certificats.png') }}" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
+                        <p><img src="/public/assets/frontend/img/Tarait.png" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
                     </div>
 
                 </div>
