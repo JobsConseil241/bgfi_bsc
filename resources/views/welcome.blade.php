@@ -171,7 +171,7 @@
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a class="navbar-brand nav-link" target="_blank">
-                <img style="" src="{{ asset('/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
+                <img style="" src="{{ asset('/public/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
                      loading="lazy" alt="Logo BGFI">
             </a>
             <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarExample01"
