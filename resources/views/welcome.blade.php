@@ -127,28 +127,28 @@
         }
 
         .carousel-item:nth-child(1) {
-            background-image: url('{{ asset('/public/assets/frontend/img/advert/one.jpeg') }}');
+            background-image: url('{{ asset('/assets/frontend/img/advert/one.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
         }
 
         .carousel-item:nth-child(2) {
-            background-image: url('{{ asset('/public/assets/frontend/img/advert/two.jpeg') }}');
+            background-image: url('{{ asset('/assets/frontend/img/advert/two.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
         }
 
         .carousel-item:nth-child(3) {
-            background-image: url('{{ asset('/public/assets/frontend/img/advert/three.jpeg') }}');
+            background-image: url('{{ asset('/assets/frontend/img/advert/three.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
         }
 
         .carousel-item:nth-child(4) {
-            background-image: url('{{ asset('/public/assets/frontend/img/advert/four.jpeg') }}');
+            background-image: url('{{ asset('/assets/frontend/img/advert/four.jpeg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
@@ -171,7 +171,7 @@
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a class="navbar-brand nav-link" target="_blank">
-                <img style="" src="{{ asset('/public/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
+                <img style="" src="{{ asset('/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
                      loading="lazy" alt="Logo BGFI">
             </a>
             <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarExample01"
@@ -299,7 +299,7 @@
             <div class="col-md-2 p-md-5 mx-auto my-5">
 
                 <div class="img text-start" style="margin-left: -15px; margin-top: -120px">
-                    <img style="margin-top:10px;margin-left:-10px;" src="{{ asset('/public/assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
+                    <img style="margin-top:10px;margin-left:-10px;" src="{{ asset('/assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
                 </div>
                 <div class="welcome">
                     <div style="position:absolute;top:60%">
@@ -313,8 +313,8 @@
 
                         </div>
 
-                        <img src="{{ asset('/public/assets/frontend/img/Les certificats.png') }}" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
-                        <p><img src="/public/assets/frontend/img/Tarait.png" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
+                        <img src="{{ asset('/assets/frontend/img/Les certificats.png') }}" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
+                        <p><img src="/assets/frontend/img/Tarait.png" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
                     </div>
 
                 </div>
