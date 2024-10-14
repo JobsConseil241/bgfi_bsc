@@ -30,8 +30,8 @@
     />
     <link rel="stylesheet" href="{{ url('public/assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="fontawesome/css/fontawesome.css">
-    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/all.min.css')}}">
     <style>
         .bg-home{
             background-image: url('{{ url('public/assets/frontend/img/Fond-1.jpg') }}');
