@@ -15,7 +15,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets/frontend/img/bgfi.jpg" />
+    <link rel="icon" type="image/x-icon" href="{{url('public/assets/frontend/img/bgfi.jpg')}}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,36 +25,36 @@
         rel="stylesheet" />
 
     <!-- Icons -->
-    <link rel="stylesheet" href="/assets/backend/vendor/fonts/fontawesome.css" />
-    <link rel="stylesheet" href="/assets/backend/vendor/fonts/tabler-icons.css" />
-    <link rel="stylesheet" href="/assets/backend/vendor/fonts/flag-icons.css" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/fonts/fontawesome.css')}}" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/fonts/tabler-icons.css')}}" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/fonts/flag-icons.css')}}" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="/assets/backend/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="/assets/backend/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/assets/backend/css/demo.css" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/css/rtl/core.css')}}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/css/rtl/theme-default.css')}}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/css/demo.css')}}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="/assets/backend/vendor/libs/node-waves/node-waves.css" />
-    <link rel="stylesheet" href="/assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-{{--    <link rel="stylesheet" href="/assets/backend/vendor/libs/typeahead-js/typeahead.css" />--}}
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/node-waves/node-waves.css')}}" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
+{{--    <link rel="stylesheet" href="assets/backend/vendor/libs/typeahead-js/typeahead.css" />--}}
     <!-- Vendor -->
-{{--    <link rel="stylesheet" href="/assets/backend/vendor/libs/@form-validation/form-validation.css" />--}}
+{{--    <link rel="stylesheet" href="assets/backend/vendor/libs/@form-validation/form-validation.css" />--}}
 
     <!-- Page CSS -->
     <!-- Page -->
-    <link rel="stylesheet" href="/assets/backend/vendor/css/pages/page-auth.css" />
+    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/css/pages/page-auth.css')}}" />
 
     <!-- Helpers -->
-{{--    <script src="/assets/backend/vendor/js/helpers.js"></script>--}}
+{{--    <script src="assets/backend/vendor/js/helpers.js"></script>--}}
 {{--    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->--}}
 {{--    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->--}}
-{{--    <script src="/assets/backend/vendor/js/template-customizer.js"></script>--}}
+{{--    <script src="assets/backend/vendor/js/template-customizer.js"></script>--}}
 {{--    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->--}}
-{{--    <script src="/assets/backend/js/config.js"></script>--}}
+{{--    <script src="assets/backend/js/config.js"></script>--}}
 </head>
 
-<body style="background-image: url('/assets/frontend/img/BGFI BG.jpg'); background-repeat: no-repeat; background-size: cover">
+<body style="background-image: url('{{url('public/assets/frontend/img/BGFI BG.jpg')}}'); background-repeat: no-repeat; background-size: cover">
 <!-- Content -->
 
 <div class="container-xxl" >
@@ -66,7 +66,7 @@
                     <!-- Logo -->
                     <div class="app-brand justify-content-center mb-4 mt-2">
                         <a href="#" class="app-brand-link gap-2">
-                            <img src="/assets/frontend/img/bgfi.jpg" alt="" srcset="" width="100" height="70">
+                            <img src="{{url('public/assets/frontend/img/bgfi.jpg')}}" alt="" srcset="" width="100" height="70">
                         </a>
                     </div>
                     <!-- /Logo -->
@@ -137,28 +137,28 @@
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 
-<script src="/assets/backend/vendor/libs/jquery/jquery.js"></script>
-<script src="/assets/backend/vendor/libs/popper/popper.js"></script>
-<script src="/assets/backend/vendor/js/bootstrap.js"></script>
-<script src="/assets/backend/vendor/libs/node-waves/node-waves.js"></script>
-<script src="/assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-<script src="/assets/backend/vendor/libs/hammer/hammer.js"></script>
-<script src="/assets/backend/vendor/libs/i18n/i18n.js"></script>
-<script src="/assets/backend/vendor/libs/typeahead-js/typeahead.js"></script>
-<script src="/assets/backend/vendor/js/menu.js"></script>
+<script src="{{url('public/assets/backend/vendor/libs/jquery/jquery.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/libs/popper/popper.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/js/bootstrap.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/libs/node-waves/node-waves.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/libs/hammer/hammer.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/libs/i18n/i18n.js')}}"></script>
+<script src="{{ url('public/assets/backend/vendor/libs/typeahead-js/typeahead.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/js/menu.js')}}"></script>
 
 <!-- endbuild -->
 
 <!-- Vendors JS -->
-<script src="/assets/backend/vendor/libs/@form-validation/popular.js"></script>
-<script src="/assets/backend/vendor/libs/@form-validation/bootstrap5.js"></script>
-<script src="/assets/backend/vendor/libs/@form-validation/auto-focus.js"></script>
+<script src="{{url('public/assets/backend/vendor/libs/@form-validation/popular.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/libs/@form-validation/bootstrap5.js')}}"></script>
+<script src="{{url('public/assets/backend/vendor/libs/@form-validation/auto-focus.js')}}"></script>
 
 <!-- Main JS -->
-<script src="/assets/backend/js/main.js"></script>
+<script src="{{url('public/assets/backend/js/main.js')}}"></script>
 
 <!-- Page JS -->
-<script src="/assets/backend/js/pages-auth.js"></script>
+<script src="{{url('public/assets/backend/js/pages-auth.js')}}"></script>
 
 </body>
 </html>
