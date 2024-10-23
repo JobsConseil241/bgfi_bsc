@@ -35,8 +35,7 @@
                 <div class="card h-100">
                     <div class="card-header">
                         <div class="d-flex justify-content-between mb-3">
-                            <h5 class="card-title mb-0">Statistics</h5>
-                            <small class="text-muted">Updated 1 month ago</small>
+                            <h5 class="card-title mb-0">Statistiques</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -159,53 +158,64 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="row row-bordered g-0">
-                            <div class="col-md-8 position-relative p-4">
+                            <div class="col-md-12 position-relative p-4">
                                 <div class="card-header d-inline-block p-0 text-wrap position-absolute">
-                                    <h5 class="m-0 card-title">Revenue Report</h5>
+                                    <h5 class="m-0 card-title">Consultations</h5>
                                 </div>
-                                <div id="totalRevenueChart" class="mt-n1"></div>
+                                <div style="width: 100%; height: 300px">
+                                    <canvas id="consultationChart" style=" margin-top: 30px"></canvas>
+                                </div>
                             </div>
-                            <div class="col-md-4 p-4">
-                                <div class="text-center mt-4">
-                                    <div class="dropdown">
-                                        <button
-                                            class="btn btn-sm btn-outline-primary dropdown-toggle"
-                                            type="button"
-                                            id="budgetId"
-                                            data-bs-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false">
-                                            <script>
-                                                document.write(new Date().getFullYear());
-                                            </script>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="budgetId">
-                                            <a class="dropdown-item prev-year1" href="javascript:void(0);">
-                                                <script>
-                                                    document.write(new Date().getFullYear() - 1);
-                                                </script>
-                                            </a>
-                                            <a class="dropdown-item prev-year2" href="javascript:void(0);">
-                                                <script>
-                                                    document.write(new Date().getFullYear() - 2);
-                                                </script>
-                                            </a>
-                                            <a class="dropdown-item prev-year3" href="javascript:void(0);">
-                                                <script>
-                                                    document.write(new Date().getFullYear() - 3);
-                                                </script>
-                                            </a>
+                            <div class="col-md-12 position-relative p-4">
+                                <div class="card-header p-0 text-wrap">
+                                    <h5 class="m-0 card-title">Consultations Par agence</h5>
+                                </div>
+                                @foreach($chartsData as $agencyName => $data)
+                                    <div style="width: 300px; height: 300px">
+                                        <div style="">
+                                            <span>{{ $agencyName }}</span>
+                                            <canvas id="chart-{{ Str::slug($agencyName) }}" ></canvas>
                                         </div>
+
+                                        <script>
+                                            let ctx{{ Str::slug($agencyName) }} = document.getElementById('chart-{{ Str::slug($agencyName) }}').getContext('2d');
+
+                                            const data{{ Str::slug($agencyName) }} = {
+                                                labels: @json(array_column($data, 'module')),
+                                                datasets: [{
+                                                    label: 'Consultations',
+                                                    data: @json(array_column($data, 'total_visits')),
+                                                    backgroundColor: [
+                                                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
+                                                        '#C9CBCF', '#FF6384', '#36A2EB', '#FFCE56'
+                                                    ],
+                                                }]
+                                            };
+
+                                            new Chart(ctx{{ Str::slug($agencyName) }}, {
+                                                type: 'pie',
+                                                data: data{{ Str::slug($agencyName) }},
+                                                options: {
+                                                    responsive: true,
+                                                    plugins: {
+                                                        legend: {
+                                                            position: 'bottom',
+                                                        },
+                                                        tooltip: {
+                                                            callbacks: {
+                                                                label: function(tooltipItem) {
+                                                                    let label = data{{ Str::slug($agencyName) }}.labels[tooltipItem.dataIndex] || '';
+                                                                    let value = data{{ Str::slug($agencyName) }}.datasets[0].data[tooltipItem.dataIndex];
+                                                                    return `${label}: ${value}`;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        </script>
                                     </div>
-                                </div>
-                                <h3 class="text-center pt-4 mb-0">$25,825</h3>
-                                <p class="mb-4 text-center"><span class="fw-medium">Budget: </span>56,800</p>
-                                <div class="px-3">
-                                    <div id="budgetChart"></div>
-                                </div>
-                                <div class="text-center mt-4">
-                                    <button type="button" class="btn btn-primary">Increase Budget</button>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -215,4 +225,46 @@
         </div>
     </div>
     <!-- / Content -->
+    @push('scripts')
+        <script>
+            let ctex = document.getElementById('consultationChart').getContext('2d');
+            const consultationChart = new Chart(ctex, {
+                type: 'bar', // You can also use 'line', 'pie', 'doughnut', etc.
+                data: {
+                    labels: @json($modules), // Pass module names
+                    datasets: [
+                        {
+                            label: 'Visites',
+                            data: @json($visites), // Pass visits data
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Intéressé',
+                            data: @json($interesses), // Pass interested data
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Pas Intéressé',
+                            data: @json($pas_interesses), // Pass uninterested data
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        </script>
+    @endpush
 @endsection

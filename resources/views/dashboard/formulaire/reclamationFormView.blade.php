@@ -71,7 +71,10 @@
         }
         .blue{
             color:#2563a2;
-        }.
+        }
+        .is-invalid{
+            border: 2px solid red !important;
+        }
     </style>
     <style>
         /* Carousel styling */
@@ -331,13 +334,14 @@
             display: flex;
             justify-content: center; /* Centre horizontalement la grille */
             align-items: center;     /* Centre verticalement la grille */
+            margin-bottom: 15px;
         }
 
         .checkbox-grid {
             display: grid;
             grid-template-columns: 1fr 1fr; /* Deux colonnes de taille égale */
             gap: 20px 20px; /* Espacement vertical et horizontal */
-            width: 50%;
+            width: 100%;
         }
 
         .checkbox-grid div {
@@ -459,136 +463,249 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="cursor: default; color: #105095;">
                         <h1 class="bienvenu">
-                            JE DONNE MON AVIS
+                            JE FAIS UNE RECLAMATION
                         </h1>
                     </a>
                 </li>
             </ul>
         </div>
         <br><br>
-        <div class="position-relative overflow-hidden p-md-5 text-center row bg-other h-100">
-            <div class="col-8 mx-auto my-auto text-center card p-5">
+        <div class="position-relative overflow-hidden p-md-5 row bg-other h-100">
+            <div class="col-8 mx-auto my-auto card p-5">
                 <form id="dynamicForm" action="" method="POST">
                     @csrf
 
-                    @foreach($formFields as $index => $field)
-                        <div class="step" id="step{{ $index+1 }}" style="display: {{ $index === 0 ? 'block' : 'none' }};">
-                            <div align="center">
-                                <label style="color: #0D437A;font-weight: bold;font-size:25px" for="">{{ ucfirst($field->intitulé) }}</label>
+                    <div id="stepper">
+                        <div align="center">
+                            <label style="color: #0D437A;font-weight: bold;font-size:20px" for="">Vous souhaitez nous faire une remarque particulière, une requête ou une réclamation.
+                                <br>
+                                Veuillez compléter les champs ci-dessous</label>
+                        </div>
+                        <div align="center" class="mb-3">
 
-                                <input type="hidden" name="field_id_{{ $field->id }}" value="{{ $field->id }}">
-                            </div>
-                            <div align="center" class="mb-3">
+                            <img src="{{url('assets/frontend/img/Tarait.png')}}" class="mb-5 mt-3" width="250px" height="4px" style="margin-left: -50px;">
+                        </div>
+                        <!-- Step 1 -->
+                        <div class="step active" data-step="1">
+                            <div class="row">
+                                @foreach($fields->slice(0, 4) as $field)
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-group">
+                                            @if($field->type == 'select')
+                                                @if($field->name == "nationalite")
+                                                    @php
+                                                        // indiqué le chemin de votre fichier JSON, il peut s'agir d'une URL
+                                                        $str_json = file_get_contents("assets/backend/countries-FR.json");
 
-                                <img src="{{url('assets/frontend/img/Tarait.png')}}" class="mb-5 mt-3" width="250px" height="4px" style="margin-left: -50px;">
-                            </div>
-                            <div class="form-group">
+                                                        $parsed_json = json_decode($str_json,true);
 
-                                @if($field->type == 'select')
-                                    @if($field->name == "nationalite")
-                                        @php
-                                            // indiqué le chemin de votre fichier JSON, il peut s'agir d'une URL
-                                            $str_json = file_get_contents("assets/backend/countries-FR.json");
+                                                    @endphp
 
-                                            $parsed_json = json_decode($str_json,true);
+                                                    <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                        @foreach($parsed_json as $sv)
+                                                            @if($sv == 'Gabon')
+                                                                <option selected>{{ $sv }}</option>
+                                                            @else
+                                                                <option>{{ $sv }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                        <!-- Ajouter les options ici -->
+                                                    </select>
 
-                                        @endphp
-                                    @endif
-                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px" required>
-                                        @foreach($parsed_json as $sv)
-                                            @if($sv == 'Gabon')
-                                                <option selected>{{ $sv }}</option>
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                @elseif($field->name == "type")
+                                                    <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                    <select name="{{ $field->name }}" id="{{ $field->name }}1" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                        <option>Je rencontre un problème technique (Application, site )</option>
+                                                        <option>Frais bancaires  inattendus ou incompréhensifs</option>
+                                                        <option>Ma carte bancaire est bloquée</option>
+                                                        <option>Transactions inquiétantes sur mon compte</option>
+                                                        <option>Je souhaite faire opposition à une transaction</option>
+                                                        <option>Mon conseiller client est indisponible, je souhaite me référer à un autre</option>
+                                                        <option>Je trouve le délai de traitement de ma demande trop long </option>
+                                                        <option>Autre</option>
+                                                    </select>
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                @endif
+
+                                            @elseif($field->type === 'radio')
+                                                <div class="checkbox-grid-container">
+                                                    <div class="checkbox-grid mx-auto">
+                                                        @foreach($field->options as $option)
+                                                            <div>
+                                                                <input type="radio" name="{{ $field->name }}" class="form-check-input" value="{{ $option->libelle }}">
+                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                            </div>
+                                                        @endforeach
+
+                                                        <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                    </div>
+                                                </div>
+                                            @elseif($field->type === 'checkbox')
+                                                <div class="checkbox-grid-container">
+                                                    <div class="checkbox-grid mx-auto">
+                                                        @foreach($field->options as $option)
+                                                            <div>
+                                                                <input type="checkbox" class="form-check-input" name="{{ $field->name }}[]" value="{{ $option->libelle }}">
+                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                </div>
+                                            @elseif($field->type === 'textarea')
+                                                <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                <textarea placeholder="Renseignez ce champ" name="avis" rows="2" class="form-control" style="border-color: #0F5095"></textarea>
+
+                                                <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @else
-                                                <option>{{ $sv }}</option>
+                                                <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" class="form-control" required style="border-color: #0F5095;height:50px">
+
+
+                                                <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @endif
-                                        @endforeach
-                                        <!-- Ajouter les options ici -->
-                                    </select>
-                                @elseif($field->type === 'radio')
-                                    <div class="checkbox-grid-container">
-                                        <div class="checkbox-grid mx-auto">
-                                            @foreach($field->options as $option)
-                                                <div>
-                                                    <input type="radio" name="{{ $field->name }}" class="form-check-input" value="{{ $option->libelle }}">
-                                                    <label class="form-check-label">{{ $option->libelle }}</label>
-                                                </div>
-                                            @endforeach
                                         </div>
                                     </div>
-                                @elseif($field->type === 'checkbox')
-                                    <div class="checkbox-grid-container">
-                                        <div class="checkbox-grid mx-auto">
-                                            @foreach($field->options as $option)
-                                                <div>
-                                                    <input type="checkbox" class="form-check-input" name="{{ $field->name }}[]" value="{{ $option->libelle }}">
-                                                    <label class="form-check-label">{{ $option->libelle }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif($field->type === 'emoji')
-                                    <div class="custom-radio-grid-container">
-                                        <div class="custom-radio-grid">
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_1" name="emoji" value="Decevant">
-                                                <label for="radio_1">
-                                                    <img src=" {{ url('assets/frontend/img/decevant_off.png') }} " class="unchecked">
-                                                    <img src=" {{ url('assets/frontend/img/decevant_on.png') }} " class="checked">
-                                                    <span>Decevant</span>
-                                                </label>
-                                            </div>
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_2" name="emoji" value="Mediocre">
-                                                <label for="radio_2">
-                                                    <img src=" {{ url('assets/frontend/img/mediocre_off.png') }} " class="unchecked">
-                                                    <img src=" {{ url('assets/frontend/img/mediocre_on.png') }} " class="checked">
-                                                    <span>Mediocre</span>
-                                                </label>
-                                            </div>
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_3" name="emoji" value="Bien">
-                                                <label for="radio_3">
-                                                    <img src=" {{ url('assets/frontend/img/bien_off.png') }} " class="unchecked">
-                                                    <img src=" {{ url('assets/frontend/img/bien_on.png') }} " class="checked">
-                                                    <span>Bien</span>
-                                                </label>
-                                            </div>
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_4" name="emoji" value="Parfait">
-                                                <label for="radio_4">
-                                                    <img src=" {{ url('assets/frontend/img/parfait_off.png') }} " class="unchecked">
-                                                    <img src=" {{ url('assets/frontend/img/parfait_on.png') }} " class="checked">
-                                                    <span>Parfait</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @elseif($field->type === 'textarea')
-                                    <textarea placeholder="Renseignez ce champ" name="avis" rows="5" class="form-control" style="border-color: #0F5095;margin-top: -20px"></textarea>
-                                @else
-                                    <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" class="form-control" required style="border-color: #0F5095;height:50px">
-                                @endif
-                            </div>
 
-                            <div class="navigation-buttons mt-5">
-                                @if($index > 0)
-                                    <button type="button" class="btn btn-outline-secondary btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);"  onclick="prevStep({{ $index+1 }})">Précédent</button>
-                                @endif
 
-                                @if($index < count($formFields) - 1)
-                                    <button type="button" class="btn btn-outline-primary btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);" onclick="nextStep({{ $index+1 }})">Suivant</button>
-                                @else
-                                    <button type="submit" class="btn btn-outline-success btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);" >Soumettre</button>
-                                @endif
+                                @endforeach
+                                <div class="col-md-6" id="otherFieldGroup" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="otherNationality">Entrez la valeur</label>
+                                        <input type="text" name="other_nationality" id="otherNationality" class="form-control">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    @endforeach
-                </form>
 
+                        <!-- Step 2 -->
+                        <div class="step" data-step="2" style="display:none;">
+                            <div class="row">
+                                @foreach($fields->slice(4, 4) as $field)
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @if($field->type == 'select')
+                                                @if($field->name == "nationalite")
+                                                    @php
+                                                        // indiqué le chemin de votre fichier JSON, il peut s'agir d'une URL
+                                                        $str_json = file_get_contents("assets/backend/countries-FR.json");
+
+                                                        $parsed_json = json_decode($str_json,true);
+
+                                                    @endphp
+
+                                                    <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                        @foreach($parsed_json as $sv)
+                                                            @if($sv == 'Gabon')
+                                                                <option selected>{{ $sv }}</option>
+                                                            @else
+                                                                <option>{{ $sv }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                        <!-- Ajouter les options ici -->
+                                                    </select>
+
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                @elseif($field->name == "type")
+                                                    <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                    <select name="{{ $field->name }}" id="{{ $field->name }}1" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                        <option>Je rencontre un problème technique (Application, site )</option>
+                                                        <option>Frais bancaires  inattendus ou incompréhensifs</option>
+                                                        <option>Ma carte bancaire est bloquée</option>
+                                                        <option>Transactions inquiétantes sur mon compte</option>
+                                                        <option>Je souhaite faire opposition à une transaction</option>
+                                                        <option>Mon conseiller client est indisponible, je souhaite me référer à un autre</option>
+                                                        <option>Je trouve le délai de traitement de ma demande trop long </option>
+                                                        <option>Autre</option>
+                                                    </select>
+
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                @endif
+
+                                            @elseif($field->type === 'radio')
+                                                <label style="color: #0D437A; margin-bottom: 15px">{{ $field->intitulé }}</label>
+                                                <div class="checkbox-grid-container">
+                                                    <div class="checkbox-grid mx-auto">
+                                                        @foreach($field->options as $option)
+                                                            <div>
+                                                                <input type="radio" name="{{ $field->name }}" class="form-check-input" value="{{ $option->libelle }}">
+                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                </div>
+                                            @elseif($field->type === 'checkbox')
+                                                <label style="color: #0D437A; margin-bottom: 15px">{{ $field->intitulé }}</label>
+                                                <div class="checkbox-grid-container">
+                                                    <div class="checkbox-grid mx-auto">
+                                                        @foreach($field->options as $option)
+                                                            <div>
+                                                                <input type="checkbox" class="form-check-input" name="{{ $field->name }}[]" value="{{ $option->libelle }}">
+                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+
+                                                    <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                                </div>
+                                            @elseif($field->type === 'textarea')
+                                                <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                <textarea placeholder="Renseignez ce champ" name="avis" rows="2" class="form-control" style="border-color: #0F5095"></textarea>
+
+
+                                                <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                            @else
+                                                <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+                                                <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" class="form-control" required style="height:50px">
+
+
+                                                <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="step" data-step="3" style="display:none;">
+                            <div class="row">
+                                @foreach($fields->slice(8, 3) as $field)
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-group">
+                                            <label style="color: #0D437A;" class="mb-2" for="{{ $field->name }}">{{ $field->intitulé }}</label>
+
+                                            <input type="{{ $field->type }}" class="form-control"
+                                                   name="{{ $field->name }}" id="{{ $field->name }}"
+                                                required style="height:60px">
+
+
+                                            <input type="hidden" name="field_id[]" value="{{ $field->id }}">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Stepper buttons -->
+                        <div class="stepper-buttons text-center mt-5">
+                            <button id="prevBtn" type="button" class="btn btn-outline-secondary btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);"   onclick="prevStep()">Precedent</button>
+                            <button id="nextBtn" type="button" class="btn btn-outline-primary btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);"   onclick="nextStep()">Suivant</button>
+                            <button id="submitBtn"  type="submit" class="btn btn-success btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);display:none;">Soumettre</button>
+                        </div>
+                    </div>
+                </form>
                 <div id="successMessage" style="display:none;">
 
                     <div class="text-center text-light pt-3">
-                        <h1 class="display-6 text-muted h1 bienvenu"><strong style="color: #105095; margin-bottom: 15px">Merci d’avoir répondu à notre questionnaire de satisfaction.</strong></h1>
+                        <h1 class="display-6 text-muted h1 bienvenu"><strong style="color: #105095; margin-bottom: 20px">Merci d’avoir répondu à notre questionnaire de satisfaction.</strong></h1>
                         <h1 class="display-6 text-muted h1 bienvenu"><strong style="color: #b2b88f;">À bientôt dans votre agence BGFI</strong></h1>
 
                         <br>
@@ -619,7 +736,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="/assets/frontend/js/zoom.js"></script>
+<script src="{{url('assets/frontend/js/zoom.js')}}"></script>
 <!-- MDB -->
 <script
     type="text/javascript"
@@ -627,132 +744,101 @@
 ></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // A $( document ).ready() block.
     let currentStep = 1;
+    const totalSteps = 3;
     const url = window.location.href;
     const parsedUrl = new URL(url);
     const pathParts = parsedUrl.pathname.split('/');
     const agence = pathParts[2]; // Ici, '123'
 
-    // Fonction pour passer à l'étape suivante
-    function nextStep(currentStep) {
-        // Sélectionner tous les champs de l'étape actuelle
-        const step = document.getElementById('step' + currentStep);
-        const inputs = step.querySelectorAll('input, select, textarea');
-
-        let allValid = true;
-
-        // Valider chaque champ
-        inputs.forEach(input => {
-            if (!input.checkValidity()) {
-                input.reportValidity();  // Affiche le message d'erreur du navigateur
-                allValid = false;
-            }
-        });
-
-        // Si tous les champs sont valides, on passe à l'étape suivante
-        if (allValid) {
-            step.style.display = 'none';
-            document.getElementById('step' + (currentStep + 1)).style.display = 'block';
+    $('#type1').on('change', function() {
+        if ($(this).val() === 'Autre') {
+            $('#otherFieldGroup').show();  // Show "Other" input field
+        } else {
+            $('#otherFieldGroup').hide();  // Hide "Other" input field
         }
-    }
-
-    // Fonction pour revenir à l'étape précédente
-    function prevStep(currentStep) {
-        document.getElementById('step' + currentStep).style.display = 'none';
-        document.getElementById('step' + (currentStep - 1)).style.display = 'block';
-    }
-
-    jQuery( document ).ready(function() {
-
-        // Récupérer l'URL actuelle
-        const url = window.location.href;
-        const parsedUrl = new URL(url);
-        const pathParts = parsedUrl.pathname.split('/');
-        const agence = pathParts[2]; // Ici, '123'
-
-
-        jQuery(".startHome").click(function (event) {
-            event.preventDefault();
-            jQuery("#first").hide()
-            jQuery('#avis').removeClass('d-none')
-            checkActivity();
-        })
-
-        // Soumission du formulaire via AJAX
-        $("#dynamicForm").submit(function(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
-
-            // Collecte des données du formulaire
-            var formData = $(this).serialize();
-
-            // Soumission AJAX
-            $.ajax({
-                type: 'POST',
-                url: '/agence/' + agence + '/avis', // Remplace par l'URL de ton endpoint
-                data: formData,
-                success: function(response) {
-                    if (response.status === 200) {
-                        $('#dynamicForm').hide();
-                        $('#successMessage').show();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Gérer l'erreur ici
-                    alert('Erreur lors de la soumission du formulaire: ' + error);
-                    console.error(xhr);
-                }
-            });
-        });
-
-        var activite_detectee = false;
-        var intervalle = 1000;
-        var temps_inactivite = 10 * 1000;
-        var inactivite_persistante = true;
-        // On crée la fonction qui teste toutes les x secondes l'activité du visiteur via activite_detectee
-        function testerActivite() {
-            // On teste la variable activite_detectee
-            // Si une activité a été détectée [On réinitialise activite_detectee, temps_inactivite et inactivite_persistante]
-            if(activite_detectee) {
-                activite_detectee = false;
-                temps_inactivite = 10 * 1000;
-                inactivite_persistante = false;
-            }
-            // Si aucune activité n'a été détectée [on actualise le statut du visiteur et on teste/met à jour la valeur du temps d'inactivité]
-            else {
-                statut('inactif');
-                // Si l'inactivite est persistante [on met à jour temps_inactivite]
-                if(inactivite_persistante) {
-                    temps_inactivite -= intervalle;
-                    // Si le temps d'inactivite dépasse les 30 secondes
-                    if(temps_inactivite == 0){
-                        jQuery("#first").show()
-                        jQuery('#avis').addClass('d-none')
-                    }
-
-
-                }
-                // Si l'inactivite est nouvelle [on met à jour inactivite_persistante]
-                else
-                    inactivite_persistante = true;
-            }
-            // On relance la fonction ce qui crée une boucle
-            setTimeout('testerActivite();', intervalle);
-        }
-
-        var timeout = false;
-        function checkActivity() {
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                jQuery("#first").show()
-                jQuery('#avis').addClass('d-none')
-                clearTimeout(timeout)
-            }, 10000);
-        }
-        document.addEventListener('keydown', checkActivity);
-        document.addEventListener('mousedown', checkActivity);
-        document.addEventListener('mousemove', checkActivity);
     });
+
+    function showStep(step) {
+        document.querySelectorAll('.step').forEach((el) => {
+            el.style.display = 'none';
+        });
+        document.querySelector(`[data-step="${step}"]`).style.display = 'block';
+
+        document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'inline-block';
+        document.getElementById('nextBtn').style.display = step === totalSteps ? 'none' : 'inline-block';
+        document.getElementById('submitBtn').style.display = step === totalSteps ? 'inline-block' : 'none';
+    }
+
+    function validateStep(step) {
+        let valid = true;
+        document.querySelectorAll(`[data-step="${step}"] .form-control, [data-step="${step}"] input[required]`).forEach((input) => {
+            if (!input.checkValidity()) {
+                input.classList.add('is-invalid');
+                valid = false;
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+        return valid;
+    }
+
+    function nextStep() {
+        if (validateStep(currentStep)) {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    // Initially show the first step
+    showStep(currentStep);
+
+
+
+    // Handle form submission via AJAX
+    $('#dynamicForm').submit(function(event) {
+        event.preventDefault();
+
+
+        // Check if "Other" is selected
+        if ($('#type1').val() === 'Autre') {
+            // Replace the value of "type" with the value from "other_type"
+            let otherTypeValue = $('#otherNationality').val();
+            $('#type1').val(otherTypeValue);
+            $('#otherNationality').removeAttr('name')
+        } else {
+            $('#otherNationality').removeAttr('name')
+        }
+
+        let formData = $(this).serializeArray()
+
+        $.ajax({
+            url: '/agence/'+ agence +'/reclamation',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.status === 200) {
+                    $('#stepper').hide();
+                    $('#successMessage').show();
+                }
+            },
+            error: function(xhr, status, error) {
+                // Gérer l'erreur ici
+                alert('Erreur lors de la soumission du formulaire: ' + error);
+                console.error(xhr);
+            }
+        });
+    });
+
 
     function handleLike() {
         Swal.fire({
@@ -799,7 +885,7 @@
         var token = $('meta[name="csrf-token"]').attr('content');
         // Remplacez par un véritable appel AJAX ici
         $.ajax({
-            url: '/save-feedback/' + agence + '/avis',
+            url: '/save-feedback/' + agence + '/reclamation',
             method: 'POST',
             data: { feedback: type, "_token": token, },
             success: function(response) {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agence;
+use App\Models\Consultation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,34 @@ class AdminController extends Controller
     public function index()
     {
         $title = "BGFI Corner";
-        return view('dashboard.index', compact('title'));
+        $consultations = Consultation::select('module', 'visite', 'interesse', 'pas_interesse')->get();
+
+        // Extract module names and statistics
+        $modules = $consultations->pluck('module');
+        $visites = $consultations->pluck('visite');
+        $interesses = $consultations->pluck('interesse');
+        $pas_interesses = $consultations->pluck('pas_interesse');
+
+        $consultation = Consultation::with('agence')
+            ->select('agences_id', 'module', \DB::raw('SUM(visite) as total_visits'))
+            ->groupBy('agences_id', 'module')
+            ->get();
+
+        // Group data by agency for charts
+        $chartsData = [];
+        foreach ($consultation as $consul) {
+            $agencyName = $consul->agence->libelle; // Get the agency name
+            $module = $consul->module; // Get the module name
+            $totalVisits = $consul->total_visits;
+
+            // Group by agency name and prepare data for each module
+            $chartsData[$agencyName][] = [
+                'module' => $module,
+                'total_visits' => $totalVisits,
+            ];
+        }
+
+        return view('dashboard.index', compact('title', 'modules', 'visites', 'interesses', 'pas_interesses', 'chartsData'));
     }
 
     /**

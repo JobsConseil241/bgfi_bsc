@@ -27,7 +27,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/agence/{nom}', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('/agence/{nom}/faq', [WelcomeController::class, 'indexFAQ'])->name('welcomeFAQ');
+Route::get('/agence/{nom}/avis', [WelcomeController::class, 'indexAvis'])->name('welcomeAvis');
+Route::post('/agence/{nom}/avis', [WelcomeController::class, 'saveAvis'])->name('saveAvis');
 Route::get('/agence/{nom}/reclamation', [WelcomeController::class, 'indexReclamation'])->name('welcomeReclamation');
+Route::post('/agence/{nom}/reclamation', [WelcomeController::class, 'saveReclamation'])->name('saveReclamation');
+
+
+Route::post('/save-feedback/{nom}/{module}', [WelcomeController::class, 'saveFeedback'])->name('saveFeedback');
+Route::post('/save-faq-feedback/{nom}/{faq}', [WelcomeController::class, 'saveFaqLike'])->name('saveFeedbackFaq');
+
+
 
 Auth::routes();
 
@@ -51,7 +60,7 @@ Route::get('/dashboard/users-manage', [AdminController::class, 'indexUsers'])->n
 Route::get('/dashboard/faq-manage', [FaqController::class, 'index'])->name('indexFAQs');
 Route::get('/dashboard/faq-manage/{id}/reponses', [ReponseFAQController::class, 'index'])->name('indexReponses');
 Route::post('/dashboard/faq-manage/{id}/reponses', [ReponseFAQController::class, 'store'])->name('AddReponses');
-Route::post('/dashboard/faq-manage/{id}/reponses/edit', [ReponseFAQController::class, 'edit'])->name('EditResponses');
+Route::post(    '/dashboard/faq-manage/{id}/reponses/edit', [ReponseFAQController::class, 'edit'])->name('EditResponses');
 
 
 Route::post('/dashboard/faq-manage/add', [FaqController::class, 'store'])->name('addFAQs');
