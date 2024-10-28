@@ -34,15 +34,19 @@
 
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/fontawesome.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/all.min.css')}}">
+
+    <link rel="preload" href="{{url('public/assets/frontend/img/fond2.jpg') }}" as="image">
+    <link rel="preload" href="{{url('public/assets/frontend/img/Fond-1.jpg') }}" as="image">
     <style>
+
         .bg-home{
-            background-image: url('{{url('public/assets/frontend/img/Fond-1.jpg') }}');
+            background-image: url('{{url('public/assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         .bg-other{
-            background-image: url('{{url('public/assets/frontend/img/fond2.jpg') }}');
+            background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
@@ -452,7 +456,7 @@
     <nav class="navbar navbar-expand-lg fixed-bottom navbar-light">
         <div class="container-fluid">
             <!-- Toggle button -->
-            <a class="navbar-brand mt-lg-0 tablinks" href="{{ route('welcome', ['nom' => 'venus']) }}">
+            <a class="navbar-brand mt-lg-0 tablinks" href="/agence/venus?click=yes">
                 <span class="btn text-light" style="font-size:20px; background-color: #b2b88f; border-radius: 25px;">
                     <i class="fa fa-chevron-left"></i>
                     Accueil
@@ -487,58 +491,8 @@
             event.preventDefault();
             jQuery("#first").hide()
             jQuery('#avis').removeClass('d-none')
-            checkActivity();
+            resetInactivityTimer();
         })
-
-
-
-        var activite_detectee = false;
-        var intervalle = 1000;
-        var temps_inactivite = 10 * 1000;
-        var inactivite_persistante = true;
-        // On crée la fonction qui teste toutes les x secondes l'activité du visiteur via activite_detectee
-        function testerActivite() {
-            // On teste la variable activite_detectee
-            // Si une activité a été détectée [On réinitialise activite_detectee, temps_inactivite et inactivite_persistante]
-            if(activite_detectee) {
-                activite_detectee = false;
-                temps_inactivite = 10 * 1000;
-                inactivite_persistante = false;
-            }
-            // Si aucune activité n'a été détectée [on actualise le statut du visiteur et on teste/met à jour la valeur du temps d'inactivité]
-            else {
-                statut('inactif');
-                // Si l'inactivite est persistante [on met à jour temps_inactivite]
-                if(inactivite_persistante) {
-                    temps_inactivite -= intervalle;
-                    // Si le temps d'inactivite dépasse les 30 secondes
-                    if(temps_inactivite == 0){
-                        jQuery("#first").show()
-                        jQuery('#avis').addClass('d-none')
-                    }
-
-
-                }
-                // Si l'inactivite est nouvelle [on met à jour inactivite_persistante]
-                else
-                    inactivite_persistante = true;
-            }
-            // On relance la fonction ce qui crée une boucle
-            setTimeout('testerActivite();', intervalle);
-        }
-
-        var timeout = false;
-        function checkActivity() {
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                jQuery("#first").show()
-                jQuery('#avis').addClass('d-none')
-                clearTimeout(timeout)
-            }, 10000);
-        }
-        document.addEventListener('keydown', checkActivity);
-        document.addEventListener('mousedown', checkActivity);
-        document.addEventListener('mousemove', checkActivity);
 
         jQuery('#search-text').on('keyup', function () {
             var searchText = jQuery(this).val().toLowerCase(); // Récupérer la valeur de l'input et la convertir en minuscule
@@ -556,6 +510,69 @@
             });
         })
     });
+
+    const INACTIVITY_TIME = 10000; // 10 secondes
+    let inactivityTimer;
+    let swalInstance = null;
+    let shouldRedirect = true;
+
+
+    function warnAndRedirect() {
+        let timerInterval;
+
+        shouldRedirect = true;
+
+        swalInstance  =  Swal.fire({
+            title: "Inactivité détectée",
+            html: "Vous serez redirigé dans <b></b> secondes...",
+            icon: "warning",
+            timer: 3000,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+            },
+            willClose: () => {
+                if (shouldRedirect){
+                    clearInterval(timerInterval);
+                    // window.location.href = "https://votre-page-de-redirection.com";
+                    window.location.href = '/agence/' + agence + '?click=yes';
+
+                    window.removeEventListener("mousemove", resetInactivityTimer);
+                    window.removeEventListener("click", resetInactivityTimer);
+                    window.removeEventListener("keydown", resetInactivityTimer);
+                    window.removeEventListener("touchstart", resetInactivityTimer);
+
+                    clearTimeout(inactivityTimer);
+                }
+            }
+        })
+    }
+
+    function resetInactivityTimer() {
+        // Efface le timer existant s'il y en a un
+        clearTimeout(inactivityTimer);
+
+        // Ferme l'alerte SweetAlert si elle est ouverte
+        if (swalInstance && Swal.isVisible()) {
+            shouldRedirect = false;
+            swalInstance.close();
+        }
+
+        // Redémarre le timer
+        inactivityTimer = setTimeout(warnAndRedirect, INACTIVITY_TIME);
+
+        window.addEventListener("mousemove", resetInactivityTimer);
+        window.addEventListener("click", resetInactivityTimer);
+        window.addEventListener("keydown", resetInactivityTimer);
+        window.addEventListener("touchstart", resetInactivityTimer);
+    }
 
     function handleLike(id) {
         Swal.fire({
@@ -617,5 +634,7 @@
             }
         });
     }
+
+    resetInactivityTimer()
 </script>
 </body>

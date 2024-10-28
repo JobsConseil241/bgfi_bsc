@@ -32,15 +32,21 @@
 
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/fontawesome.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/all.min.css')}}">
+
+
+    <link rel="preload" href="{{url('public/assets/frontend/img/fond2.jpg') }}" as="image">
+    <link rel="preload" href="{{url('public/assets/frontend/img/Fond-1.jpg') }}" as="image">
+
     <style>
+
         .bg-home{
-            background-image: url('{{url('public/assets/frontend/img/Fond-1.jpg') }}');
+            background-image: url('{{url('public/assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         .bg-other{
-            background-image: url('{{url('public/assets/frontend/img/fond2.jpg') }}');
+            background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
@@ -337,7 +343,7 @@
                     <!--<a class="tablinks" href="http://10.20.20.41:8080/OnlineBankingGB/#!/login?agence=venus">-->
 
 
-                    <div style="position: relative;visibility:visible" onmousedown="return mise_a_jourconsultation(consultation)" class="col-6 mb-2 text-start">
+                    <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <!--<a class="tablinks" href="https://ga.bgfionline.com/ga_retail/index.ebk">-->
                         <img src="{{url('public/assets/backend/dist/img/Femme-ordi-sans-texte.jpg08')}}" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                         <span class="card-sbtitle light-brown">Je consulte mon compte</span>
@@ -345,7 +351,7 @@
                     </div>
 
 
-                    <div style="position: relative;visibility:visible" onmousedown="return mise_a_jourreclame(reclame)" class="col-6 mb-3 text-end">
+                    <div style="position: relative;visibility:visible"  class="col-6 mb-3 text-end">
                         <a class="tablinks" href="/agence/venus/reclamation">
                             <img src="{{url('public/assets/backend/dist/img/Dame-2-sans-texte.jpg09')}}" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blue">Je fais une réclamation </span>
@@ -353,7 +359,7 @@
                     </div>
 
 
-                    <div style="position: relative;visibility:visible" onmousedown="return mise_a_jouravis(avis)" class="col-6 mb-2 text-start">
+                    <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <a class="tablinks" href="/agence/venus/avis">
                             <img src="{{url('public/assets/backend/dist/img/Dame-3-sans-texte (1).jpg34')}}" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-brown">Je donne mon avis sur ma banque</span>
@@ -371,67 +377,104 @@
     type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"
 ></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     // A $( document ).ready() block.
     jQuery( document ).ready(function() {
 
+        const INACTIVITY_TIME = 10000; // 10 secondes
+        let inactivityTimer;
+        let swalInstance = null;
+        let shouldRedirect = true;
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+
+        let value  = urlParams.get('click')
+
+        if(value === 'yes'){
+            jQuery("#first").hide()
+            jQuery('#avis').removeClass('d-none')
+
+
+            const url = new URL(window.location);
+            url.search = ""; // Supprime tous les paramètres
+            window.history.replaceState({}, document.title, url);
+
+            resetInactivityTimer();
+        }
+
         jQuery(".startHome").click(function (event) {
             event.preventDefault();
             jQuery("#first").hide()
             jQuery('#avis').removeClass('d-none')
-            checkActivity();
+
+            resetInactivityTimer();
         })
 
 
+        function warnAndRedirect() {
+            let timerInterval;
 
-        var activite_detectee = false;
-        var intervalle = 1000;
-        var temps_inactivite = 10 * 1000;
-        var inactivite_persistante = true;
-        // On crée la fonction qui teste toutes les x secondes l'activité du visiteur via activite_detectee
-        function testerActivite() {
-            // On teste la variable activite_detectee
-            // Si une activité a été détectée [On réinitialise activite_detectee, temps_inactivite et inactivite_persistante]
-            if(activite_detectee) {
-                activite_detectee = false;
-                temps_inactivite = 10 * 1000;
-                inactivite_persistante = false;
-            }
-            // Si aucune activité n'a été détectée [on actualise le statut du visiteur et on teste/met à jour la valeur du temps d'inactivité]
-            else {
-                statut('inactif');
-                // Si l'inactivite est persistante [on met à jour temps_inactivite]
-                if(inactivite_persistante) {
-                    temps_inactivite -= intervalle;
-                    // Si le temps d'inactivite dépasse les 30 secondes
-                    if(temps_inactivite == 0){
+            shouldRedirect = true;
+
+            swalInstance  =  Swal.fire({
+                title: "Inactivité détectée",
+                html: "Vous serez redirigé dans <b></b> secondes...",
+                icon: "warning",
+                timer: 3000,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    if (shouldRedirect){
+                        clearInterval(timerInterval);
+                        // window.location.href = "https://votre-page-de-redirection.com";
                         jQuery("#first").show()
                         jQuery('#avis').addClass('d-none')
+
+                        window.removeEventListener("mousemove", resetInactivityTimer);
+                        window.removeEventListener("click", resetInactivityTimer);
+                        window.removeEventListener("keydown", resetInactivityTimer);
+                        window.removeEventListener("touchstart", resetInactivityTimer);
+
+                        clearTimeout(inactivityTimer);
                     }
-
-
                 }
-                // Si l'inactivite est nouvelle [on met à jour inactivite_persistante]
-                else
-                    inactivite_persistante = true;
-            }
-            // On relance la fonction ce qui crée une boucle
-            setTimeout('testerActivite();', intervalle);
+            })
         }
 
-        var timeout = false;
-        function checkActivity() {
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                jQuery("#first").show()
-                jQuery('#avis').addClass('d-none')
-                clearTimeout(timeout)
-            }, 10000);
+        function resetInactivityTimer() {
+            // Efface le timer existant s'il y en a un
+            clearTimeout(inactivityTimer);
+
+            // Ferme l'alerte SweetAlert si elle est ouverte
+            if (swalInstance && Swal.isVisible()) {
+                shouldRedirect = false;
+                swalInstance.close();
+            }
+
+            // Redémarre le timer
+            inactivityTimer = setTimeout(warnAndRedirect, INACTIVITY_TIME);
+
+            window.addEventListener("mousemove", resetInactivityTimer);
+            window.addEventListener("click", resetInactivityTimer);
+            window.addEventListener("keydown", resetInactivityTimer);
+            window.addEventListener("touchstart", resetInactivityTimer);
         }
-        document.addEventListener('keydown', checkActivity);
-        document.addEventListener('mousedown', checkActivity);
-        document.addEventListener('mousemove', checkActivity);
+
+
+
     });
 </script>
 </body>

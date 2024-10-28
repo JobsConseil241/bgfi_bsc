@@ -34,18 +34,31 @@
 
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/fontawesome.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/all.min.css')}}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+
+    <link rel="preload" href="{{url('public/assets/frontend/img/fond2.jpg') }}" as="image">
+    <link rel="preload" href="{{url('public/assets/frontend/img/Fond-1.jpg') }}" as="image">
+
     <style>
+
         .bg-home{
-            background-image: url('{{url('public/assets/frontend/img/Fond-1.jpg') }}');
+            background-image: url('{{url('public/assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         .bg-other{
-            background-image: url('{{url('public/assets/frontend/img/fond2.jpg') }}');
+            background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
+            height: 75vh !important;
         }
         .card-sbtitle{
             position:absolute;
@@ -327,6 +340,9 @@
         .toast--yellown:before{
             background-color:#b2b88f;
         }
+        .iti{
+            width: 100% !important;
+        }
         .checkbox-grid-container {
             display: flex;
             justify-content: center; /* Centre horizontalement la grille */
@@ -565,6 +581,8 @@
                                     </div>
                                 @elseif($field->type === 'textarea')
                                     <textarea placeholder="Renseignez ce champ" name="avis" rows="5" class="form-control" style="border-color: #0F5095;margin-top: -20px"></textarea>
+                                @elseif($field->type === 'tel')
+                                    <input  type="tel" id="{{ $field->type }}"  name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px; width: 100% !important" required>
                                 @else
                                     <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" class="form-control" required style="border-color: #0F5095;height:50px">
                                 @endif
@@ -606,7 +624,7 @@
     <nav class="navbar navbar-expand-lg fixed-bottom navbar-light">
         <div class="container-fluid">
             <!-- Toggle button -->
-            <a class="navbar-brand mt-lg-0 tablinks" href="{{ route('welcome', ['nom' => 'venus']) }}">
+            <a class="navbar-brand mt-lg-0 tablinks" href="/agence/venus?click=yes">
                 <span class="btn text-light" style="font-size:20px; background-color: #b2b88f; border-radius: 25px;">
                     <i class="fa fa-chevron-left"></i>
                     Accueil
@@ -633,6 +651,18 @@
     const parsedUrl = new URL(url);
     const pathParts = parsedUrl.pathname.split('/');
     const agence = pathParts[2]; // Ici, '123'
+
+    const input = document.querySelector("#tel");
+    const iti = window.intlTelInput(input, {
+        initialCountry: "auto", // Détecte automatiquement le pays de l'utilisateur
+        geoIpLookup: function(callback) {
+            fetch('https://ipinfo.io?token=7092a49506ec32')
+                .then((response) => response.json())
+                .then((data) => callback(data.country))
+                .catch(() => callback("us"));
+        },
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Inclut les scripts utilitaires pour le formatage
+    });
 
     // Fonction pour passer à l'étape suivante
     function nextStep(currentStep) {
@@ -680,7 +710,7 @@
         })
 
         // Soumission du formulaire via AJAX
-        $("#dynamicForm").submit(function(event) {
+        $("#dynamicForm").submit(function (event) {
             event.preventDefault(); // Empêche le rechargement de la page
 
             // Collecte des données du formulaire
@@ -691,68 +721,82 @@
                 type: 'POST',
                 url: '/agence/' + agence + '/avis', // Remplace par l'URL de ton endpoint
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     if (response.status === 200) {
                         $('#dynamicForm').hide();
                         $('#successMessage').show();
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     // Gérer l'erreur ici
                     alert('Erreur lors de la soumission du formulaire: ' + error);
                     console.error(xhr);
                 }
             });
         });
+    })
 
-        var activite_detectee = false;
-        var intervalle = 1000;
-        var temps_inactivite = 10 * 1000;
-        var inactivite_persistante = true;
-        // On crée la fonction qui teste toutes les x secondes l'activité du visiteur via activite_detectee
-        function testerActivite() {
-            // On teste la variable activite_detectee
-            // Si une activité a été détectée [On réinitialise activite_detectee, temps_inactivite et inactivite_persistante]
-            if(activite_detectee) {
-                activite_detectee = false;
-                temps_inactivite = 10 * 1000;
-                inactivite_persistante = false;
-            }
-            // Si aucune activité n'a été détectée [on actualise le statut du visiteur et on teste/met à jour la valeur du temps d'inactivité]
-            else {
-                statut('inactif');
-                // Si l'inactivite est persistante [on met à jour temps_inactivite]
-                if(inactivite_persistante) {
-                    temps_inactivite -= intervalle;
-                    // Si le temps d'inactivite dépasse les 30 secondes
-                    if(temps_inactivite == 0){
-                        jQuery("#first").show()
-                        jQuery('#avis').addClass('d-none')
-                    }
+    const INACTIVITY_TIME = 10000; // 10 secondes
+    let inactivityTimer;
+    let swalInstance = null;
+    let shouldRedirect = true;
 
 
+    function warnAndRedirect() {
+        let timerInterval;
+
+        shouldRedirect = true;
+
+        swalInstance  =  Swal.fire({
+            title: "Inactivité détectée",
+            html: "Vous serez redirigé dans <b></b> secondes...",
+            icon: "warning",
+            timer: 3000,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+            },
+            willClose: () => {
+                if (shouldRedirect){
+                    clearInterval(timerInterval);
+                    window.location.href = '/agence/' + agence + '?click=yes';
+
+                    window.removeEventListener("mousemove", resetInactivityTimer);
+                    window.removeEventListener("click", resetInactivityTimer);
+                    window.removeEventListener("keydown", resetInactivityTimer);
+                    window.removeEventListener("touchstart", resetInactivityTimer);
+
+                    clearTimeout(inactivityTimer);
                 }
-                // Si l'inactivite est nouvelle [on met à jour inactivite_persistante]
-                else
-                    inactivite_persistante = true;
             }
-            // On relance la fonction ce qui crée une boucle
-            setTimeout('testerActivite();', intervalle);
+        })
+    }
+
+    function resetInactivityTimer() {
+        // Efface le timer existant s'il y en a un
+        clearTimeout(inactivityTimer);
+
+        // Ferme l'alerte SweetAlert si elle est ouverte
+        if (swalInstance && Swal.isVisible()) {
+            shouldRedirect = false;
+            swalInstance.close();
         }
 
-        var timeout = false;
-        function checkActivity() {
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                jQuery("#first").show()
-                jQuery('#avis').addClass('d-none')
-                clearTimeout(timeout)
-            }, 10000);
-        }
-        document.addEventListener('keydown', checkActivity);
-        document.addEventListener('mousedown', checkActivity);
-        document.addEventListener('mousemove', checkActivity);
-    });
+        // Redémarre le timer
+        inactivityTimer = setTimeout(warnAndRedirect, INACTIVITY_TIME);
+
+        window.addEventListener("mousemove", resetInactivityTimer);
+        window.addEventListener("click", resetInactivityTimer);
+        window.addEventListener("keydown", resetInactivityTimer);
+        window.addEventListener("touchstart", resetInactivityTimer);
+    }
 
     function handleLike() {
         Swal.fire({
@@ -804,10 +848,12 @@
             data: { feedback: type, "_token": token, },
             success: function(response) {
                 if(response.status === 200) {
-                    window.location.href = '/agence/' + agence;
+                    window.location.href = '/agence/' + agence + '?click=yes';
                 }
             }
         });
     }
+
+    resetInactivityTimer()
 </script>
 </body>
