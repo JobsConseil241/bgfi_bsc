@@ -41,10 +41,6 @@
     <!-- JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 
-
-    <link rel="preload" href="{{url('public/assets/frontend/img/fond2.jpg') }}" as="image">
-    <link rel="preload" href="{{url('public/assets/frontend/img/Fond-1.jpg') }}" as="image">
-
     <style>
 
         .bg-home{

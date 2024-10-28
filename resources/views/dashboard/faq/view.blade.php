@@ -35,8 +35,6 @@
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/fontawesome.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/all.min.css')}}">
 
-    <link rel="preload" href="{{url('public/assets/frontend/img/fond2.jpg') }}" as="image">
-    <link rel="preload" href="{{url('public/assets/frontend/img/Fond-1.jpg') }}" as="image">
     <style>
 
         .bg-home{
