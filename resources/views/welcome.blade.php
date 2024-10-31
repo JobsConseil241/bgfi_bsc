@@ -152,7 +152,7 @@
 </div>
 
 <!--Main Navigation-->
-<header id="first">
+<header id="first" style="display: none">
     <style>
         /* Carousel styling */
         #introCarousel,
@@ -410,25 +410,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // window.addEventListener('load', function () {
-    //     const bgImage = new Image();
-    //     bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
-    //
-    //     // Ajoutez un écouteur pour vérifier si l'image est bien chargée
-    //     bgImage.onload = function () {
-    //         // Applique l'image de fond à la div
-    //         const content = document.getElementById("bg-home");
-    //         content.style.backgroundImage = `url('${bgImage.src}')`;
-    //         content.style.backgroundSize = "cover";
-    //         content.style.backgroundPosition = "center";
-    //         content.style.backgroundRepeat = "no-repeat";
-    //
-    //         // Cache le loader et affiche le contenu une fois l'image chargée
-    //         document.getElementById('loader').style.display = 'none';
-    //         document.getElementById('first').style.display = 'block';
-    //         content.style.opacity = 1;
-    //     };
-    // });
+
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    window.addEventListener('load', function () {
+        let value  = urlParams.get('click')
+        if(!value){
+            const dt = document.getElementById('first')
+            dt.style.display = "block"
+        }
+    });
 
     // A $( document ).ready() block.
     jQuery( document ).ready(function() {
@@ -437,10 +429,6 @@
         let inactivityTimer;
         let swalInstance = null;
         let shouldRedirect = true;
-
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-
 
         let value  = urlParams.get('click')
 
