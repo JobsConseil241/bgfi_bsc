@@ -449,7 +449,7 @@
             document.getElementById('loader').style.display = 'flex';
 
             const bgImage = new Image();
-            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+            bgImage.src = "/public/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
 
             // Ajoutez un écouteur pour vérifier si l'image est bien chargée
             bgImage.onload = function () {
@@ -479,7 +479,7 @@
             document.getElementById('loader').style.display = 'flex';
 
             const bgImage = new Image();
-            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+            bgImage.src = "/public/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
 
             // Ajoutez un écouteur pour vérifier si l'image est bien chargée
             bgImage.onload = function () {
