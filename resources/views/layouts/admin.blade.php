@@ -97,55 +97,55 @@
                     </a>
                 </li>
 
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons ti ti-chart-bar"></i>
-                        <div data-i18n="Recapitulatif"></div>
-                        {{--                        <div class="badge bg-primary rounded-pill ms-auto">5</div>--}}
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item {{ $rcprcl ?? '' }}">
-                            <a href="/dashboard/recapitulatifs/reclamations" class="menu-link">
-                                <div data-i18n="Avis"></div>
-                            </a>
-                        </li>
-                        <li class="menu-item {{ $rcpavis ?? '' }}">
-                            <a href="/dashboard/recapitulatifs/avis" class="menu-link">
-                                <div data-i18n="Reclamations"></div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+{{--                <li class="menu-item">--}}
+{{--                    <a href="javascript:void(0);" class="menu-link menu-toggle">--}}
+{{--                        <i class="menu-icon tf-icons ti ti-chart-bar"></i>--}}
+{{--                        <div data-i18n="Recapitulatif"></div>--}}
+{{--                        --}}{{--                        <div class="badge bg-primary rounded-pill ms-auto">5</div>--}}
+{{--                    </a>--}}
+{{--                    <ul class="menu-sub">--}}
+{{--                        <li class="menu-item {{ $rcprcl ?? '' }}">--}}
+{{--                            <a href="/dashboard/recapitulatifs/reclamations" class="menu-link">--}}
+{{--                                <div data-i18n="Avis"></div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="menu-item {{ $rcpavis ?? '' }}">--}}
+{{--                            <a href="/dashboard/recapitulatifs/avis" class="menu-link">--}}
+{{--                                <div data-i18n="Reclamations"></div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
 
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons ti ti-chart-donut"></i>
-                        <div data-i18n="Pertinence"></div>
-                        {{--                        <div class="badge bg-primary rounded-pill ms-auto">5</div>--}}
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item {{ $ptnrcl ?? '' }}">
-                            <a href="/dashboard/pertinence/reclamations" class="menu-link">
-                                <div data-i18n="Avis"></div>
-                            </a>
-                        </li>
-                        <li class="menu-item {{ $ptnavis ?? '' }}">
-                            <a href="/dashboard/pertinence/avis" class="menu-link">
-                                <div data-i18n="Reclamations"></div>
-                            </a>
-                        </li>
-                        <li class="menu-item {{ $ptnec ?? '' }}">
-                            <a href="/dashboard/pertinence/espace-client" class="menu-link">
-                                <div data-i18n="Espace Client"></div>
-                            </a>
-                        </li>
-                        <li class="menu-item {{ $ptnfaq ?? '' }}">
-                            <a href="/dashboard/pertinence/faq" class="menu-link">
-                                <div data-i18n="FAQ"></div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+{{--                <li class="menu-item">--}}
+{{--                    <a href="javascript:void(0);" class="menu-link menu-toggle">--}}
+{{--                        <i class="menu-icon tf-icons ti ti-chart-donut"></i>--}}
+{{--                        <div data-i18n="Pertinence"></div>--}}
+{{--                        --}}{{--                        <div class="badge bg-primary rounded-pill ms-auto">5</div>--}}
+{{--                    </a>--}}
+{{--                    <ul class="menu-sub">--}}
+{{--                        <li class="menu-item {{ $ptnrcl ?? '' }}">--}}
+{{--                            <a href="/dashboard/pertinence/reclamations" class="menu-link">--}}
+{{--                                <div data-i18n="Avis"></div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="menu-item {{ $ptnavis ?? '' }}">--}}
+{{--                            <a href="/dashboard/pertinence/avis" class="menu-link">--}}
+{{--                                <div data-i18n="Reclamations"></div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="menu-item {{ $ptnec ?? '' }}">--}}
+{{--                            <a href="/dashboard/pertinence/espace-client" class="menu-link">--}}
+{{--                                <div data-i18n="Espace Client"></div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="menu-item {{ $ptnfaq ?? '' }}">--}}
+{{--                            <a href="/dashboard/pertinence/faq" class="menu-link">--}}
+{{--                                <div data-i18n="FAQ"></div>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
 
                 <li class="menu-item {{ $form ?? '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -192,14 +192,14 @@
                     <span class="menu-header-text" data-i18n="Misc"></span>
                 </li>
                 <li class="menu-item">
-                    <a href="https://pixinvent.ticksy.com/"  class="menu-link">
+                    <a href=""  class="menu-link">
                         <i class="menu-icon tf-icons ti ti-lifebuoy"></i>
-                        <div data-i18n="Support">Support</div>
+                        <div data-i18n="Aide">Aide</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a
-                        href="https://demos.pixinvent.com/vuexy-html-admin-template/documentation/"
+                        href="#"
 
                         class="menu-link">
                         <i class="menu-icon tf-icons ti ti-file-description"></i>

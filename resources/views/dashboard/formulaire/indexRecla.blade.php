@@ -209,6 +209,9 @@
                     dt_basic = dt_basic_table.DataTable({
                         // ajax: assetsPath + 'json/table-datatable.json',
                         data: agences,
+                        language: {
+                            url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/fr-FR.json',
+                        },
                         columns: [
                             { data: '' },
                             { data: 'id' },

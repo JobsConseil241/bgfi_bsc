@@ -576,7 +576,7 @@
                                                 <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @elseif($field->type === 'tel')
                                                 <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                <input  type="tel" id="{{ $field->type }}"  name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px; width: 100% !important" required>
+                                                <input  type="tel" id="{{ $field->type }}"  name="{{ $field->name }}" maxlength="9" class="form-control" style="border-color: #0F5095;height:50px; width: 100% !important" required>
 
                                                 <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @else
@@ -772,10 +772,11 @@
     const input = document.querySelector("#tel");
     const iti = window.intlTelInput(input, {
         initialCountry: "auto", // Détecte automatiquement le pays de l'utilisateur
-        geoIpLookup: function(callback) {
-            fetch('https://ipinfo.io?token=7092a49506ec32')
-                .then((response) => response.json())
-                .then((data) => callback(data.country))
+        strictMode: true,
+        geoIpLookup: callback => {
+            fetch("https://ipapi.co/json")
+                .then(res => res.json())
+                .then(data => callback(data.country_code))
                 .catch(() => callback("us"));
         },
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Inclut les scripts utilitaires pour le formatage

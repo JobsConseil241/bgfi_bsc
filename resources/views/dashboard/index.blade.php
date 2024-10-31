@@ -46,8 +46,8 @@
                                         <i class="ti ti-chart-pie-2 ti-sm"></i>
                                     </div>
                                     <div class="card-info">
-                                        <h5 class="mb-0">230k</h5>
-                                        <small>Sales</small>
+                                        <h5 class="mb-0">{{$no_faqs}}</h5>
+                                        <small>FAQs</small>
                                     </div>
                                 </div>
                             </div>
@@ -57,8 +57,8 @@
                                         <i class="ti ti-users ti-sm"></i>
                                     </div>
                                     <div class="card-info">
-                                        <h5 class="mb-0">8.549k</h5>
-                                        <small>Customers</small>
+                                        <h5 class="mb-0">{{$no_agences}}</h5>
+                                        <small>Agences</small>
                                     </div>
                                 </div>
                             </div>
@@ -68,8 +68,8 @@
                                         <i class="ti ti-shopping-cart ti-sm"></i>
                                     </div>
                                     <div class="card-info">
-                                        <h5 class="mb-0">1.423k</h5>
-                                        <small>Products</small>
+                                        <h5 class="mb-0">{{$no_res_avis->count()}}</h5>
+                                        <small>Reponse Avis</small>
                                     </div>
                                 </div>
                             </div>
@@ -79,8 +79,8 @@
                                         <i class="ti ti-currency-dollar ti-sm"></i>
                                     </div>
                                     <div class="card-info">
-                                        <h5 class="mb-0">$9745</h5>
-                                        <small>Revenue</small>
+                                        <h5 class="mb-0">{{$no_res_recla->count()}}</h5>
+                                        <small>Reponse Reclamation</small>
                                     </div>
                                 </div>
                             </div>
@@ -92,59 +92,122 @@
 
             <div class="col-xl-4 col-12">
                 <div class="row">
-                    <!-- Expenses -->
-                    <div class="col-xl-6 mb-4 col-md-3 col-6">
+                    <!-- Generated Leads -->
+                    <div class="col-xl-12 mb-4 col-md-6">
                         <div class="card">
-                            <div class="card-header pb-0">
-                                <h5 class="card-title mb-0">82.5k</h5>
-                                <small class="text-muted">Expenses</small>
-                            </div>
                             <div class="card-body">
-                                <div id="expensesChart"></div>
-                                <div class="mt-md-2 text-center mt-lg-3 mt-3">
-                                    <small class="text-muted mt-3">$21k Expenses more than last month</small>
+                                <div class="">
+                                    <div class="d-flex flex-column">
+                                        <div class="card-title mb-auto">
+                                            <h5 class="mb-1 text-nowrap">FAQ Le Plus aimé</h5>
+                                            <small>Rapport Quotidien</small>
+                                        </div>
+                                    </div>
+                                    <div style="width: 100%; height: 200px">
+                                        <canvas id="faqLikesChart" style=" margin-top: 30px" width="400" height="200"></canvas>
+                                    </div>
+                                    <script>
+                                        const ctxe = document.getElementById('faqLikesChart').getContext('2d');
+                                        const myChart = new Chart(ctxe, {
+                                            type: 'bar',
+                                            data: {
+                                                labels: <?php echo json_encode($agencyNames); ?>, // Noms des agences
+                                                datasets: [{
+                                                    label: 'Nombre de likes par FAQ',
+                                                    data: <?php echo json_encode($likes); ?>, // Nombre de likes
+                                                    backgroundColor: 'rgba(13, 67, 122, 0.6)',
+                                                    borderColor: 'rgba(13, 67, 122, 1)',
+                                                    borderWidth: 1,
+                                                    borderRadius: 10, // Arrondi des coins
+                                                    borderSkipped: false // Appliquer l'arrondi sur tous les coins
+                                                }]
+                                            },
+                                            options: {
+                                                responsive: true,
+                                                plugins: {
+                                                    tooltip: {
+                                                        callbacks: {
+                                                            title: function(tooltipItems) {
+                                                                return 'FAQ: ' + <?php echo json_encode($faqTitles); ?>[tooltipItems[0].dataIndex]; // Titre de la FAQ
+                                                            },
+                                                            label: function(tooltipItem) {
+                                                                return 'Likes: ' + tooltipItem.raw;
+                                                            }
+                                                        }
+                                                    },
+                                                    legend: {
+                                                        display: true,
+                                                    },
+                                                },
+                                                scales: {
+                                                    y: {
+                                                        beginAtZero: true,
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--/ Expenses -->
-
-                    <!-- Profit last month -->
-                    <div class="col-xl-6 mb-4 col-md-3 col-6">
-                        <div class="card">
-                            <div class="card-header pb-0">
-                                <h5 class="card-title mb-0">Profit</h5>
-                                <small class="text-muted">Last Month</small>
-                            </div>
-                            <div class="card-body">
-                                <div id="profitLastMonth"></div>
-                                <div class="d-flex justify-content-between align-items-center mt-3 gap-3">
-                                    <h4 class="mb-0">624k</h4>
-                                    <small class="text-success">+8.24%</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--/ Profit last month -->
+                    <!--/ Generated Leads -->
 
                     <!-- Generated Leads -->
                     <div class="col-xl-12 mb-4 col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between">
+                                <div class="">
                                     <div class="d-flex flex-column">
                                         <div class="card-title mb-auto">
-                                            <h5 class="mb-1 text-nowrap">Generated Leads</h5>
-                                            <small>Monthly Report</small>
-                                        </div>
-                                        <div class="chart-statistics">
-                                            <h3 class="card-title mb-1">4,350</h3>
-                                            <small class="text-success text-nowrap fw-medium"
-                                            ><i class="ti ti-chevron-up me-1"></i> 15.8%</small
-                                            >
+                                            <h5 class="mb-1 text-nowrap">FAQ Le Moins aimé</h5>
+                                            <small>Rapport Quotidien</small>
                                         </div>
                                     </div>
-                                    <div id="generatedLeadsChart"></div>
+                                    <div style="width: 100%; height: 200px">
+                                        <canvas id="faqDislikesChart" style=" margin-top: 30px" width="400" height="200"></canvas>
+                                    </div>
+                                    <script>
+                                        const ctxes = document.getElementById('faqDislikesChart').getContext('2d');
+                                        const myCharte = new Chart(ctxes, {
+                                            type: 'bar',
+                                            data: {
+                                                labels: <?php echo json_encode($agencyName); ?>, // Noms des agences
+                                                datasets: [{
+                                                    label: 'Nombre de dislikes par FAQ',
+                                                    data: <?php echo json_encode($lik); ?>, // Nombre de likes
+                                                    backgroundColor: 'rgba(13, 67, 122, 0.6)',
+                                                    borderColor: 'rgba(13, 67, 122, 1)',
+                                                    borderWidth: 1,
+                                                    borderRadius: 10, // Arrondi des coins
+                                                    borderSkipped: false // Appliquer l'arrondi sur tous les coins
+                                                }]
+                                            },
+                                            options: {
+                                                responsive: true,
+                                                plugins: {
+                                                    tooltip: {
+                                                        callbacks: {
+                                                            title: function(tooltipItems) {
+                                                                return 'FAQ: ' + <?php echo json_encode($faqTitle); ?>[tooltipItems[0].dataIndex]; // Titre de la FAQ
+                                                            },
+                                                            label: function(tooltipItem) {
+                                                                return 'Likes: ' + tooltipItem.raw;
+                                                            }
+                                                        }
+                                                    },
+                                                    legend: {
+                                                        display: true,
+                                                    },
+                                                },
+                                                scales: {
+                                                    y: {
+                                                        beginAtZero: true,
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>

@@ -220,6 +220,9 @@
                             { data: 'status' },
                             { data: '' }
                         ],
+                        language: {
+                            url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/fr-FR.json',
+                        },
                         columnDefs: [
                             {
                                 // For Responsive

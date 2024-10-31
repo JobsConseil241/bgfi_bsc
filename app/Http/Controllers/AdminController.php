@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Agence;
 use App\Models\Consultation;
+use App\Models\Faq;
+use App\Models\FaqStatistiques;
+use App\Models\ReponseAvis;
+use App\Models\ReponseReclamation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -22,6 +27,55 @@ class AdminController extends Controller
     {
         $title = "BGFI Corner";
         $consultations = Consultation::select('module', 'visite', 'interesse', 'pas_interesse')->get();
+
+        $no_faqs = count(Faq::all());
+        $no_agences = count(Agence::all());
+        $no_res_avis = ReponseAvis::groupBy('sender_no')->select('sender_no', DB::raw('count(*) as total'))->get();
+        $no_res_recla = ReponseReclamation::groupBy('sender_no')->select('sender_no', DB::raw('count(*) as total'))->get();
+
+        $agencies = FaqStatistiques::with('agence')
+            ->select('agence_id', 'faq_no', 'likes')
+            ->whereIn('likes', function($query) {
+                $query->select(DB::raw('MAX(likes)'))
+                    ->from('faq_statistiques as subquery')
+                    ->whereColumn('subquery.agence_id', 'faq_statistiques.agence_id')
+                    ->groupBy('agence_id');
+            })
+            ->get()
+            ->map(function ($stat) {
+                return [
+                    'nom' => $stat->agence->libelle ?? 'Nom indisponible',
+                    'likes' => $stat->likes,
+                    'faq' => $stat->faq->titre ?? 'FAQ sans titre',
+                ];
+            });
+
+        $agencyNames = $agencies->pluck('nom');
+        $likes = $agencies->pluck('likes');
+        $faqTitles= $agencies->pluck('faq');
+
+         $agencie = FaqStatistiques::with('agence')
+             ->select('agence_id', 'faq_no', 'dislikes')
+             ->whereIn('dislikes', function($query) {
+                 $query->select(DB::raw('MAX(dislikes)'))
+                     ->from('faq_statistiques as subquery')
+                     ->whereColumn('subquery.agence_id', 'faq_statistiques.agence_id')
+                     ->groupBy('agence_id');
+             })
+             ->get()
+             ->map(function ($stat) {
+                 return [
+                     'nom' => $stat->agence->libelle ?? 'Nom indisponible',
+                     'dislikes' => $stat->dislikes,
+                     'faq' => $stat->faq->titre ?? 'FAQ sans titre',
+                 ];
+             });
+
+
+        $agencyName = $agencie->pluck('nom');
+        $lik = $agencie->pluck('dislikes');
+        $faqTitle = $agencie->pluck('faq');
+
 
         // Extract module names and statistics
         $modules = $consultations->pluck('module');
@@ -48,7 +102,7 @@ class AdminController extends Controller
             ];
         }
 
-        return view('dashboard.index', compact('title', 'modules', 'visites', 'interesses', 'pas_interesses', 'chartsData'));
+        return view('dashboard.index', compact('title', 'modules', 'agencies', 'agencyNames', 'likes', 'faqTitles',  'agencyName', 'lik', 'faqTitle',  'visites', 'interesses', 'pas_interesses', 'chartsData', 'no_agences', 'no_faqs', 'no_res_avis', 'no_res_recla'));
     }
 
     /**
