@@ -49,11 +49,11 @@
             background-size: cover;
             background-attachment: fixed;
         }
-        .bg-other{
-            background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');
-            background-position: center;
-            background-size: cover;
-            background-attachment: fixed;
+        #bg-other{
+            {{--background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');--}}
+            {{--background-position: center;--}}
+            {{--background-size: cover;--}}
+            {{--background-attachment: fixed;--}}
             height: 75vh !important;
         }
         .card-sbtitle{
@@ -416,10 +416,44 @@
             color: #105095;
         }
     </style>
+    <style>
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* Couleur de fond */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        /* Style pour le spinner */
+        .spinner {
+            border: 8px solid #f3f3f3; /* Couleur du cercle externe */
+            border-top: 8px solid #0D437A; /* Couleur de l'animation */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Animation de rotation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-<div id="faq" class="tabcontent" style="display: block;">
+<div id="loader">
+    <div class="spinner"></div>
+</div>
+
+<div id="faq" class="tabcontent" style="display: none;" >
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-transparent shadow-0">
         <!-- Container wrapper -->
@@ -478,7 +512,7 @@
             </ul>
         </div>
         <br><br>
-        <div class="position-relative overflow-hidden p-md-5 text-center row bg-other h-100">
+        <div class="position-relative overflow-hidden p-md-5 text-center row bg-yother h-100" id="bg-other">
             <div class="col-8 mx-auto my-auto text-center card p-5">
                 <form id="dynamicForm" action="" method="POST">
                     @csrf
@@ -649,6 +683,27 @@
     const parsedUrl = new URL(url);
     const pathParts = parsedUrl.pathname.split('/');
     const agence = pathParts[2]; // Ici, '123'
+
+    window.addEventListener('load', function () {
+        const bgImage = new Image();
+        bgImage.src = "/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
+
+        // Ajoutez un écouteur pour vérifier si l'image est bien chargée
+        bgImage.onload = function () {
+            // Applique l'image de fond à la div
+            const content = document.getElementById("bg-other");
+            content.style.backgroundImage = `url('${bgImage.src}')`;
+            content.style.backgroundSize = "cover";
+            content.style.backgroundPosition = "center";
+            content.style.backgroundRepeat = "no-repeat";
+            content.style.height = "75vh !important";
+
+            // Cache le loader et affiche le contenu une fois l'image chargée
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('faq').style.display = 'block';
+            content.style.opacity = 1;
+        };
+    });
 
     const input = document.querySelector("#tel");
     const iti = window.intlTelInput(input, {

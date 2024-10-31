@@ -114,9 +114,43 @@
             color: #fff !important;
         }
     </style>
+    <style>
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* Couleur de fond */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
 
+        /* Style pour le spinner */
+        .spinner {
+            border: 8px solid #f3f3f3; /* Couleur du cercle externe */
+            border-top: 8px solid #0D437A; /* Couleur de l'animation */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Animation de rotation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
+
+<div id="loader" style="display: none">
+    <div class="spinner"></div>
+</div>
+
 <!--Main Navigation-->
 <header id="first">
     <style>
@@ -297,7 +331,7 @@
 <div id="avis" class="tabcontent d-none">
 
     <div class="container-fluid">
-        <div class="position-relative overflow-hidden p-md-5 text-center vh-100 row bg-home d-flex">
+        <div class="position-relative overflow-hidden p-md-5 text-center vh-100 row bg-hoome d-flex" id="bg-home">
             <div class="col-md-2 p-md-5 mx-auto my-5">
 
                 <div class="img text-start" style="margin-left: -15px; margin-top: -120px">
@@ -376,6 +410,26 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    // window.addEventListener('load', function () {
+    //     const bgImage = new Image();
+    //     bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+    //
+    //     // Ajoutez un écouteur pour vérifier si l'image est bien chargée
+    //     bgImage.onload = function () {
+    //         // Applique l'image de fond à la div
+    //         const content = document.getElementById("bg-home");
+    //         content.style.backgroundImage = `url('${bgImage.src}')`;
+    //         content.style.backgroundSize = "cover";
+    //         content.style.backgroundPosition = "center";
+    //         content.style.backgroundRepeat = "no-repeat";
+    //
+    //         // Cache le loader et affiche le contenu une fois l'image chargée
+    //         document.getElementById('loader').style.display = 'none';
+    //         document.getElementById('first').style.display = 'block';
+    //         content.style.opacity = 1;
+    //     };
+    // });
+
     // A $( document ).ready() block.
     jQuery( document ).ready(function() {
 
@@ -392,8 +446,24 @@
 
         if(value === 'yes'){
             jQuery("#first").hide()
-            jQuery('#avis').removeClass('d-none')
+            document.getElementById('loader').style.display = 'flex';
 
+            const bgImage = new Image();
+            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+
+            // Ajoutez un écouteur pour vérifier si l'image est bien chargée
+            bgImage.onload = function () {
+                // Applique l'image de fond à la div
+                const content = document.getElementById("bg-home");
+                content.style.backgroundImage = `url('${bgImage.src}')`;
+                content.style.backgroundSize = "cover";
+                content.style.backgroundPosition = "center";
+                content.style.backgroundRepeat = "no-repeat";
+
+                document.getElementById('loader').style.display = 'none';
+                jQuery('#avis').removeClass('d-none')
+                content.style.opacity = 1;
+            };
 
             const url = new URL(window.location);
             url.search = ""; // Supprime tous les paramètres
@@ -405,7 +475,26 @@
         jQuery(".startHome").click(function (event) {
             event.preventDefault();
             jQuery("#first").hide()
-            jQuery('#avis').removeClass('d-none')
+
+            document.getElementById('loader').style.display = 'flex';
+
+            const bgImage = new Image();
+            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+
+            // Ajoutez un écouteur pour vérifier si l'image est bien chargée
+            bgImage.onload = function () {
+                // Applique l'image de fond à la div
+                const content = document.getElementById("bg-home");
+                content.style.backgroundImage = `url('${bgImage.src}')`;
+                content.style.backgroundSize = "cover";
+                content.style.backgroundPosition = "center";
+                content.style.backgroundRepeat = "no-repeat";
+
+                document.getElementById('loader').style.display = 'none';
+                jQuery('#avis').removeClass('d-none')
+                content.style.opacity = 1;
+            };
+
 
             resetInactivityTimer();
         })
@@ -438,6 +527,7 @@
                         // window.location.href = "https://votre-page-de-redirection.com";
                         jQuery("#first").show()
                         jQuery('#avis').addClass('d-none')
+
 
                         window.removeEventListener("mousemove", resetInactivityTimer);
                         window.removeEventListener("click", resetInactivityTimer);

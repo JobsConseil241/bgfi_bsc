@@ -79,6 +79,11 @@ class AdminController extends Controller
 
         // Extract module names and statistics
         $modules = $consultations->pluck('module');
+
+        for($i = 0; $i < count($modules); $i++) {
+            $modules[$i] = ucfirst($modules[$i]);
+        }
+
         $visites = $consultations->pluck('visite');
         $interesses = $consultations->pluck('interesse');
         $pas_interesses = $consultations->pluck('pas_interesse');
@@ -92,7 +97,7 @@ class AdminController extends Controller
         $chartsData = [];
         foreach ($consultation as $consul) {
             $agencyName = $consul->agence->libelle; // Get the agency name
-            $module = $consul->module; // Get the module name
+            $module = ucfirst($consul->module); // Get the module name
             $totalVisits = $consul->total_visits;
 
             // Group by agency name and prepare data for each module

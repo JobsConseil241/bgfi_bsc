@@ -44,10 +44,10 @@
             background-attachment: fixed;
         }
         .bg-other{
-            background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');
-            background-position: center;
-            background-size: cover;
-            background-attachment: fixed;
+            {{--background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');--}}
+            {{--background-position: center;--}}
+            {{--background-size: cover;--}}
+            {{--background-attachment: fixed;--}}
         }
         .card-sbtitle{
             position:absolute;
@@ -309,10 +309,44 @@
             background-color:#b2b88f;
         }
     </style>
+    <style>
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* Couleur de fond */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        /* Style pour le spinner */
+        .spinner {
+            border: 8px solid #f3f3f3; /* Couleur du cercle externe */
+            border-top: 8px solid #0D437A; /* Couleur de l'animation */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Animation de rotation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
-<div id="faq" class="tabcontent" style="display: block;">
+<div id="loader">
+    <div class="spinner"></div>
+</div>
+
+<div id="faq" class="tabcontent" style="display: none;">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-transparent shadow-0">
         <!-- Container wrapper -->
@@ -371,7 +405,7 @@
             </ul>
         </div>
         <br><br>
-        <div class="position-relative overflow-hidden p-md-5 text-center row bg-other">
+        <div class="position-relative overflow-hidden p-md-5 text-center row bg-yother" id="bg-other">
             <div align="center" class="col-9 mx-auto my-auto text-start">
                 <input type="text" id="search-text" class="form-control rounded" style="height:50px;margin-bottom:5px;width:80%;margin-left:10%" placeholder="Tapez une recherche...">
                 <!--ACCORDEON-->
@@ -476,6 +510,26 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    window.addEventListener('load', function () {
+        const bgImage = new Image();
+        bgImage.src = "/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
+
+        // Ajoutez un écouteur pour vérifier si l'image est bien chargée
+        bgImage.onload = function () {
+            // Applique l'image de fond à la div
+            const content = document.getElementById("bg-other");
+            content.style.backgroundImage = `url('${bgImage.src}')`;
+            content.style.backgroundSize = "cover";
+            content.style.backgroundPosition = "center";
+            content.style.backgroundRepeat = "no-repeat";
+            content.style.height = "75vh !important";
+
+            // Cache le loader et affiche le contenu une fois l'image chargée
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('faq').style.display = 'block';
+            content.style.opacity = 1;
+        };
+    });
 
     const url = window.location.href;
     const parsedUrl = new URL(url);

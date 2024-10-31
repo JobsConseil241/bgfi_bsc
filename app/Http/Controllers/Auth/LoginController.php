@@ -46,6 +46,12 @@ class LoginController extends Controller
         }
     }
 
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/agence/venus');
+    }
+
     /**
      * Create a new controller instance.
      *
