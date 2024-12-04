@@ -215,7 +215,7 @@
 
         @foreach ($market as $key => $image)
             .carousel-item:nth-child({{ $key + 1 }}) {
-                background-image: url('{{ Storage::url($image->thumb_url) }}');
+                background-image: url('/public{{ Storage::url($image->thumb_url) }}');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center center;
