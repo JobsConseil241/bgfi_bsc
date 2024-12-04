@@ -5,7 +5,17 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('indexDashboard') }}">Accueil</a>
+                    </li>
+                    {{--                    <li class="breadcrumb-item">--}}
+                    {{--                        <a href="javascript:void(0);">Library</a>--}}
+                    {{--                    </li>--}}
+                    <li class="breadcrumb-item active">Utilisateurs</li>
+                </ol>
+            </nav>
             <!-- DataTable with Buttons -->
             <div class="card">
                 <div class="card-datatable table-responsive pt-0">
@@ -42,20 +52,18 @@
                 </div>
 
                 <div class="offcanvas-body flex-grow-1">
-                    <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="post" action="">
+                    <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="post" action="{{ route('addUsers') }}">
                         @csrf
                         <div class="col-sm-12">
-                            <label class="form-label" for="nom">Libelle</label>
+                            <label class="form-label" for="nom">Nom</label>
                             <div class="input-group input-group-merge">
                                 <input
                                     type="text"
                                     id="nom"
                                     class="form-control dt-full-nom"
                                     name="nom"
-                                    placeholder="test"
-                                    required
-                                    aria-label="venus"
-                                    aria-describedby="nom" />
+                                    placeholder="nom utilisateur"
+                                    required />
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -68,144 +76,116 @@
                                     name="email"
                                     placeholder="bgfi@gamil.com"
                                     required
-                                    aria-label="venus"
                                     aria-describedby="email" />
                             </div>
                         </div>
-                        <div class="col-sm-12 pt-1">
-                            <small class="text-dark fw-medium d-block">Faq</small>
-                            <div class="form-check form-check-inline mt-1">
-                                <input class="form-check-input dt-full-faq" type="radio" name="faq" id="faq_oui" value="1">
-                                <label class="form-check-label" for="faq_oui">Oui</label>
+                        <div class="col-sm-12">
+                            <label class="form-label" for="email">Mot de passe</label>
+                            <div class="input-group input-group-merge">
+                                <input
+                                    type="password"
+                                    id="mdp"
+                                    class="form-control dt-full-nom"
+                                    name="mdp"
+                                    required
+                                    aria-describedby="email" />
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input dt-full-faq" type="radio" name="faq" id="faq_non" value="0" checked>
-                                <label class="form-check-label" for="faq_non">Non</label>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-12 mb-4">
+                                <label for="selectpickerHeader" class="form-label">Role</label>
+                                <select id="selectpickerHeader" name="role" class="form-select w-100" data-header="Selectionne un role" tabindex="null">
+                                    <option>responsable</option>
+                                </select>
                             </div>
-                            <div class="form-text">Activer le module FAQ sur le Corner ?</div>
                         </div>
                         <div class="col-sm-12 mt-2">
-                            <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">Submit</button>
-                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+                            <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">Enregistrer</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Supprimer</button>
                         </div>
                     </form>
                 </div>
             </div>
             <!--/ DataTable with Buttons -->
 
-
             <!-- Modal -->
-{{--            <div class="modal fade" id="EditModal" tabindex="-1" aria-hidden="true">--}}
-{{--                <div class="modal-dialog modal-dialog-centered" role="document">--}}
-{{--                    <div class="modal-content">--}}
-{{--                        <div class="modal-header">--}}
-{{--                            <h5 class="modal-title" id="modalCenterTitle">Modifier l'utilisateur</h5>--}}
-{{--                            <button--}}
-{{--                                type="button"--}}
-{{--                                class="btn-close"--}}
-{{--                                data-bs-dismiss="modal"--}}
-{{--                                aria-label="Close"></button>--}}
-{{--                        </div>--}}
-{{--                        <form class="add-new-record pt-0 row g-2" id="editForm" method="post" action="{{ route('ModifyAgences') }}">--}}
-{{--                            @csrf--}}
-{{--                            <div class="modal-body">--}}
-{{--                                <div class="col-sm-12">--}}
-{{--                                    <label class="form-label" for="nome">Libelle</label>--}}
-{{--                                    <div class="input-group input-group-merge">--}}
-{{--                                        <input--}}
-{{--                                            type="text"--}}
-{{--                                            id="nome"--}}
-{{--                                            class="form-control dt-full-nom"--}}
-{{--                                            name="nome"--}}
-{{--                                            placeholder="venus"--}}
-{{--                                            required--}}
-{{--                                            aria-label="venus"--}}
-{{--                                            aria-describedby="nom" />--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-12">--}}
-{{--                                    <label class="form-label" for="delaye">Delais d'attente</label>--}}
-{{--                                    <div class="input-group input-group-merge">--}}
-{{--                                        <input--}}
-{{--                                            type="number"--}}
-{{--                                            id="delaye"--}}
-{{--                                            name="delaye"--}}
-{{--                                            required--}}
-{{--                                            class="form-control dt-delay"--}}
-{{--                                            placeholder="100"--}}
-{{--                                            aria-label="100"--}}
-{{--                                            aria-describedby="delay" />--}}
-
-{{--                                    </div>--}}
-{{--                                    <input--}}
-{{--                                        type="number"--}}
-{{--                                        id="id"--}}
-{{--                                        name="id"--}}
-{{--                                        class="form-control dt-delay"--}}
-{{--                                        placeholder="100"--}}
-{{--                                        aria-label="100"--}}
-{{--                                        aria-describedby="delay" style="display: none" />--}}
-{{--                                    <div class="form-text">le délais d'attente sur l'interface d'accueil</div>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-12 pt-1">--}}
-{{--                                    <small class="text-dark fw-medium d-block">Faq</small>--}}
-{{--                                    <div class="form-check form-check-inline mt-1">--}}
-{{--                                        <input class="form-check-input dt-full-faq" type="radio" name="faqe" id="faq_ouie" value="1">--}}
-{{--                                        <label class="form-check-label" for="faq_oui">Oui</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check form-check-inline">--}}
-{{--                                        <input class="form-check-input dt-full-faq" type="radio" name="faqe" id="faq_none" value="0" checked>--}}
-{{--                                        <label class="form-check-label" for="faq_non">Non</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-text">Activer le module FAQ sur le Corner ?</div>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-12 pt-1">--}}
-{{--                                    <small class="text-dark fw-medium d-block">Consultation</small>--}}
-{{--                                    <div class="form-check form-check-inline mt-1">--}}
-{{--                                        <input class="form-check-input dt-full-cons" type="radio" name="consulte" id="cons_ouie" value="1">--}}
-{{--                                        <label class="form-check-label" for="cons_oui">Oui</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check form-check-inline">--}}
-{{--                                        <input class="form-check-input dt-full-cons" type="radio" name="consulte" id="cons_none" value="0" checked>--}}
-{{--                                        <label class="form-check-label" for="cons_non">Non</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-text">Activer le module Consultation sur le Corner ?</div>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-12 pt-1">--}}
-{{--                                    <small class="text-dark fw-medium d-block">Reclamation</small>--}}
-{{--                                    <div class="form-check form-check-inline mt-1">--}}
-{{--                                        <input class="form-check-input dt-full-recla" type="radio" name="reclae" id="recla_ouie" value="1">--}}
-{{--                                        <label class="form-check-label" for="recla_oui">Oui</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check form-check-inline">--}}
-{{--                                        <input class="form-check-input dt-full-recla" type="radio" name="reclae" id="recla_none" value="0" checked>--}}
-{{--                                        <label class="form-check-label" for="recla_non">Non</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-text">Activer le module Reclamation sur le Corner ?</div>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-12 pt-1">--}}
-{{--                                    <small class="text-dark fw-medium d-block">Avis</small>--}}
-{{--                                    <div class="form-check form-check-inline mt-1">--}}
-{{--                                        <input class="form-check-input dt-full-avis" type="radio" name="avise" id="avis_ouie" value="1">--}}
-{{--                                        <label class="form-check-label" for="avis_oui">Oui</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-check form-check-inline">--}}
-{{--                                        <input class="form-check-input dt-full-avis" type="radio" name="avise" id="avis_none" value="0" checked>--}}
-{{--                                        <label class="form-check-label" for="avis_non">Non</label>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-text">Activer le module Avis sur le Corner ?</div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="modal-footer">--}}
-{{--                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">--}}
-{{--                                    Fermer--}}
-{{--                                </button>--}}
-{{--                                <button  type="submit" class="btn btn-primary">Enregistrer</button>--}}
-{{--                            </div>--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="modal fade" id="EditModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalCenterTitle">Modifier l'utilisateur</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <form class="add-new-record pt-0 row g-2" id="editForm" method="post" action="{{ route('editUsers') }}">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="nom">Nom</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="noms"
+                                            class="form-control dt-full-nom"
+                                            name="nom"
+                                            placeholder="nom utilisateur"
+                                            required />
+                                        <input
+                                            type="number"
+                                            id="id"
+                                            name="id"
+                                            class="form-control dt-delay"
+                                            placeholder="100"
+                                            aria-label="100"
+                                            aria-describedby="delay" style="display: none" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="email">Email</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="text"
+                                            id="emails"
+                                            class="form-control dt-full-nom"
+                                            name="email"
+                                            placeholder="bgfi@gamil.com"
+                                            required
+                                            aria-describedby="email" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="email">Mot de passe</label>
+                                    <div class="input-group input-group-merge">
+                                        <input
+                                            type="password"
+                                            id="mdps"
+                                            class="form-control dt-full-nom"
+                                            name="mdp"
+                                            aria-describedby="email" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-12 mb-4">
+                                        <label for="roles" class="form-label">Role</label>
+                                        <select id="roles" name="role" class="form-select w-100" data-header="Selectionne un role" tabindex="null">
+                                            <option>responsable</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                                    Fermer
+                                </button>
+                                <button  type="submit" class="btn btn-primary">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- / Content -->
@@ -340,6 +320,7 @@
                                     var $status_number = full['status'];
                                     var $status = {
                                         1: { title: 'Active', class: 'bg-label-success' },
+                                        0: { title: 'Inactive', class: 'bg-label-danger' },
                                         2: { title: 'Professional', class: ' bg-label-primary' },
                                         3: { title: 'Rejected', class: ' bg-label-danger' },
                                         4: { title: 'Resigned', class: ' bg-label-warning' },
@@ -361,13 +342,8 @@
                                 searchable: false,
                                 render: function (data, type, full, meta) {
                                     return (
-                                        '<div class="d-inline-block">' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
-                                        '<ul class="dropdown-menu dropdown-menu-end m-0">'+
-                                        '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Supprimer</a></li>' +
-                                        '</ul>' +
-                                        '</div>' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'
+                                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-icon delete-record"><i class="text-danger ti ti-trash"></i></a>'
                                     );
                                 }
                             }
@@ -560,8 +536,58 @@
 
                 // Delete Record
                 $('.datatables-basic tbody').on('click', '.delete-record', function () {
-                    dt_basic.row($(this).parents('tr')).remove().draw();
-                });
+                    var row = $(this).closest('tr');
+                    var rowData = $('.datatables-basic').DataTable().row(row).data();
+                    //
+                    var token = $('meta[name="csrf-token"]').attr('content');
+
+                    Swal.fire({
+                        title: "Êtes-vous sûr?",
+                        text: " Vouloir supprimer cet utilisateur ",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#162738",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Oui, Supprimer!",
+                        preConfirm: async (login) => {
+                            try{
+                                const url = '/dashboard/users-manage/'+ rowData.id +'/delete';
+
+                                // Envoi de la requête POST avec le CSRF token
+                                const response = await fetch(url, {
+                                    method: 'POST', // Méthode POST
+                                    headers: {
+                                        'Content-Type': 'application/json', // Spécifie le type des données
+                                        'X-CSRF-TOKEN': token // En-tête pour le token CSRF
+                                    },
+                                });
+
+                                // Vérifie si la réponse est correcte (statut 200-299)
+                                if (!response.ok) {
+                                    const errorResponse = await response.json(); // Récupère la réponse d'erreur
+                                    return Swal.showValidationMessage(`Erreur : ${JSON.stringify(errorResponse)}`);
+                                }
+
+                                // Si tout est correct, retourne les données JSON
+                                return response.json();
+                            } catch (error) {
+                                // Gestion des erreurs
+                                Swal.showValidationMessage(`La requête a échoué : ${error.message} veuillez ressayer`);
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Supprimé!",
+                                text: "l'utilisateur a été supprimé",
+                                icon: "success"
+                            });
+
+                            location.reload();
+                        }
+                    });
+                })
 
 
                 // Filter form control to default size
@@ -577,17 +603,13 @@
                     var rowData = $('.datatables-basic').DataTable().row(row).data();
 
                     // Now, you can use the rowData for editing
-                    console.log("Edit data:", rowData.has_avis == 1);
-                    // console.log($(this).closest('tr'));
 
                     // Example: Open a modal to edit the row's data
-                    $("#nome").val(rowData.libelle);
+                    $("#noms").val(rowData.name);
                     $("#id").val(rowData.id);
-                    $("#delaye").val(rowData.delais);
-                    (rowData.has_avis == 1 ) ? $("#avis_ouie").prop('checked', true) : $("#avis_none").prop('checked', true);
-                    (rowData.has_consult == 1 ) ? $("#cons_ouie").prop('checked', true) : $("#cons_none").prop('checked', true);
-                    (rowData.has_faq == 1 ) ? $("#faq_ouie").prop('checked', true) : $("#faq_none").prop('checked', true);
-                    (rowData.has_reclame == 1 ) ? $("#recla_ouie").prop('checked', true) : $("#recla_none").prop('checked', true);
+                    $("#emails").val(rowData.email);
+                    $('#roles').val(rowData.role).change();
+
                     $('#EditModal').modal('show');
                     // Populate the modal with rowData for editing
                 });

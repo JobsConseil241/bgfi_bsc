@@ -20,7 +20,7 @@ class AgenceController extends Controller
     {
         $ags = 'active';
         $title = 'Gestion Agences';
-        $data = Agence::all();
+        $data = Agence::where('status', 1)->get();
         return view('dashboard.agences.index', compact('data', 'ags', 'title'));
     }
 
@@ -100,8 +100,16 @@ class AgenceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Agence $agence)
+    public function destroy($id)
     {
-        //
+        $update = Agence::where('id',$id)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Formulaire soumis avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Formulaire non soumis avec succès !']);
+        }
     }
 }

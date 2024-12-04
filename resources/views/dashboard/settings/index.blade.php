@@ -5,6 +5,17 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('indexDashboard') }}">Accueil</a>
+                    </li>
+                    {{--                    <li class="breadcrumb-item">--}}
+                    {{--                        <a href="javascript:void(0);">Library</a>--}}
+                    {{--                    </li>--}}
+                    <li class="breadcrumb-item active">Gestion de la page</li>
+                </ol>
+            </nav>
             <!-- Collapsible Section -->
             <div class="row my-4">
                 @if(Session::has('message'))

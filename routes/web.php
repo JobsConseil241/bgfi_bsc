@@ -7,7 +7,11 @@ use App\Http\Controllers\ChampFormulaireController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FormulaireController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\OptionChampController;
+use App\Http\Controllers\PertinenceController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecapitulatifController;
 use App\Http\Controllers\ReponseFAQController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\WelcomeController;
@@ -53,17 +57,24 @@ Route::post('/', [AdminController::class, 'store'])->name('store');
 Route::get('/dashboard/agences', [AgenceController::class, 'index'])->name('indexAgences');
 Route::post('/dashboard/agences', [AgenceController::class, 'store'])->name('AddAgences');
 Route::post('/dashboard/agences/modify', [AgenceController::class, 'update'])->name('ModifyAgences');
+Route::post('/dashboard/agences/{id}/delete', [AgenceController::class, 'destroy'])->name('DeleteAgences');
 
 Route::get('/dashboard/users-manage', [AdminController::class, 'indexUsers'])->name('indexUsers');
+Route::post('/dashboard/users-manage', [AdminController::class, 'addUsers'])->name('addUsers');
+Route::post('/dashboard/users-manage/edit', [AdminController::class, 'editUsers'])->name('editUsers');
+Route::post('/dashboard/users-manage/{id}/delete', [AdminController::class, 'deleteUsers'])->name('deleteUsers');
 
 
 Route::get('/dashboard/faq-manage', [FaqController::class, 'index'])->name('indexFAQs');
 Route::get('/dashboard/faq-manage/{id}/reponses', [ReponseFAQController::class, 'index'])->name('indexReponses');
 Route::post('/dashboard/faq-manage/{id}/reponses', [ReponseFAQController::class, 'store'])->name('AddReponses');
-Route::post(    '/dashboard/faq-manage/{id}/reponses/edit', [ReponseFAQController::class, 'edit'])->name('EditResponses');
+Route::post('/dashboard/faq-manage/{id}/reponses/edit', [ReponseFAQController::class, 'edit'])->name('EditResponses');
+Route::post('/dashboard/faq-manage/{id}/reponses/delete', [ReponseFAQController::class, 'destroy'])->name('DeleteResponses');
 
 
 Route::post('/dashboard/faq-manage/add', [FaqController::class, 'store'])->name('addFAQs');
+Route::post('/dashboard/faq-manage/edit', [FaqController::class, 'update'])->name('EditFaqs');
+Route::post('/dashboard/faq-manage/{id}/delete', [FaqController::class, 'delete'])->name('deleteFaqs');
 Route::post('/dashboard/faq-manage/add-reponses', [ReponseFAQController::class, 'store'])->name('');
 
 Route::get('/dashboard/page-manager', [SettingController::class, 'index'])->name('indexSetting');
@@ -102,6 +113,29 @@ Route::post('/dashboard/formulaire/reclamation/{id}/edit', [ChampFormulaireContr
 Route::get('/dashboard/formulaire/reclamation/{id}/options/{champ}', [optionChampController::class, 'indexChampOptionRecla'])->name('indexFormReclaChamp');
 Route::post('/dashboard/formulaire/reclamation/{id}/options/{champ}', [optionChampController::class, 'storeChampOptionRecla'])->name('addFormReclaChamp');
 Route::post('/dashboard/formulaire/reclamation/{id}/options/{champ}/edit', [optionChampController::class, 'editChampOptionRecla'])->name('editFormReclaChamp');
+
+// recapitulatifs
+Route::get('/dashboard/recapitulatifs/avis/data', [RecapitulatifController::class, 'indexAvisData'])->name('RecapitulatifAvisData');
+Route::get('/dashboard/recapitulatifs/reclamation/data', [RecapitulatifController::class, 'indexReclamationData'])->name('RecapitulatifReclaData');
+Route::get('/dashboard/recapitulatifs/avis', [RecapitulatifController::class, 'indexAvis'])->name('RecapitulatifAvis');
+Route::get('/dashboard/recapitulatifs/reclamations', [RecapitulatifController::class, 'indexReclamation'])->name('RecapitulatifReclamation');
+
+// marketings
+Route::get('/dashboard/marketing-manage', [MarketingController::class, 'index'])->name('marketing');
+Route::post('/dashboard/marketing-manage/add', [MarketingController::class, 'create'])->name('marketingAdd');
+Route::post('/dashboard/marketing-manage/{id}/delete', [MarketingController::class, 'delete'])->name('marketingDelete');
+Route::get('/dashboard/marketing-manage/reload', [MarketingController::class, 'getVisits'])->name('marketingData');
+
+// pertinences part
+Route::get('/dashboard/pertinence/faq', [PertinenceController::class, 'indexFaq'])->name('faqStat');
+Route::get('/dashboard/pertinence/faq/reload', [PertinenceController::class, 'getVisitsFaq'])->name('faqStatReload');
+Route::get('/dashboard/pertinence/faq/reloads', [PertinenceController::class, 'getVisitsFaqs'])->name('faqStatReloads');
+//Route::get('/dashboard/pertinence/consultation', [PertinenceController::class, 'indexConsultation'])->name('consultationStatReloads');
+//Route::get('/dashboard/pertinence/faq/reloads', [PertinenceController::class, 'getVisitsFaqs'])->name('faqStatReloads');
+
+// Profile Page
+Route::get('/dashboard/profile', [ProfileController::class, 'index'])->name('profile');
+Route::patch('/dashboard/profile/{id}/update', [ProfileController::class, 'update'])->name('profile.update');
 
 
 //Clear Cache facade value:

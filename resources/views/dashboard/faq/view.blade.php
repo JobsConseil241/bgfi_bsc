@@ -11,8 +11,8 @@
 
 
     <!-- MDB -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{url('public/assets/frontend/img/bgfi.jpg')}}">
-    <link href="{{url('public/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{url('assets/frontend/img/bgfi.jpg')}}">
+    <link href="{{url('assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font Awesome -->
     <link
@@ -30,21 +30,22 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{url('public/assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{url('assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/fontawesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('public/assets/frontend/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/all.min.css')}}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <style>
 
         .bg-home{
-            background-image: url('{{url('public/assets/frontend/img/Fond-1.webp') }}');
+            background-image: url('{{url('assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         .bg-other{
-            {{--background-image: url('{{url('public/assets/frontend/img/fond2.webp') }}');--}}
+            {{--background-image: url('{{url('assets/frontend/img/fond2.webp') }}');--}}
             {{--background-position: center;--}}
             {{--background-size: cover;--}}
             {{--background-attachment: fixed;--}}
@@ -353,7 +354,7 @@
         <div class="container-fluid">
             <!-- Toggle button -->
             <div class="img text-start" style="margin-left: -35px; margin-top: -150px;">
-                <img src="{{url('public/assets/backend/dist/img/Logo55.png') }}" style="height:100px;width:100px;margin-top:150px;margin-left:50px" class="img-fluid logo" alt="Fissure in Sandstone">
+                <img src="{{url('assets/backend/dist/img/Logo55.png') }}" style="height:100px;width:100px;margin-top:150px;margin-left:50px" class="img-fluid logo" alt="Fissure in Sandstone">
             </div>
             <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <svg class="svg-inline--fa fa-bars" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path></svg><!-- <i class="fas fa-bars"></i> Font Awesome fontawesome.com -->
@@ -477,6 +478,15 @@
                                                     </td></tr></tbody></table>
                                         </div>
                                     </div>
+
+                                    <script>
+                                        jQuery(document).ready(function() {
+                                            jQuery('#collapse{{$dt->id}}').on('shown.bs.collapse', function () {
+                                                handleView({{$dt->id}})
+                                                // Actions à effectuer lorsque l'accordéon est ouvert
+                                            });
+                                        });
+                                    </script>
                                 </div>
                         @endif
                     @endforeach
@@ -503,7 +513,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="{{url('public/assets/frontend/js/zoom.js')}}"></script>
+<script src="{{url('assets/frontend/js/zoom.js')}}"></script>
 <!-- MDB -->
 <script
     type="text/javascript"
@@ -514,7 +524,7 @@
 <script>
     window.addEventListener('load', function () {
         const bgImage = new Image();
-        bgImage.src = "/public/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
+        bgImage.src = "/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
 
         // Ajoutez un écouteur pour vérifier si l'image est bien chargée
         bgImage.onload = function () {
@@ -533,6 +543,8 @@
         };
     });
 
+    let agences = @json($agence)
+
     const url = window.location.href;
     const parsedUrl = new URL(url);
     const pathParts = parsedUrl.pathname.split('/');
@@ -547,6 +559,7 @@
             jQuery('#avis').removeClass('d-none')
             resetInactivityTimer();
         })
+
 
         jQuery('#search-text').on('keyup', function () {
             var searchText = jQuery(this).val().toLowerCase(); // Récupérer la valeur de l'input et la convertir en minuscule
@@ -565,7 +578,7 @@
         })
     });
 
-    const INACTIVITY_TIME = 10000; // 10 secondes
+    const INACTIVITY_TIME = agences.delais * 1000; // 10 secondes
     let inactivityTimer;
     let swalInstance = null;
     let shouldRedirect = true;
@@ -667,6 +680,10 @@
         });
     }
 
+    function handleView(id) {
+        saveFeedback(id, 'view');
+    }
+
 
     function saveFeedback(id, type) {
 
@@ -678,7 +695,7 @@
             method: 'POST',
             data: { feedback: type, "_token": token, },
             success: function(response) {
-                if(response.status === 200) {
+                if(response.status === 200 &&  !response.data) {
                     Swal.fire({
                         icon: "success",
                         title: "Succès",

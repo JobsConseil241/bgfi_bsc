@@ -5,7 +5,17 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('indexDashboard') }}">Accueil</a>
+                    </li>
+{{--                    <li class="breadcrumb-item">--}}
+{{--                        <a href="javascript:void(0);">Library</a>--}}
+{{--                    </li>--}}
+                    <li class="breadcrumb-item active">Agences</li>
+                </ol>
+            </nav>
             <!-- DataTable with Buttons -->
             <div class="card">
                 <div class="card-datatable table-responsive pt-0">
@@ -14,7 +24,7 @@
                             {{Session::get('message')}}
                         </div>
                     @endif
-                    <table class="datatables-basic table">
+                    <table class="datatables-basic table table-hover">
                         <thead>
                         <tr>
                             <th></th>
@@ -399,7 +409,7 @@
                                     var $status = {
                                         1: { title: 'Active', class: 'bg-label-success' },
                                         2: { title: 'Professional', class: ' bg-label-primary' },
-                                        3: { title: 'Rejected', class: ' bg-label-danger' },
+                                        0: { title: 'Inactive', class: ' bg-label-danger' },
                                         4: { title: 'Resigned', class: ' bg-label-warning' },
                                         5: { title: 'Applied', class: ' bg-label-info' }
                                     };
@@ -419,16 +429,9 @@
                                 searchable: false,
                                 render: function (data, type, full, meta) {
                                     return (
-                                        '<div class="d-inline-block">' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
-                                        '<ul class="dropdown-menu dropdown-menu-end m-0">' +
-                                        '<li><a href="javascript:;" class="dropdown-item">Details</a></li>' +
-                                        '<li><a href="javascript:;" class="dropdown-item">Archive</a></li>' +
-                                        '<div class="dropdown-divider"></div>' +
-                                        '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a></li>' +
-                                        '</ul>' +
-                                        '</div>' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'
+                                        '<a href="/agence/'+ full.libelle.toLowerCase() +'" class="btn btn-sm btn-icon " target="_blank"><i class="text-primary ti ti-eye"></i></a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'+
+                                        '<a href="javascript:;" class="btn btn-sm btn-icon delete-record"><i class="text-danger ti ti-trash"></i></a>'
                                     );
                                 }
                             }
@@ -621,9 +624,58 @@
 
                 // Delete Record
                 $('.datatables-basic tbody').on('click', '.delete-record', function () {
-                    dt_basic.row($(this).parents('tr')).remove().draw();
-                });
+                    var row = $(this).closest('tr');
+                    var rowData = $('.datatables-basic').DataTable().row(row).data();
+                    //
+                    var token = $('meta[name="csrf-token"]').attr('content');
 
+                    Swal.fire({
+                        title: "Êtes-vous sûr?",
+                        text: " Vouloir supprimer cette Agence ",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#162738",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Oui, Supprimer!",
+                        preConfirm: async (login) => {
+                            try{
+                                const url = '/dashboard/agences/'+ rowData.id +'/delete';
+
+                                // Envoi de la requête POST avec le CSRF token
+                                const response = await fetch(url, {
+                                    method: 'POST', // Méthode POST
+                                    headers: {
+                                        'Content-Type': 'application/json', // Spécifie le type des données
+                                        'X-CSRF-TOKEN': token // En-tête pour le token CSRF
+                                    },
+                                });
+
+                                // Vérifie si la réponse est correcte (statut 200-299)
+                                if (!response.ok) {
+                                    const errorResponse = await response.json(); // Récupère la réponse d'erreur
+                                    return Swal.showValidationMessage(`Erreur : ${JSON.stringify(errorResponse)}`);
+                                }
+
+                                // Si tout est correct, retourne les données JSON
+                                return response.json();
+                            } catch (error) {
+                                // Gestion des erreurs
+                                Swal.showValidationMessage(`La requête a échoué : ${error.message} veuillez ressayer`);
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Supprimé!",
+                                text: "l'utilisateur a été supprimé",
+                                icon: "success"
+                            });
+
+                            location.reload();
+                        }
+                    });
+                })
 
                 // Filter form control to default size
                 // ? setTimeout used for multilingual table initialization

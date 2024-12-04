@@ -10,105 +10,48 @@
                     <li class="breadcrumb-item">
                         <a href="{{ route('indexDashboard') }}">Accueil</a>
                     </li>
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('indexFAQs') }}">FAQs</a>
-                    </li>
-                    <li class="breadcrumb-item active">Responses FAQs</li>
+                    {{--                    <li class="breadcrumb-item">--}}
+                    {{--                        <a href="javascript:void(0);">Library</a>--}}
+                    {{--                    </li>--}}
+                    <li class="breadcrumb-item active">Pertinences FAQ</li>
                 </ol>
             </nav>
             <!-- DataTable with Buttons -->
             <div class="card">
+                <div class="mt-4 px-4">
+                    <label for="agence">Choisir une agence:</label>
+                    <select name="agence_id" id="agence" class="form-select-sm">
+                        @foreach($agences as $age)
+                            <option value="{{$age->id}}">{{$age->libelle}}</option>
+                        @endforeach
+                    </select>
+
+                    <label for="agence">Date de début:</label>
+                    <input type="date" name="dateDebut" id="dateDebut" class="form-control-sm"  >
+
+                    <label for="agence">Date de fin:</label>
+                    <input type="date" name="dateFin" id="dateFin" class="form-control-sm" >
+
+                    <button id="filterData" class="btn btn-primary btn-sm" style="margin-left: 42px;">Filtrer</button>
+                </div>
                 <div class="card-datatable table-responsive pt-0">
                     @if(Session::has('message'))
                         <div class="alert alert-{{Session::get('status')}} mt-4" role="alert">
                             {{Session::get('message')}}
                         </div>
                     @endif
-                    <table class="datatables-basic table">
+                    <table class="datatables-basic table table-hover">
                         <thead>
                         <tr>
-                            <th></th>
-                            <th></th>
-                            <th>id</th>
-                            <th>title</th>
-                            <th>id_faq</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <td>Agence</td>
+                            <th>FAQ Name</th>
+                            <th>FAQ No</th>
+                            <th>Total Views</th>
+                            <th>Total Likes</th>
+                            <th>Total Dislikes</th>
                         </tr>
                         </thead>
                     </table>
-                </div>
-            </div>
-            <!-- Modal to add new record -->
-            <div class="offcanvas offcanvas-end" id="add-new-record">
-                <div class="offcanvas-header border-bottom">
-                    <h5 class="offcanvas-title" id="exampleModalLabel">Nouvelle Reponse</h5>
-                    <button
-                        type="button"
-                        class="btn-close text-reset"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-
-                <div class="offcanvas-body flex-grow-1">
-                    <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="post" action="{{route('AddReponses', ['id' => $faqID->id])}}">
-                        @csrf
-                        <div class="col-sm-12">
-                            <div class="col-sm-12 mt-3">
-                                <label class="form-label" for="resp">Reponse associée</label>
-                                <div class="input-group input-group-merge">
-                                    <textarea class="form-control" id="resp" rows="3" name="response" required></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 mt-4">
-                            <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">Enregistrer</button>
-                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Reinitialiser</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!--/ DataTable with Buttons -->
-
-
-            <!-- Modal -->
-            <div class="modal fade" id="EditModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalCenterTitle">Modifier la Reponse</h5>
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <form class="add-new-record pt-0 row g-2" id="editForm" method="post" action="{{ route('EditResponses', ['id' => $faqID->id]) }}">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="col-sm-12">
-                                    <label class="form-label" for="resp">Reponse associée</label>
-                                    <div class="input-group input-group-merge">
-                                        <textarea class="form-control" id="respe" rows="3" name="response" required></textarea>
-                                    </div>
-                                </div>
-                                <input
-                                    type="number"
-                                    id="id_response"
-                                    name="id_response"
-                                    class="form-control dt-delay"
-                                    placeholder="100"
-                                    aria-label="100"
-                                    aria-describedby="delay" style="display: none" />
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-                                    Fermer
-                                </button>
-                                <button  type="submit" class="btn btn-primary">Enregistrer</button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -117,34 +60,12 @@
     @push('scripts')
         <script>
 
-
-            let reponses = {!! json_encode($reponses, JSON_UNESCAPED_SLASHES ); !!};
-            let faq = {!! json_encode($faqID, JSON_UNESCAPED_SLASHES ); !!};
+            /**
+             * DataTables Basic
+             */
+            let agences = {!! json_encode($stats, JSON_UNESCAPED_SLASHES ); !!};
 
             'use strict';
-
-            let fv, offCanvasEl;
-            document.addEventListener('DOMContentLoaded', function (e) {
-                (function () {
-                    const formAddNewRecord = document.getElementById('form-add-new-record');
-
-                    setTimeout(() => {
-                        const newRecord = document.querySelector('.create-new'),
-                            offCanvasElement = document.querySelector('#add-new-record');
-
-                        // To open offCanvas, to add new record
-                        if (newRecord) {
-                            newRecord.addEventListener('click', function () {
-                                offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
-
-                                // Open offCanvas with form
-                                offCanvasEl.show();
-                            });
-                        }
-                    }, 200);
-
-                })();
-            });
 
             // datatable (jquery)
             $(function () {
@@ -156,8 +77,7 @@
 
                 if (dt_basic_table.length) {
                     dt_basic = dt_basic_table.DataTable({
-                        // ajax: assetsPath + 'json/table-datatable.json',
-                        data: reponses,
+                        data: agences,
                         language: {
                             sProcessing: "Traitement en cours...",
                             sSearch: "Rechercher&nbsp;:",
@@ -180,97 +100,29 @@
                             }
                         },
                         columns: [
-                            { data: '' },
-                            { data: 'id' },
-                            { data: 'id' },
-                            { data: 'reponse' },
-                            { data: 'id_faq' },
-                            { data: 'status' },
-                            { data: '' }
+                            { data: 'agence_name' },
+                            { data: 'faq_name' },
+                            { data: 'faq_no' },
+                            { data: 'total_views' },
+                            { data: 'total_likes' },
+                            { data: 'total_dislikes' },
                         ],
                         columnDefs: [
                             {
-                                // For Responsive
-                                className: 'control',
-                                orderable: false,
-                                searchable: false,
-                                responsivePriority: 2,
-                                targets: 0,
-                                render: function (data, type, full, meta) {
-                                    return '';
-                                }
-                            },
-                            {
-                                // For Checkboxes
-                                targets: 1,
-                                orderable: false,
-                                searchable: false,
-                                responsivePriority: 3,
-                                checkboxes: true,
-                                render: function () {
-                                    return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-                                },
-                                checkboxes: {
-                                    selectAllRender: '<input type="checkbox" class="form-check-input">'
-                                }
-                            },
-                            {
-                                targets: [2,4],
-                                searchable: false,
-                                visible: false
-                            },
-                            {
-                                targets: [3],
-                                render: function (data, type, full, meta) {
-                                    return '<span class="" style="font-weight: bold">'+data+'</span>';
-                                }
-                            },
-                            {
-                                targets: [3],
+                                targets: [1,3,4,5],
                                 searchable: true,
-                                visible: true
-                            },
-
-                            {
-                                // Label
-                                targets: -2,
+                                visible: true,
                                 render: function (data, type, full, meta) {
-                                    var $status_number = full['status'];
-                                    var $status = {
-                                        1: { title: 'Active', class: 'bg-label-success' },
-                                        2: { title: 'Professional', class: ' bg-label-primary' },
-                                        0: { title: 'Inactive', class: ' bg-label-danger' },
-                                        4: { title: 'Resigned', class: ' bg-label-warning' },
-                                        5: { title: 'Applied', class: ' bg-label-info' }
-                                    };
-                                    if (typeof $status[$status_number] === 'undefined') {
-                                        return data;
-                                    }
                                     return (
-                                        '<span class="badge ' + $status[$status_number].class + '">' + $status[$status_number].title + '</span>'
+                                        '<b>'+data+'</b>'
                                     );
                                 }
                             },
                             {
-                                // Actions
-                                targets: -1,
-                                title: 'Actions',
-                                orderable: false,
-                                searchable: false,
-                                render: function (data, type, row) {
-                                    if (row.type === 'checkbox' || row.type === 'radio') {
-                                        return (
-                                            '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'+
-                                            '<a href="javascript:;" class="btn btn-sm btn-icon delete-record"><i class="text-danger ti ti-trash"></i></a>'
-                                        );
-                                    }else {
-                                        return (
-                                            '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'+
-                                            '<a href="javascript:;" class="btn btn-sm btn-icon delete-record"><i class="text-danger ti ti-trash"></i></a>'
-                                        );
-                                    }
-                                }
-                            }
+                                targets: [0,2],
+                                searchable: true,
+                                visible: true,
+                            },
                         ],
                         order: [[2, 'desc']],
                         dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
@@ -287,7 +139,7 @@
                                         text: '<i class="ti ti-printer me-1" ></i>Imprimer',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [3, 4, 5, 6, 7],
+                                            columns: [0,1,2,3,4,5],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -324,7 +176,7 @@
                                         text: '<i class="ti ti-file-text me-1" ></i>Csv',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [3, 4, 5, 6, 7],
+                                            columns: [0,1,2,3,4,5],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -348,7 +200,7 @@
                                         text: '<i class="ti ti-file-spreadsheet me-1"></i>Excel',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [3, 4, 5, 6, 7],
+                                            columns: [0,1,2,3,4,5],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -372,7 +224,7 @@
                                         text: '<i class="ti ti-file-description me-1"></i>Pdf',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [3, 4, 5, 6, 7],
+                                            columns: [0,1,2,3,4,5],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -396,7 +248,7 @@
                                         text: '<i class="ti ti-copy me-1" ></i>Copy',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [3, 4, 5, 6, 7],
+                                            columns: [0,1,2,3,4,5],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -417,10 +269,6 @@
                                     }
                                 ]
                             },
-                            {
-                                text: '<i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Ajouter Une Reponse</span>',
-                                className: 'create-new btn btn-primary waves-effect waves-light'
-                            }
                         ],
                         responsive: {
                             details: {
@@ -455,97 +303,76 @@
                             }
                         }
                     });
-                    $('div.head-label').html('<h5 class="card-title mb-0">'+ faq.titre +'</h5>');
+                    $('div.head-label').html('<h5 class="card-title mb-0">Statistiques FAQs</h5>');
                 }
 
-                // Delete Record
-                $('.datatables-basic tbody').on('click', '.delete-record', function () {
-                    var row = $(this).closest('tr');
-                    var rowData = $('.datatables-basic').DataTable().row(row).data();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-                    //
-                    var token = $('meta[name="csrf-token"]').attr('content');
+                $('#agence').change(function () {
 
-                    Swal.fire({
-                        title: "Êtes-vous sûr?",
-                        text: " Vouloir supprimer cette reponse ? ",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#162738",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Oui, Supprimer!",
-                        preConfirm: async (login) => {
-                            try{
-                                const url = '/dashboard/faq-manage/'+ rowData.id +'/reponses/delete';
+                    let val = $('#agence').val();
 
-                                // Envoi de la requête POST avec le CSRF token
-                                const response = await fetch(url, {
-                                    method: 'POST', // Méthode POST
-                                    headers: {
-                                        'Content-Type': 'application/json', // Spécifie le type des données
-                                        'X-CSRF-TOKEN': token // En-tête pour le token CSRF
-                                    },
-                                });
-
-                                // Vérifie si la réponse est correcte (statut 200-299)
-                                if (!response.ok) {
-                                    const errorResponse = await response.json(); // Récupère la réponse d'erreur
-                                    return Swal.showValidationMessage(`Erreur : ${JSON.stringify(errorResponse)}`);
-                                }
-
-                                // Si tout est correct, retourne les données JSON
-                                return response.json();
-                            } catch (error) {
-                                // Gestion des erreurs
-                                Swal.showValidationMessage(`La requête a échoué : ${error.message} veuillez ressayer`);
+                    $.ajax({
+                        url: "{{ route('faqStatReload') }}", // Laravel route
+                        type: "GET",                     // HTTP method
+                        data: {
+                            key: val               // Query parameters
+                        },
+                        dataType: "json",              // Expected response format
+                        success: function(data) {
+                            // Update the page with the response
+                            if(data.status){
+                                dt_basic.clear();
+                                dt_basic.rows.add(data.response);
+                                dt_basic.draw();
                             }
                         },
-                        allowOutsideClick: () => !Swal.isLoading()
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire({
-                                title: "Supprimé!",
-                                text: "Cette reponse a été supprimé",
-                                icon: "success"
-                            });
-
-                            location.reload();
+                        error: function(xhr) {
+                            // Handle errors
+                            $('#result').html('<p>Error occurred!</p>');
+                            console.error(xhr.responseText);
                         }
                     });
-                })
-
-
-                // Filter form control to default size
-                // ? setTimeout used for multilingual table initialization
-                setTimeout(() => {
-                    $('.dataTables_filter .form-control').removeClass('form-control-sm');
-                    $('.dataTables_length .form-select').removeClass('form-select-sm');
-                }, 300);
-
-                // Add an event listener for the edit button
-                $('.datatables-basic ').on('click', '.edit-btn', function() {
-                    var row = $(this).closest('tr');
-                    var rowData = $('.datatables-basic').DataTable().row(row).data();
-
-                    // Now, you can use the rowData for editing
-                    console.log("Edit data:", rowData);
-                    // console.log($(this).closest('tr'));
-
-                    // Example: Open a modal to edit the row's data
-                    $("#respe").val(rowData.reponse);
-                    $("#id_response").val(rowData.id);
-
-                    $('#EditModal').modal('show');
-                    // Populate the modal with rowData for editing
                 });
 
-                // Add an event listener for the edit button
-                $('.datatables-basic ').on('click', '.add-res', function() {
-                    var row = $(this).closest('tr');
-                    var rowData = $('.-datatables-basic').DataTable().row(row).data();
-                    $('#AddRes').modal('show');
-                });
+                $('#filterData').click(function (e) {
+                    e.preventDefault(); // Empêche le rechargement de la page
 
+                    const dateDebut = $('#dateDebut').val();
+                    const dateFin = $('#dateFin').val();
+                    const val = $('#agence').val();
+
+                    // Validation côté client
+                    if (!dateDebut || !dateFin) {
+                        alert('Veuillez sélectionner les deux dates.');
+                        return;
+                    }
+
+                    // Envoi de la requête AJAX
+                    $.ajax({
+                        url: "{{ route('faqStatReloads') }}", // Route Laravel pour le filtre
+                        type: "GET", // Méthode GET
+                        data: {
+                            dateDebut: dateDebut,
+                            dateFin: dateFin,
+                            key: val
+                        },
+                        success: function (data) {
+                            if(data.status){
+                                dt_basic.clear();
+                                dt_basic.rows.add(data.response);
+                                dt_basic.draw();
+                            }
+                        },
+                        error: function (xhr) {
+                            alert('Une erreur est survenue : ' + xhr.responseText);
+                        }
+                    });
+                });
             });
 
         </script>

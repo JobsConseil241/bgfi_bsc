@@ -12,6 +12,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -28,10 +30,17 @@ class AdminController extends Controller
         $title = "BGFI Corner";
         $consultations = Consultation::select('module', 'visite', 'interesse', 'pas_interesse')->get();
 
-        $no_faqs = count(Faq::all());
+        $no_faqs = count(Faq::where('status', 1)->get());
         $no_agences = count(Agence::all());
+        $agences = Agence::where('status', 1)->get();
         $no_res_avis = ReponseAvis::groupBy('sender_no')->select('sender_no', DB::raw('count(*) as total'))->get();
         $no_res_recla = ReponseReclamation::groupBy('sender_no')->select('sender_no', DB::raw('count(*) as total'))->get();
+
+        $data_ad = DB::table('formulaires')
+            ->join('agences', 'formulaires.agence_id', '=', 'agences.id')
+            ->select('agences.libelle as agence_libelle', 'formulaires.type', DB::raw('COUNT(*) as formulaire_count'))
+            ->groupBy('agences.libelle', 'formulaires.type')
+            ->get();
 
         $agencies = FaqStatistiques::with('agence')
             ->select('agence_id', 'faq_no', 'likes')
@@ -71,6 +80,13 @@ class AdminController extends Controller
                  ];
              });
 
+        $stats = DB::table('faq_statistiques as s')
+            ->join('faqs as f', 's.faq_no', '=', 'f.id')
+            ->join('agences as a', 's.agence_id', '=', 'a.id')
+            ->select('a.libelle as agence_name', 'f.titre as faq_name', 's.faq_no', DB::raw('SUM(s.view) as total_views'))
+            ->where('s.agence_id', 1)
+            ->groupBy('a.libelle','s.faq_no', 'f.titre')
+            ->get();
 
         $agencyName = $agencie->pluck('nom');
         $lik = $agencie->pluck('dislikes');
@@ -107,7 +123,7 @@ class AdminController extends Controller
             ];
         }
 
-        return view('dashboard.index', compact('title', 'modules', 'agencies', 'agencyNames', 'likes', 'faqTitles',  'agencyName', 'lik', 'faqTitle',  'visites', 'interesses', 'pas_interesses', 'chartsData', 'no_agences', 'no_faqs', 'no_res_avis', 'no_res_recla'));
+        return view('dashboard.index', compact('title', 'stats', 'agences', 'modules', 'data_ad', 'agencies', 'agencyNames', 'likes', 'faqTitles',  'agencyName', 'lik', 'faqTitle',  'visites', 'interesses', 'pas_interesses', 'chartsData', 'no_agences', 'no_faqs', 'no_res_avis', 'no_res_recla'));
     }
 
     /**
@@ -117,8 +133,72 @@ class AdminController extends Controller
     {
         $usermng = 'active';
         $title = "Users - management";
-        $users =  User::all();
+        $users =  User::where('status', 1)->get();
         return view('dashboard.users.index', compact('title', 'users', 'usermng'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
+    public function addUsers(Request $request)
+    {
+        $insertion = User::create([
+            'name' => $request->nom,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make($request->mdp),
+            'status' =>1,
+        ]);
+
+        if($insertion){
+            Session::flash('message', 'sauvegarde réussie!');
+            Session::flash('status', 'success');
+            return redirect()->route('indexUsers');
+        } else{
+
+        }
+    }
+    public function editUsers(Request $request)
+    {
+        if ($request->mdp){
+            $update = User::where('id',$request->id)->update([
+                'name' => $request->nom,
+                'email' => $request->email,
+                'role' => $request->role,
+                'password' => Hash::make($request->mdp),
+                'status' =>1,
+            ]);
+        } else {
+            $update = User::where('id',$request->id)->update([
+                'name' => $request->nom,
+                'email' => $request->email,
+                'role' => $request->role,
+                'status' =>1,
+            ]);
+        }
+
+        if($update){
+            Session::flash('message', 'sauvegarde réussie!');
+            Session::flash('status', 'success');
+            return redirect()->route('indexUsers');
+        } else{
+
+        }
+    }
+
+    public function deleteUsers(Request $request, $id){
+
+        $update = User::where('id',$id)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Formulaire soumis avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Formulaire non soumis avec succès !']);
+        }
+
     }
 
     /**

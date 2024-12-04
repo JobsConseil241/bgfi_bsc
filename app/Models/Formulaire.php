@@ -10,4 +10,9 @@ class Formulaire extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function agence()
+    {
+        return $this->belongsTo(Agence::class, 'agence_id', 'id');
+    }
 }

@@ -20549,7 +20549,7 @@ body.text-sm .control-sidebar {
 .dark-mode .navbar-indigo.navbar-dark .form-control-navbar:focus::placeholder {
   color: #fff;
 }
-
+v
 .dark-mode .navbar-indigo.navbar-dark .form-control-navbar:focus,
 .dark-mode .navbar-indigo.navbar-dark .form-control-navbar:focus + .input-group-append .btn-navbar {
   background-color: #7528f3;

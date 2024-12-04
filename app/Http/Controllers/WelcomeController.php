@@ -9,9 +9,11 @@ use App\Models\Consultation;
 use App\Models\Faq;
 use App\Models\FaqStatistiques;
 use App\Models\Formulaire;
+use App\Models\Marketing;
 use App\Models\ReponseAvis;
 use App\Models\ReponseFaq;
 use App\Models\ReponseReclamation;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +24,10 @@ class WelcomeController extends Controller
     public function index(Request $request, $nom) {
 
         $agence  = Agence::where('libelle', $nom)->first();
+        $param = Setting::where('agence_id', $agence->id)->first();
+        $market = Marketing::where('active', 1)->latest('created_at')->get();
 
-        return view('welcome', compact('agence'));
+        return view('welcome', compact('agence', 'param', 'market'));
     }
 
     /**
@@ -34,6 +38,7 @@ class WelcomeController extends Controller
     public function indexFAQ(Request $request, $nom) {
 
         $agence  = Agence::where('libelle', $nom)->first();
+        $param = Setting::where('agence_id', $agence->id)->first();
         $Faq = Faq::all();
 
         foreach ($Faq as $faq) {
@@ -43,14 +48,12 @@ class WelcomeController extends Controller
         $agence_id = Agence::where('libelle', $nom)->first()->id;
         $cons = Consultation::where('agences_id', $agence_id)->where('module', 'faq')->first();
 
-        $visite = $cons ? $cons->visite : null;
-
-        $consultation = Consultation::firstOrNew(['agences_id' => $agence_id, 'module' => 'faq']);
-        $consultation->agences_id = $agence_id;
-        $consultation->ip_address = $this->getClientIPaddress();
-        $consultation->module = 'faq';
-        $consultation->visite = $visite + 1 ;
-        $consultation->save();
+        $constr = Consultation::create([
+            'agences_id' => $agence_id,
+            'module' => 'faq',
+            'visite' => 1,
+            'ip_address' => $this->getClientIPaddress()
+        ]);
 
 
         return view('dashboard.faq.view', compact('agence', 'Faq'));
@@ -76,14 +79,12 @@ class WelcomeController extends Controller
         $agence_id = Agence::where('libelle', $nom)->first()->id;
         $cons = Consultation::where('agences_id', $agence_id)->where('module', 'avis')->first();
 
-        $visite = $cons ? $cons->visite : null;
-
-        $consultation = Consultation::firstOrNew(['agences_id' => $agence_id, 'module' => 'avis', 'ip_address' => $this->getClientIPaddress()]);
-        $consultation->agences_id = $agence_id;
-        $consultation->ip_address = $this->getClientIPaddress();
-        $consultation->module = 'avis';
-        $consultation->visite = $visite + 1 ;
-        $consultation->save();
+        $constr = Consultation::create([
+            'agences_id' => $agence_id,
+            'module' => 'avis',
+            'visite' => 1,
+            'ip_address' => $this->getClientIPaddress()
+        ]);
 
         // Passer les champs à la vue
         return view('dashboard.formulaire.avisFormView', compact('formFields'));
@@ -103,14 +104,12 @@ class WelcomeController extends Controller
         $agence_id = Agence::where('libelle', $nom)->first()->id;
         $cons = Consultation::where('agences_id', $agence_id)->where('module', 'reclamation')->first();
 
-        $visite = $cons ? $cons->visite : null;
-
-        $consultation = Consultation::firstOrNew(['agences_id' => $agence_id, 'module' => 'reclamation', 'ip_address' => $this->getClientIPaddress()]);
-        $consultation->agences_id = $agence_id;
-        $consultation->ip_address = $this->getClientIPaddress();
-        $consultation->module = 'reclamation';
-        $consultation->visite = $visite + 1 ;
-        $consultation->save();
+        $constr = Consultation::create([
+            'agences_id' => $agence_id,
+            'module' => 'reclamation',
+            'visite' => 1,
+            'ip_address' => $this->getClientIPaddress()
+        ]);
 
         // Passer les champs à la vue
         return view('dashboard.formulaire.reclamationFormView', compact('fields'));
@@ -219,29 +218,39 @@ class WelcomeController extends Controller
     {
         if ($request->feedback === 'like') {
             $agence_id = Agence::where('libelle', $nom)->first()->id;
-            $cons = Consultation::where('agences_id', $agence_id)->where('module', $module)->first();
 
-            $visite = $cons ? $cons->interesse : null;
-
-            $consultation = Consultation::firstOrNew(['agences_id' => $agence_id, 'module' => $module, 'ip_address' => $this->getClientIPaddress()]);
-            $consultation->agences_id = $agence_id;
-            $consultation->ip_address = $this->getClientIPaddress();
-            $consultation->interesse = $visite + 1;
-            $consultation->save();
+            $consultation = Consultation::create([
+                'agences_id' => $agence_id,
+                'module' => $module,
+                'visite' => 1,
+                'interesse' => 1,
+                'ip_address' => $this->getClientIPaddress()
+            ]);
 
             return response()->json(['status' => 200, 'success' => 'Avis soumis avec succès !']);
         } elseif ($request->feedback ===  'dislike') {
 
             $agence_id = Agence::where('libelle', $nom)->first()->id;
-            $cons = Consultation::where('agences_id', $agence_id)->where('module', $module)->first();
 
-            $visite = $cons ? $cons->pas_interesse : null;
+            $consultation = Consultation::create([
+                'agences_id' => $agence_id,
+                'module' => $module,
+                'visite' => 1,
+                'pas_interesse' => 1,
+                'ip_address' => $this->getClientIPaddress()
+            ]);
 
-            $consultation = Consultation::firstOrNew(['agences_id' => $agence_id, 'module' => $module, 'ip_address' => $this->getClientIPaddress()]);
-            $consultation->agences_id = $agence_id;
-            $consultation->ip_address = $this->getClientIPaddress();
-            $consultation->pas_interesse = $visite + 1;
-            $consultation->save();
+            return response()->json(['status' => 200, 'success' => 'Avis soumis avec succès !']);
+        }elseif ($request->feedback ===  'view') {
+
+            $agence_id = Agence::where('libelle', $nom)->first()->id;
+
+            $consultation = Consultation::create([
+                'agences_id' => $agence_id,
+                'module' => $module,
+                'visite' => 1,
+                'ip_address' => $this->getClientIPaddress()
+            ]);
 
             return response()->json(['status' => 200, 'success' => 'Avis soumis avec succès !']);
         }
@@ -253,32 +262,41 @@ class WelcomeController extends Controller
     {
         if ($request->feedback === 'like') {
             $agence_id = Agence::where('libelle', $nom)->first()->id;
-            $like = FaqStatistiques::where('agence_id', $agence_id)->where('faq_no', $id)->first();
 
-            $visite = $like ? $like->likes : null;
-
-            $consultation = FaqStatistiques::firstOrNew(['agence_id' => $agence_id, 'faq_no' => $id]);
-            $consultation->agence_id = $agence_id;
-            $consultation->faq_no = $id;
-            $consultation->likes = $visite + 1;
-            $consultation->save();
+            $consultation = FaqStatistiques::create([
+                'agence_id' => $agence_id,
+                'faq_no' => $id,
+                'likes' => 1,
+                'ip_adress' => $this->getClientIPaddress()
+            ]);
 
             return response()->json(['status' => 200, 'success' => 'Avis soumis avec succès !']);
         } elseif ($request->feedback ===  'dislike') {
 
             $agence_id = Agence::where('libelle', $nom)->first()->id;
-            $like = FaqStatistiques::where('agence_id', $agence_id)->where('faq_no', $id)->first();
 
-            $visite = $like ? $like->dislikes : null;
-
-            $consultation = FaqStatistiques::firstOrNew(['agence_id' => $agence_id, 'faq_no' => $id]);
-            $consultation->agence_id = $agence_id;
-            $consultation->faq_no = $id;
-            $consultation->dislikes = $visite + 1;
-            $consultation->save();
+            $consultation = FaqStatistiques::create([
+                'agence_id' => $agence_id,
+                'faq_no' => $id,
+                'dislikes' => 1,
+                'ip_adress' => $this->getClientIPaddress()
+            ]);
 
 
             return response()->json(['status' => 200, 'success' => 'Avis soumis avec succès !']);
+        } elseif ($request->feedback ===  'view') {
+
+            $agence_id = Agence::where('libelle', $nom)->first()->id;
+
+            $consultation = FaqStatistiques::create([
+                'agence_id' => $agence_id,
+                'faq_no' => $id,
+                'view' => 1,
+                'ip_adress' => $this->getClientIPaddress()
+            ]);
+
+
+            return response()->json(['status' => 200, 'success' => 'Avis soumis avec succès !', 'data' => 'view']);
         }
     }
 

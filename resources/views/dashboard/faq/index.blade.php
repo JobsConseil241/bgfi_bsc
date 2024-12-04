@@ -5,7 +5,17 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('indexDashboard') }}">Accueil</a>
+                    </li>
+                    {{--                    <li class="breadcrumb-item">--}}
+                    {{--                        <a href="javascript:void(0);">Library</a>--}}
+                    {{--                    </li>--}}
+                    <li class="breadcrumb-item active">FAQs</li>
+                </ol>
+            </nav>
             <!-- DataTable with Buttons -->
             <div class="card">
                 <div class="card-datatable table-responsive pt-0">
@@ -14,7 +24,7 @@
                             {{Session::get('message')}}
                         </div>
                     @endif
-                    <table class="datatables-basic table">
+                    <table class="datatables-basic table table-hover">
                         <thead>
                         <tr>
                             <th></th>
@@ -83,57 +93,45 @@
 
 
             <!-- Modal -->
-{{--            <div class="modal fade" id="AddRes" tabindex="-1" aria-hidden="true">--}}
-{{--                <div class="modal-dialog modal-dialog-centered" role="document">--}}
-{{--                    <div class="modal-content">--}}
-{{--                        <div class="modal-header">--}}
-{{--                            <h5 class="modal-title" id="modalCenterTitle">Ajouter Une Reponse</h5>--}}
-{{--                            <button--}}
-{{--                                type="button"--}}
-{{--                                class="btn-close"--}}
-{{--                                data-bs-dismiss="modal"--}}
-{{--                                aria-label="Close"></button>--}}
-{{--                        </div>--}}
-{{--                        <form class="add-new-record pt-0 row g-2" id="editForm" method="post" >--}}
-{{--                            @csrf--}}
-{{--                            <div class="modal-body">--}}
-{{--                                <div class="col-sm-12">--}}
-{{--                                    <label class="form-label" for="libelle">Libelle de la Question</label>--}}
-{{--                                    <div class="input-group input-group-merge">--}}
-{{--                                        <input--}}
-{{--                                            type="text"--}}
-{{--                                            id="libelle"--}}
-{{--                                            name="libelle"--}}
-{{--                                            disabled--}}
-{{--                                            class="form-control dt-delay"/>--}}
-
-{{--                                    </div>--}}
-{{--                                    <input--}}
-{{--                                        type="number"--}}
-{{--                                        id="id"--}}
-{{--                                        name="id"--}}
-{{--                                        class="form-control dt-delay"--}}
-{{--                                        placeholder="100"--}}
-{{--                                        aria-label="100"--}}
-{{--                                        aria-describedby="delay" style="display: none" />--}}
-{{--                                </div>--}}
-{{--                                <div class="col-sm-12 mt-3">--}}
-{{--                                    <label class="form-label" for="resp">Reponse associée</label>--}}
-{{--                                    <div class="input-group input-group-merge">--}}
-{{--                                        <textarea class="form-control" id="resp" rows="3" name="response" required></textarea>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="modal-footer">--}}
-{{--                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">--}}
-{{--                                    Fermer--}}
-{{--                                </button>--}}
-{{--                                <button  type="submit" class="btn btn-primary">Enregistrer</button>--}}
-{{--                            </div>--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="modal fade" id="EditModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalCenterTitle">Modifier le FAQ</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <form class="add-new-record pt-0 row g-2" id="editForm" method="post" action="{{ route('EditFaqs') }}">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="titres">Titre de la FAQ</label>
+                                    <div class="input-group input-group-merge">
+                                        <textarea class="form-control" id="titres" rows="3" name="title" required></textarea>
+                                    </div>
+                                </div>
+                                <input
+                                    type="number"
+                                    id="id"
+                                    name="id"
+                                    class="form-control dt-delay"
+                                    placeholder="100"
+                                    aria-label="100"
+                                    aria-describedby="delay" style="display: none" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                                    Fermer
+                                </button>
+                                <button  type="submit" class="btn btn-primary">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- / Content -->
@@ -292,14 +290,9 @@
                                 searchable: false,
                                 render: function (data, type, full, meta) {
                                     return (
-                                        '<div class="d-inline-block">' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
-                                        '<ul class="dropdown-menu dropdown-menu-end m-0">'+
-                                        '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Supprimer</a></li>' +
-                                        '</ul>' +
-                                        '</div>' +
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-primary waves-effect add-res">Ajouter Reponse</a>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-outline-primary waves-effect add-res">Ajouter Reponse</a>'
+                                        '<a href="javascript:;" class="btn btn-sm btn-icon delete-record"><i class="text-danger ti ti-trash"></i></a>'
                                     );
                                 }
                             }
@@ -490,11 +483,6 @@
                     $('div.head-label').html('<h5 class="card-title mb-0">Liste des Questions/Reponses</h5>');
                 }
 
-                // Delete Record
-                $('.datatables-basic tbody').on('click', '.delete-record', function () {
-                    dt_basic.row($(this).parents('tr')).remove().draw();
-                });
-
 
                 // Filter form control to default size
                 // ? setTimeout used for multilingual table initialization
@@ -503,23 +491,72 @@
                     $('.dataTables_length .form-select').removeClass('form-select-sm');
                 }, 300);
 
+                $('.datatables-basic tbody').on('click', '.delete-record', function () {
+                    var row = $(this).closest('tr');
+                    var rowData = $('.datatables-basic').DataTable().row(row).data();
+
+                    //
+                    var token = $('meta[name="csrf-token"]').attr('content');
+
+                    Swal.fire({
+                        title: "Êtes-vous sûr?",
+                        text: " Vouloir supprimer cet FAQ ",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#162738",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Oui, Supprimer!",
+                        preConfirm: async (login) => {
+                            try{
+                                const url = '/dashboard/faq-manage/'+ rowData.id +'/delete';
+
+                                // Envoi de la requête POST avec le CSRF token
+                                const response = await fetch(url, {
+                                    method: 'POST', // Méthode POST
+                                    headers: {
+                                        'Content-Type': 'application/json', // Spécifie le type des données
+                                        'X-CSRF-TOKEN': token // En-tête pour le token CSRF
+                                    },
+                                });
+
+                                // Vérifie si la réponse est correcte (statut 200-299)
+                                if (!response.ok) {
+                                    const errorResponse = await response.json(); // Récupère la réponse d'erreur
+                                    return Swal.showValidationMessage(`Erreur : ${JSON.stringify(errorResponse)}`);
+                                }
+
+                                // Si tout est correct, retourne les données JSON
+                                return response.json();
+                            } catch (error) {
+                                // Gestion des erreurs
+                                Swal.showValidationMessage(`La requête a échoué : ${error.message} veuillez ressayer`);
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Supprimé!",
+                                text: "le FAQ a été supprimé",
+                                icon: "success"
+                            });
+
+                            location.reload();
+                        }
+                    });
+                })
+
                 // Add an event listener for the edit button
                 $('.datatables-basic ').on('click', '.edit-btn', function() {
                     var row = $(this).closest('tr');
                     var rowData = $('.datatables-basic').DataTable().row(row).data();
 
                     // Now, you can use the rowData for editing
-                    // console.log($(this).closest('tr'));
-                    console.log("Edit data:", rowData);
 
                     // Example: Open a modal to edit the row's data
-                    $("#nome").val(rowData.libelle);
+                    $("#titres").val(rowData.titre);
                     $("#id").val(rowData.id);
-                    $("#delaye").val(rowData.delais);
-                    (rowData.has_avis == 1 ) ? $("#avis_ouie").prop('checked', true) : $("#avis_none").prop('checked', true);
-                    (rowData.has_consult == 1 ) ? $("#cons_ouie").prop('checked', true) : $("#cons_none").prop('checked', true);
-                    (rowData.has_faq == 1 ) ? $("#faq_ouie").prop('checked', true) : $("#faq_none").prop('checked', true);
-                    (rowData.has_reclame == 1 ) ? $("#recla_ouie").prop('checked', true) : $("#recla_none").prop('checked', true);
+
                     $('#EditModal').modal('show');
                     // Populate the modal with rowData for editing
                 });

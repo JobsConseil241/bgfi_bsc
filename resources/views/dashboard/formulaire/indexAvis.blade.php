@@ -5,7 +5,17 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('indexDashboard') }}">Accueil</a>
+                    </li>
+{{--                    <li class="breadcrumb-item">--}}
+{{--                        <a href="{{ route('indexFormAvis') }}">Avis - Formulaire</a>--}}
+{{--                    </li>--}}
+                    <li class="breadcrumb-item active">Avis - Formulaire</li>
+                </ol>
+            </nav>
             <!-- DataTable with Buttons -->
             <div class="card">
                 <div class="card-datatable table-responsive pt-0">
@@ -311,14 +321,9 @@
                                 searchable: false,
                                 render: function (data, type, full, meta) {
                                     return (
-                                        '<div class="d-inline-block">' +
-                                        '<a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="text-primary ti ti-dots-vertical"></i></a>' +
-                                        '<ul class="dropdown-menu dropdown-menu-end m-0">'+
-                                        '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Supprimer</a></li>' +
-                                        '</ul>' +
-                                        '</div>' +
+                                        '<a href="javascript:;" class="btn btn-sm btn-outline-primary waves-effect add-res">Ajouter Champ</a>'+
                                         '<a href="javascript:;" class="btn btn-sm btn-icon item-edit edit-btn"><i class="text-primary ti ti-pencil"></i></a>'+
-                                        '<a href="javascript:;" class="btn btn-sm btn-outline-primary waves-effect add-res">Ajouter Champ</a>'
+                                        '<a href="javascript:;" class="btn btn-sm btn-icon delete-record"><i class="text-danger ti ti-trash"></i></a>'
                                     );
                                 }
                             }

@@ -11,12 +11,12 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard - {{ $title }}</title>
+    <title>Tableau de Bord - {{ $title }}</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{url('public/assets/frontend/img/bgfi.jpg')}}" />
+    <link rel="icon" type="image/x-icon" href="{{url('assets/frontend/img/bgfi.jpg')}}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Fonts -->
@@ -27,35 +27,36 @@
         rel="stylesheet" />
 
     <!-- Icons -->
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/fonts/fontawesome.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/fonts/tabler-icons.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/fonts/flag-icons.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/fonts/fontawesome.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/fonts/tabler-icons.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/fonts/flag-icons.css')}}" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css"/>
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/css/rtl/core.css')}}" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/css/rtl/theme-default.css')}}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/css/rtl/core.css')}}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/css/rtl/theme-default.css')}}" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"  />
-    <link rel="stylesheet" href="{{url('public/assets/backend/css/demo.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/css/demo.css')}}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/node-waves/node-waves.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/typeahead-js/typeahead.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/apex-charts/apex-charts.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css')}}" />
-    <link rel="stylesheet" href="{{url('public/assets/backend/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/libs/node-waves/node-waves.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/libs/typeahead-js/typeahead.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/libs/apex-charts/apex-charts.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css')}}" />
+    <link rel="stylesheet" href="{{url('assets/backend/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}" />
 
     <!-- Page CSS -->
 
     <!-- Helpers -->
-    <script src="{{url('public/assets/backend/vendor/js/helpers.js')}}"></script>
+    <script src="{{url('assets/backend/vendor/js/helpers.js')}}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
     {{--<script src="assets/backend/vendor/js/template-customizer.js"></script>--}}
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{url('public/assets/backend/js/config.js')}}"></script>
+    <script src="{{url('assets/backend/js/config.js')}}"></script>
 </head>
 
 <body>
@@ -68,7 +69,7 @@
             <div class="app-brand demo">
                 <a href="/dashboard" class="app-brand-link">
                   <span class="app-brand-logo demo">
-                    <img src="{{url('public/assets/frontend/img/bgfi.jpg')}}" alt="" srcset="" width="100" height="70">
+                    <img src="{{url('assets/frontend/img/bgfi.jpg')}}" alt="" srcset="" width="100" height="70">
                   </span>
                     <span class="app-brand-text demo menu-text fw-bold">CornerDash</span>
                 </a>
@@ -86,7 +87,7 @@
                 <li class="menu-item">
                     <a href="/dashboard" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                        <div data-i18n="Dashboard">Dashboard</div>
+                        <div data-i18n="Tableau de Bord">Tableau de Bord</div>
 {{--                        <div class="badge bg-primary rounded-pill ms-auto">5</div>--}}
                     </a>
                 </li>
@@ -97,55 +98,53 @@
                     </a>
                 </li>
 
-{{--                <li class="menu-item">--}}
-{{--                    <a href="javascript:void(0);" class="menu-link menu-toggle">--}}
-{{--                        <i class="menu-icon tf-icons ti ti-chart-bar"></i>--}}
-{{--                        <div data-i18n="Recapitulatif"></div>--}}
-{{--                        --}}{{--                        <div class="badge bg-primary rounded-pill ms-auto">5</div>--}}
-{{--                    </a>--}}
-{{--                    <ul class="menu-sub">--}}
-{{--                        <li class="menu-item {{ $rcprcl ?? '' }}">--}}
-{{--                            <a href="/dashboard/recapitulatifs/reclamations" class="menu-link">--}}
-{{--                                <div data-i18n="Avis"></div>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="menu-item {{ $rcpavis ?? '' }}">--}}
-{{--                            <a href="/dashboard/recapitulatifs/avis" class="menu-link">--}}
-{{--                                <div data-i18n="Reclamations"></div>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
+                <li class="menu-item {{ $formsz ?? '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons ti ti-chart-bar"></i>
+                        <div data-i18n="Recapitulatif"></div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item {{ $rcprcl ?? '' }}">
+                            <a href="/dashboard/recapitulatifs/avis" class="menu-link">
+                                <div data-i18n="Avis"></div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ $rcpavis ?? '' }}">
+                            <a href="/dashboard/recapitulatifs/reclamations" class="menu-link">
+                                <div data-i18n="Reclamations"></div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-{{--                <li class="menu-item">--}}
-{{--                    <a href="javascript:void(0);" class="menu-link menu-toggle">--}}
-{{--                        <i class="menu-icon tf-icons ti ti-chart-donut"></i>--}}
-{{--                        <div data-i18n="Pertinence"></div>--}}
-{{--                        --}}{{--                        <div class="badge bg-primary rounded-pill ms-auto">5</div>--}}
-{{--                    </a>--}}
-{{--                    <ul class="menu-sub">--}}
-{{--                        <li class="menu-item {{ $ptnrcl ?? '' }}">--}}
-{{--                            <a href="/dashboard/pertinence/reclamations" class="menu-link">--}}
-{{--                                <div data-i18n="Avis"></div>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="menu-item {{ $ptnavis ?? '' }}">--}}
-{{--                            <a href="/dashboard/pertinence/avis" class="menu-link">--}}
-{{--                                <div data-i18n="Reclamations"></div>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="menu-item {{ $ptnec ?? '' }}">--}}
-{{--                            <a href="/dashboard/pertinence/espace-client" class="menu-link">--}}
-{{--                                <div data-i18n="Espace Client"></div>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="menu-item {{ $ptnfaq ?? '' }}">--}}
-{{--                            <a href="/dashboard/pertinence/faq" class="menu-link">--}}
-{{--                                <div data-i18n="FAQ"></div>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
+                <li class="menu-item {{ $perti ?? '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons ti ti-chart-donut"></i>
+                        <div data-i18n="Pertinence"></div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item {{ $ptnrcl ?? '' }}">
+                            <a href="/dashboard/pertinence/reclamations" class="menu-link">
+                                <div data-i18n="Avis"></div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ $ptnavis ?? '' }}">
+                            <a href="/dashboard/pertinence/avis" class="menu-link">
+                                <div data-i18n="Reclamations"></div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ $ptnec ?? '' }}">
+                            <a href="/dashboard/pertinence/espace-client" class="menu-link">
+                                <div data-i18n="Espace Client"></div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ $ptnfaq ?? '' }}">
+                            <a href="/dashboard/pertinence/faq" class="menu-link">
+                                <div data-i18n="FAQ"></div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
                 <li class="menu-item {{ $form ?? '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -187,14 +186,26 @@
                         <div data-i18n="Gestion de Utilisateurs"></div>
                     </a>
                 </li>
+                <li class="menu-item {{ $mkrt ?? '' }}">
+                    <a href="/dashboard/marketing-manage"  class="menu-link">
+                        <i class="menu-icon fa-solid fa-rss"></i>
+                        <div data-i18n="Espace Marketing"></div>
+                    </a>
+                </li>
                 <!-- Misc -->
                 <li class="menu-header small text-uppercase">
-                    <span class="menu-header-text" data-i18n="Misc"></span>
+                    <span class="menu-header-text" data-i18n="Parametres"></span>
                 </li>
-                <li class="menu-item">
-                    <a href=""  class="menu-link">
+                <li class="menu-item ">
+                    <a href="" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-lifebuoy"></i>
                         <div data-i18n="Aide">Aide</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ $profile ?? '' }}">
+                    <a href="{{ route('profile') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ti ti-user"></i>
+                        <div data-i18n="Profile"></div>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -236,67 +247,12 @@
                     <!-- /Search -->
 
                     <ul class="navbar-nav flex-row align-items-center ms-auto">
-                        <!-- Language -->
-                        <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
-                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                <i class="ti ti-language rounded-circle ti-md"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-                                        <span class="align-middle">English</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-                                        <span class="align-middle">French</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-                                        <span class="align-middle">Arabic</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-                                        <span class="align-middle">German</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!--/ Language -->
-
-                        <!-- Style Switcher -->
-                        <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
-                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                <i class="ti ti-md"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
-                                        <span class="align-middle"><i class="ti ti-sun me-2"></i>Light</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                                        <span class="align-middle"><i class="ti ti-moon me-2"></i>Dark</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-                                        <span class="align-middle"><i class="ti ti-device-desktop me-2"></i>System</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- / Style Switcher-->
-
 
                         <!-- User -->
                         <li class="nav-item navbar-dropdown dropdown-user dropdown">
                             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                 <div class="avatar avatar-online">
-                                    <img src="{{url('public/assets/backend/img/avatars/1.png')}}" alt class="h-auto rounded-circle" />
+                                    <img src="{{url('assets/frontend/img/logo_profil.png')}}" alt class="h-auto rounded-circle" />
                                 </div>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -305,7 +261,7 @@
                                         <div class="d-flex">
                                             <div class="flex-shrink-0 me-3">
                                                 <div class="avatar avatar-online">
-                                                    <img src="{{url('public/assets/backend/img/avatars/1.png')}}" alt class="h-auto rounded-circle" />
+                                                    <img src="{{url('assets/frontend/img/logo_profil.png')}}" alt class="h-auto rounded-circle" />
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
@@ -319,7 +275,7 @@
                                     <div class="dropdown-divider"></div>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('profile') }}">
                                         <i class="ti ti-user-check me-2 ti-sm"></i>
                                         <span class="align-middle">Mon Profil</span>
                                     </a>
@@ -372,7 +328,7 @@
                                 <script>
                                     document.write(new Date().getFullYear());
                                 </script>
-                                , made with ❤️ by
+                                , réalisé avec ❤️ par
                                 <a href="https://jobs-conseil.com" target="_blank" class="footer-link text-primary fw-medium"
                                 >JOBS</a
                                 >
@@ -400,28 +356,28 @@
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 
-<script src="{{url('public/assets/backend/vendor/libs/jquery/jquery.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/libs/popper/popper.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/js/bootstrap.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/libs/node-waves/node-waves.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/libs/hammer/hammer.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/libs/i18n/i18n.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/libs/typeahead-js/typeahead.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/js/menu.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/jquery/jquery.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/popper/popper.js')}}"></script>
+<script src="{{url('assets/backend/vendor/js/bootstrap.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/node-waves/node-waves.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/hammer/hammer.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/i18n/i18n.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/typeahead-js/typeahead.js')}}"></script>
+<script src="{{url('assets/backend/vendor/js/menu.js')}}"></script>
 
 <!-- endbuild -->
 
 <!-- Vendors JS -->
-<script src="{{url('public/assets/backend/vendor/libs/apex-charts/apexcharts.js')}}"></script>
-<script src="{{url('public/assets/backend/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/apex-charts/apexcharts.js')}}"></script>
+<script src="{{url('assets/backend/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.js"></script>
 <!-- Main JS -->
-<script src="{{url('public/assets/backend/js/main.js')}}"></script>
+<script src="{{url('assets/backend/js/main.js')}}"></script>
 
 <!-- Page JS -->
-<script src="{{url('public/assets/backend/js/app-ecommerce-dashboard.js')}}"></script>
+<script src="{{url('assets/backend/js/app-ecommerce-dashboard.js')}}"></script>
 
 <!-- Page JS -->
 @stack('scripts')

@@ -94,8 +94,16 @@ class ReponseFAQController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ReponseFAQ $reponseFAQ)
+    public function destroy(Request $request, $id)
     {
-        //
+        $update = ReponseFAQ::where('id',$id)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Formulaire soumis avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Formulaire non soumis avec succès !']);
+        }
     }
 }
