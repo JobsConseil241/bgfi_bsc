@@ -215,7 +215,7 @@
 
         @foreach ($market as $key => $image)
             .carousel-item:nth-child({{ $key + 1 }}) {
-                background-image: url('{{ Storage::url($image->thumb_url) }}');
+                background-image: url('public/{{ Storage::url($image->thumb_url) }}');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center center;
@@ -352,7 +352,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-3 text-end">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/faq" @if($agence->has_faq === 0) class="tablinks disabled" @endif>
-                            <img style="width:70%" src="@if($param->faq_logo) {{asset('/settings/'. $param->faq_logo )}} @else {{asset('assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
+                            <img style="width:70%" src="@if($param->faq_logo) {{asset('/public/settings/'. $param->faq_logo )}} @else {{asset('/public/assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blues">{{ $param->faq_stitre ?? 'Je cherche des réponses' }}</span>
                         </a>
 
@@ -363,7 +363,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <a href="#" @if($agence->has_consult === 0) class="tablinks disabled" @endif id="consultData">
-                            <img src="@if($param->consult_logo) {{asset('/settings/'. $param->consult_logo )}} @else {{url('/public/assets/backend/dist/img/Femme-ordi-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if($param->consult_logo) {{asset('/public/settings/'. $param->consult_logo )}} @else {{url('/public/assets/backend/dist/img/Femme-ordi-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-brown">{{ $param->consult_stitre ?? 'Je consulte mon compte' }}</span>
                         </a>
                     </div>
@@ -371,7 +371,7 @@
 
                     <div style="position: relative;visibility:visible"  class="col-6 mb-3 text-end">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/reclamation" @if($agence->has_reclame === 0) class="tablinks disabled" @endif>
-                            <img src="@if($param->recla_logo !== null) {{asset('/settings/'. $param->recla_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-2-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if($param->recla_logo !== null) {{asset('/public/settings/'. $param->recla_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-2-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blue">{{ $param->recla_stitre ?? 'Je fais une réclamation' }} </span>
                         </a>
                     </div>
@@ -379,7 +379,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/avis" @if($agence->has_avis === 0) class="tablinks disabled" @endif>
-                            <img src="@if($param->avis_logo) {{asset('/settings/'. $param->avis_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-3-sans-texte (1).jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if($param->avis_logo) {{asset('/public/settings/'. $param->avis_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-3-sans-texte (1).jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-brown">{{ $param->avis_stitre ?? 'Je donne mon avis sur ma banque' }}</span>
                         </a>
                     </div>
