@@ -20,7 +20,7 @@
                         <div class="col-5 text-center text-sm-left">
                             <div class="card-body pb-0 px-0 px-md-4">
                                 <img
-                                    src="{{url('assets/backend/img/illustrations/card-advance-sale.png')}}"
+                                    src="{{url('public/assets/backend/img/illustrations/card-advance-sale.png')}}"
                                     height="140"
                                     alt="view sales" />
                             </div>

@@ -11,8 +11,8 @@
 
 
     <!-- MDB -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{url('assets/frontend/img/bgfi.jpg')}}">
-    <link href="{{url('assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{url('/public/assets/frontend/img/bgfi.jpg')}}">
+    <link href="{{url('/public/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font Awesome -->
     <link
@@ -30,10 +30,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{url('assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{url('/public/assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/fontawesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/all.min.css')}}">
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
@@ -44,13 +44,13 @@
     <style>
 
         .bg-home{
-            background-image: url('{{url('assets/frontend/img/Fond-1.webp') }}');
+            background-image: url('{{url('/public/assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         #bg-other{
-            {{--background-image: url('{{url('assets/frontend/img/fond2.webp') }}');--}}
+            {{--background-image: url('{{url('/public/assets/frontend/img/fond2.webp') }}');--}}
             {{--background-position: center;--}}
             {{--background-size: cover;--}}
             {{--background-attachment: fixed;--}}
@@ -460,7 +460,7 @@
         <div class="container-fluid">
             <!-- Toggle button -->
             <div class="img text-start" style="margin-left: -35px; margin-top: -150px;">
-                <img src="{{url('assets/backend/dist/img/Logo55.png') }}" style="height:100px;width:100px;margin-top:150px;margin-left:50px" class="img-fluid logo" alt="Fissure in Sandstone">
+                <img src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" style="height:100px;width:100px;margin-top:150px;margin-left:50px" class="img-fluid logo" alt="Fissure in Sandstone">
             </div>
             <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <svg class="svg-inline--fa fa-bars" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path></svg><!-- <i class="fas fa-bars"></i> Font Awesome fontawesome.com -->
@@ -526,7 +526,7 @@
                             </div>
                             <div align="center" class="mb-3">
 
-                                <img src="{{url('assets/frontend/img/Tarait.png')}}" class="mb-5 mt-3" width="250px" height="4px" style="margin-left: -50px;">
+                                <img src="{{url('/public/assets/frontend/img/Tarait.png')}}" class="mb-5 mt-3" width="250px" height="4px" style="margin-left: -50px;">
                             </div>
                             <div class="form-group">
 
@@ -578,32 +578,32 @@
                                             <div class="custom-radio">
                                                 <input type="radio" id="radio_1" name="emoji" value="Decevant">
                                                 <label for="radio_1">
-                                                    <img src=" {{url('assets/frontend/img/decevant_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/decevant_on.png') }} " class="checked">
+                                                    <img src=" {{url('/public/assets/frontend/img/decevant_off.png') }} " class="unchecked">
+                                                    <img src=" {{url('/public/assets/frontend/img/decevant_on.png') }} " class="checked">
                                                     <span>Decevant</span>
                                                 </label>
                                             </div>
                                             <div class="custom-radio">
                                                 <input type="radio" id="radio_2" name="emoji" value="Mediocre">
                                                 <label for="radio_2">
-                                                    <img src=" {{url('assets/frontend/img/mediocre_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/mediocre_on.png') }} " class="checked">
+                                                    <img src=" {{url('/public/assets/frontend/img/mediocre_off.png') }} " class="unchecked">
+                                                    <img src=" {{url('/public/assets/frontend/img/mediocre_on.png') }} " class="checked">
                                                     <span>Mediocre</span>
                                                 </label>
                                             </div>
                                             <div class="custom-radio">
                                                 <input type="radio" id="radio_3" name="emoji" value="Bien">
                                                 <label for="radio_3">
-                                                    <img src=" {{url('assets/frontend/img/bien_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/bien_on.png') }} " class="checked">
+                                                    <img src=" {{url('/public/assets/frontend/img/bien_off.png') }} " class="unchecked">
+                                                    <img src=" {{url('/public/assets/frontend/img/bien_on.png') }} " class="checked">
                                                     <span>Bien</span>
                                                 </label>
                                             </div>
                                             <div class="custom-radio">
                                                 <input type="radio" id="radio_4" name="emoji" value="Parfait">
                                                 <label for="radio_4">
-                                                    <img src=" {{url('assets/frontend/img/parfait_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/parfait_on.png') }} " class="checked">
+                                                    <img src=" {{url('/public/assets/frontend/img/parfait_off.png') }} " class="unchecked">
+                                                    <img src=" {{url('/public/assets/frontend/img/parfait_on.png') }} " class="checked">
                                                     <span>Parfait</span>
                                                 </label>
                                             </div>
@@ -685,10 +685,11 @@
     const parsedUrl = new URL(url);
     const pathParts = parsedUrl.pathname.split('/');
     const agence = pathParts[2]; // Ici, '123'
+    const agences = @json($agence);
 
     window.addEventListener('load', function () {
         const bgImage = new Image();
-        bgImage.src = "/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
+        bgImage.src = "/public/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
 
         // Ajoutez un écouteur pour vérifier si l'image est bien chargée
         bgImage.onload = function () {
@@ -792,7 +793,7 @@
         });
     })
 
-    const INACTIVITY_TIME = 10000; // 10 secondes
+    const INACTIVITY_TIME = agences.delais * 1000; // 10 secondes
     let inactivityTimer;
     let swalInstance = null;
     let shouldRedirect = true;
