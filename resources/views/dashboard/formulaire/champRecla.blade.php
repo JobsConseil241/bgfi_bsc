@@ -416,7 +416,7 @@
                                         return data;
                                     }
                                     return (
-                                        '<img src="/assets/backend/img/' + $status[$status_number].title + '" alt = "'+data+'" style="height: 40px">'
+                                        '<img src="/public/assets/backend/img/' + $status[$status_number].title + '" alt = "'+data+'" style="height: 40px">'
                                     );
                                 }
                             },

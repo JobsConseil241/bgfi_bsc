@@ -87,7 +87,7 @@ class WelcomeController extends Controller
         ]);
 
         // Passer les champs à la vue
-        return view('dashboard.formulaire.avisFormView', compact('formFields'));
+        return view('dashboard.formulaire.avisFormView', compact('formFields', 'agence'));
     }
     public function indexReclamation(Request $request, $nom) {
 
@@ -112,7 +112,7 @@ class WelcomeController extends Controller
         ]);
 
         // Passer les champs à la vue
-        return view('dashboard.formulaire.reclamationFormView', compact('fields'));
+        return view('dashboard.formulaire.reclamationFormView', compact('fields', 'agence'));
     }
 
     /**
