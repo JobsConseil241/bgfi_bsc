@@ -19,13 +19,6 @@
             <!-- DataTable with Buttons -->
             <div class="card">
                 <div class="mt-4 px-4">
-                    <label for="agence">Choisir une agence:</label>
-                    <select name="agence_id" id="agence" class="form-select-sm">
-                        @foreach($agences as $age)
-                            <option value="{{$age->id}}">{{$age->libelle}}</option>
-                        @endforeach
-                    </select>
-
                     <label for="agence">Date de début:</label>
                     <input type="date" name="dateDebut" id="dateDebut" class="form-control-sm"  >
 
@@ -44,11 +37,8 @@
                         <thead>
                         <tr>
                             <td>Agence</td>
-                            <th>FAQ Name</th>
-                            <th>FAQ No</th>
+                            <th>Module</th>
                             <th>Total Views</th>
-                            <th>Total Likes</th>
-                            <th>Total Dislikes</th>
                         </tr>
                         </thead>
                     </table>
@@ -101,15 +91,12 @@
                         },
                         columns: [
                             { data: 'agence_name' },
-                            { data: 'faq_name' },
-                            { data: 'faq_no' },
+                            { data: 'module' },
                             { data: 'total_views' },
-                            { data: 'total_likes' },
-                            { data: 'total_dislikes' },
                         ],
                         columnDefs: [
                             {
-                                targets: [1,3,4,5],
+                                targets: [0,1],
                                 searchable: true,
                                 visible: true,
                                 render: function (data, type, full, meta) {
@@ -119,7 +106,7 @@
                                 }
                             },
                             {
-                                targets: [0,2],
+                                targets: [2],
                                 searchable: true,
                                 visible: true,
                             },
@@ -139,7 +126,7 @@
                                         text: '<i class="ti ti-printer me-1" ></i>Imprimer',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [0,1,2,3,4,5],
+                                            columns: [0,1,2],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -176,7 +163,7 @@
                                         text: '<i class="ti ti-file-text me-1" ></i>Csv',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [0,1,2,3,4,5],
+                                            columns: [0,1,2],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -200,7 +187,7 @@
                                         text: '<i class="ti ti-file-spreadsheet me-1"></i>Excel',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [0,1,2,3,4,5],
+                                            columns: [0,1,2],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -224,7 +211,7 @@
                                         text: '<i class="ti ti-file-description me-1"></i>Pdf',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [0,1,2,3,4,5],
+                                            columns: [0,1,2],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -248,7 +235,7 @@
                                         text: '<i class="ti ti-copy me-1" ></i>Copy',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [0,1,2,3,4,5],
+                                            columns: [0,1,2,3],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -354,12 +341,11 @@
 
                     // Envoi de la requête AJAX
                     $.ajax({
-                        url: "{{ route('faqStatReloads') }}", // Route Laravel pour le filtre
+                        url: "{{ route('consultationStatReloads') }}", // Route Laravel pour le filtre
                         type: "GET", // Méthode GET
                         data: {
                             dateDebut: dateDebut,
                             dateFin: dateFin,
-                            key: val
                         },
                         success: function (data) {
                             if(data.status){

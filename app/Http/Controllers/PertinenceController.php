@@ -74,13 +74,28 @@ class PertinenceController extends Controller
         $agences = Agence::where('status', 1)->get();
 
         $stats = DB::table('consultations as c')
-            ->join('agences as a', 'c.agence_id', '=', 'a.id')
+            ->join('agences as a', 'c.agences_id', '=', 'a.id')
             ->select('a.libelle as agence_name', 'c.module as module', DB::raw('SUM(c.visite) as total_views'))
-            ->where('c.agence_id', 1)
             ->where('c.module', 'consultation')
-            ->groupBy('a.libelle','s.faq_no', 'f.titre')
+            ->groupBy('a.libelle','c.module')
             ->get();
 
-        return view('dashboard.pertinence.indexFAQ', compact('stats', 'ptnec', 'title', 'perti', 'agences'));
+        return view('dashboard.pertinence.indexConsultation', compact('stats', 'ptnec', 'title', 'perti', 'agences'));
+    }
+
+    public function getVisitsConsultations(Request $request){
+
+        $stats = DB::table('consultations as c')
+            ->join('agences as a', 'c.agences_id', '=', 'a.id')
+            ->select('a.libelle as agence_name', 'c.module as module', DB::raw('SUM(c.visite) as total_views'))
+            ->where('c.module', 'consultation')
+            ->whereBetween('c.created_at', [$request->query('dateDebut'), $request->query('dateFin')])
+            ->groupBy('a.libelle','c.module')
+            ->get();
+
+        return response()->json([
+            'status' => 200,
+            'response' => $stats,
+        ]);
     }
 }

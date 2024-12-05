@@ -130,8 +130,8 @@ Route::get('/dashboard/marketing-manage/reload', [MarketingController::class, 'g
 Route::get('/dashboard/pertinence/faq', [PertinenceController::class, 'indexFaq'])->name('faqStat');
 Route::get('/dashboard/pertinence/faq/reload', [PertinenceController::class, 'getVisitsFaq'])->name('faqStatReload');
 Route::get('/dashboard/pertinence/faq/reloads', [PertinenceController::class, 'getVisitsFaqs'])->name('faqStatReloads');
-//Route::get('/dashboard/pertinence/consultation', [PertinenceController::class, 'indexConsultation'])->name('consultationStatReloads');
-//Route::get('/dashboard/pertinence/faq/reloads', [PertinenceController::class, 'getVisitsFaqs'])->name('faqStatReloads');
+Route::get('/dashboard/pertinence/espace-client', [PertinenceController::class, 'indexConsultation'])->name('consultationStatReload');
+Route::get('/dashboard/pertinence/espace-client/reloads', [PertinenceController::class, 'getVisitsConsultations'])->name('consultationStatReloads');
 
 // Profile Page
 Route::get('/dashboard/profile', [ProfileController::class, 'index'])->name('profile');

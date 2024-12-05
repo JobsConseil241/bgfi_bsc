@@ -32,7 +32,7 @@
                             <div class="intro-y box">
                                 <div class="flex items-center px-1 border-b border-slate-200/60 dark:border-darkmode-400">
                                     <h5 class="font-medium text-base mr-auto">
-                                        Personal Information
+                                        Information Personnelle
                                     </h5>
                                 </div>
                                 <div class="p-2">
