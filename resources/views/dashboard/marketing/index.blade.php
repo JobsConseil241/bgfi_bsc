@@ -173,7 +173,6 @@
                                 orderable: false,
                                 searchable: false,
                                 responsivePriority: 3,
-                                checkboxes: true,
                                 render: function () {
                                     return '<input type="checkbox" class="dt-checkboxes form-check-input">';
                                 },
@@ -187,7 +186,7 @@
                                 visible: true,
                                 render: function (data, type, full, meta) {
                                     return (
-                                        '<img class="rounded-md" width="52" height="30" src="public/storage/'+data+'">'
+                                        '<img class="rounded-md" width="52" height="30" src="/public/storage/'+data+'">'
                                     );
                                 }
                             },
