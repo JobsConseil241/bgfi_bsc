@@ -189,11 +189,11 @@ class WelcomeController extends Controller
 
         // TODO : send mail on all responsable users
 
-//        $users = User::where('role', 'responsable')->get();
-//
-//        foreach ($users as $user) {
-//            Mail::to($user->email)->send(new SendAvisMail($data_array, $user));
-//        }
+        $users = User::where('role', 'responsable')->get();
+
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new SendAvisMail($data_array, $user));
+        }
 
         return response()->json(['status' => 200, 'success' => 'Formulaire soumis avec succès !']);
 
@@ -219,9 +219,9 @@ class WelcomeController extends Controller
                 $value = '-';
             }
 
-//            if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
-//                Mail::to($value)->send(new ConfirmationReception($value));
-//            }
+            if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                Mail::to($value)->send(new ConfirmationReception($value));
+            }
 
             // Handle case where value is an array (e.g., for checkboxes)
             if (is_array($value)) {
@@ -242,11 +242,11 @@ class WelcomeController extends Controller
             ]);
         }
 
-//        $users = User::where('role', 'responsable')->get();
-//
-//        foreach ($users as $user) {
-//            Mail::to($user->email)->send(new SendReclamationMail($data_array, $user));
-//        }
+        $users = User::where('role', 'responsable')->get();
+
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new SendReclamationMail($data_array, $user));
+        }
 
         Log::info($data_array);
 
