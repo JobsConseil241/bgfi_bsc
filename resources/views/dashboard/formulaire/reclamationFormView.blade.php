@@ -11,8 +11,8 @@
 
 
     <!-- MDB -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{url('/public/assets/frontend/img/bgfi.jpg')}}">
-    <link href="{{url('/public/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{url('assets/frontend/img/bgfi.jpg')}}">
+    <link href="{{url('assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font Awesome -->
     <link
@@ -30,10 +30,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{url('/public/assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{url('assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/fontawesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/all.min.css')}}">
 
 
     <!-- CSS -->
@@ -45,13 +45,13 @@
 
     <style>
         .bg-home{
-            background-image: url('{{url('/public/assets/frontend/img/Fond-1.webp') }}');
+            background-image: url('{{url('assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         #bg-other{
-            {{--background-image: url('{{url('/public/assets/frontend/img/fond2.webp') }}');--}}
+            {{--background-image: url('{{url('assets/frontend/img/fond2.webp') }}');--}}
             {{--background-position: center;--}}
             {{--background-size: cover;--}}
             {{--background-attachment: fixed;--}}
@@ -465,7 +465,7 @@
         <div class="container-fluid">
             <!-- Toggle button -->
             <div class="img text-start" style="margin-left: -35px; margin-top: -150px;">
-                <img src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" style="height:100px;width:100px;margin-top:150px;margin-left:50px" class="img-fluid logo" alt="Fissure in Sandstone">
+                <img src="{{url('assets/backend/dist/img/Logo55.png') }}" style="height:100px;width:100px;margin-top:150px;margin-left:50px" class="img-fluid logo" alt="Fissure in Sandstone">
             </div>
             <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <svg class="svg-inline--fa fa-bars" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path></svg><!-- <i class="fas fa-bars"></i> Font Awesome fontawesome.com -->
@@ -530,7 +530,7 @@
                         </div>
                         <div align="center" class="mb-3">
 
-                            <img src="{{url('/public/assets/frontend/img/Tarait.png')}}" class="mb-5 mt-3" width="250px" height="4px" style="margin-left: -50px;">
+                            <img src="{{url('assets/frontend/img/Tarait.png')}}" class="mb-5 mt-3" width="250px" height="4px" style="margin-left: -50px;">
                         </div>
                         <!-- Step 1 -->
                         <div class="step active" data-step="1">
@@ -549,7 +549,7 @@
                                                     @endphp
 
                                                     <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px"  @if($field->is_required == 1) required @endif>
                                                         @foreach($parsed_json as $sv)
                                                             @if($sv == 'Gabon')
                                                                 <option selected>{{ $sv }}</option>
@@ -563,9 +563,9 @@
                                                     <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                                 @elseif($field->name == "type")
                                                     <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                    <select name="{{ $field->name }}" id="{{ $field->name }}1" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                    <select name="{{ $field->name }}" id="{{ $field->name }}1" class="form-control" style="border-color: #0F5095;height:50px"  @if($field->is_required == 1) required @endif>
                                                         <option>Je rencontre un problème technique (Application, site )</option>
-                                                        <option>Frais bancaires  inattendus ou incompréhensifs</option>
+                                                        <option>Frais bancaires inattendus ou incompréhensifs</option>
                                                         <option>Ma carte bancaire est bloquée</option>
                                                         <option>Transactions inquiétantes sur mon compte</option>
                                                         <option>Je souhaite faire opposition à une transaction</option>
@@ -581,8 +581,8 @@
                                                     <div class="checkbox-grid mx-auto">
                                                         @foreach($field->options as $option)
                                                             <div>
-                                                                <input type="radio" name="{{ $field->name }}" class="form-check-input" value="{{ $option->libelle }}">
-                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                                <input type="radio" name="{{ $field->name }}" id="{{ $option->libelle }}{{ $field->id }}" class="form-check-input" value="{{ $option->libelle }}"  @if($field->is_required == 1) required @endif>
+                                                                <label class="form-check-label" for="{{ $option->libelle }}{{ $field->id }}">{{ $option->libelle }}</label>
                                                             </div>
                                                         @endforeach
 
@@ -594,8 +594,8 @@
                                                     <div class="checkbox-grid mx-auto">
                                                         @foreach($field->options as $option)
                                                             <div>
-                                                                <input type="checkbox" class="form-check-input" name="{{ $field->name }}[]" value="{{ $option->libelle }}">
-                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                                <input type="checkbox" class="form-check-input" id="{{ $option->libelle }}{{ $field->id }}" name="{{ $field->name }}[]" value="{{ $option->libelle }}"  @if($field->is_required == 1) required @endif>
+                                                                <label class="form-check-label" for="{{ $option->libelle }}{{ $field->id }}">{{ $option->libelle }}</label>
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -604,17 +604,17 @@
                                                 </div>
                                             @elseif($field->type === 'textarea')
                                                 <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                <textarea placeholder="Renseignez ce champ" name="avis" rows="2" class="form-control" style="border-color: #0F5095"></textarea>
+                                                <textarea placeholder="Renseignez ce champ" name="avis" rows="2" class="form-control" style="border-color: #0F5095"  @if($field->is_required == 1) required @endif></textarea>
 
                                                 <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @elseif($field->type === 'tel')
                                                 <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                <input  type="tel" id="{{ $field->type }}"  name="{{ $field->name }}" maxlength="9" class="form-control" style="border-color: #0F5095;height:50px; width: 100% !important" required>
+                                                <input  type="tel" id="{{ $field->type }}"  name="{{ $field->name }}" maxlength="9" class="form-control" style="border-color: #0F5095;height:50px; width: 100% !important"  @if($field->is_required == 1) required @endif>
 
                                                 <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @else
                                                 <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" class="form-control" required style="border-color: #0F5095;height:50px">
+                                                <input type="{{ $field->type }}" name="{{ $field->name }}"  class="form-control" required style="border-color: #0F5095;height:50px"  @if($field->is_required == 1) required @endif>
 
                                                 <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @endif
@@ -650,7 +650,7 @@
                                                     @endphp
 
                                                     <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px"  @if($field->is_required == 1) required @endif>
                                                         @foreach($parsed_json as $sv)
                                                             @if($sv == 'Gabon')
                                                                 <option selected>{{ $sv }}</option>
@@ -664,9 +664,9 @@
                                                     <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                                 @elseif($field->name == "type")
                                                     <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                    <select name="{{ $field->name }}" id="{{ $field->name }}1" class="form-control" style="border-color: #0F5095;height:50px" required>
+                                                    <select name="{{ $field->name }}" id="{{ $field->name }}1" class="form-control" style="border-color: #0F5095;height:50px"  @if($field->is_required == 1) required @endif>
                                                         <option>Je rencontre un problème technique (Application, site )</option>
-                                                        <option>Frais bancaires  inattendus ou incompréhensifs</option>
+                                                        <option>Frais bancaires inattendus ou incompréhensifs</option>
                                                         <option>Ma carte bancaire est bloquée</option>
                                                         <option>Transactions inquiétantes sur mon compte</option>
                                                         <option>Je souhaite faire opposition à une transaction</option>
@@ -684,8 +684,8 @@
                                                     <div class="checkbox-grid mx-auto">
                                                         @foreach($field->options as $option)
                                                             <div>
-                                                                <input type="radio" name="{{ $field->name }}" class="form-check-input" value="{{ $option->libelle }}">
-                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                                <input type="radio" id="{{ $option->libelle }}{{ $field->id }}" name="{{ $field->name }}" class="form-check-input" value="{{ $option->libelle }}"  @if($field->is_required == 1) required @endif>
+                                                                <label class="form-check-label" for="{{ $option->libelle }}{{ $field->id }}">{{ $option->libelle }}</label>
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -698,8 +698,8 @@
                                                     <div class="checkbox-grid mx-auto">
                                                         @foreach($field->options as $option)
                                                             <div>
-                                                                <input type="checkbox" class="form-check-input" name="{{ $field->name }}[]" value="{{ $option->libelle }}">
-                                                                <label class="form-check-label">{{ $option->libelle }}</label>
+                                                                <input type="checkbox" id="{{ $option->libelle }}{{ $field->id }}" class="form-check-input" name="{{ $field->name }}[]" value="{{ $option->libelle }}"  @if($field->is_required == 1) required @endif>
+                                                                <label class="form-check-label" for="{{ $option->libelle }}{{ $field->id }}">{{ $option->libelle }}</label>
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -708,14 +708,13 @@
                                                 </div>
                                             @elseif($field->type === 'textarea')
                                                 <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                <textarea placeholder="Renseignez ce champ" name="avis" rows="2" class="form-control" style="border-color: #0F5095"></textarea>
+                                                <textarea placeholder="Renseignez ce champ" name="avis" rows="2" class="form-control" style="border-color: #0F5095"  @if($field->is_required == 1) required @endif></textarea>
 
 
                                                 <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @else
                                                 <label style="color: #0D437A; margin-bottom: 10px" for="{{ $field->name }}">{{ $field->intitulé }}</label>
-                                                <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" class="form-control" required style="height:50px">
-
+                                                <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" style="height:50px" id="{{ $field->name }}"  @if($field->is_required == 1) required @endif>
 
                                                 <input type="hidden" name="field_id[]" value="{{ $field->id }}">
                                             @endif
@@ -735,7 +734,7 @@
 
                                             <input type="{{ $field->type }}" class="form-control"
                                                    name="{{ $field->name }}" id="{{ $field->name }}"
-                                                required style="height:60px">
+                                                   @if($field->is_required == 1) required @endif style="height:60px">
 
 
                                             <input type="hidden" name="field_id[]" value="{{ $field->id }}">
@@ -789,7 +788,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="{{url('/public/assets/frontend/js/zoom.js')}}"></script>
+<script src="{{url('assets/frontend/js/zoom.js')}}"></script>
 <!-- MDB -->
 <script
     type="text/javascript"
@@ -803,11 +802,10 @@
     const parsedUrl = new URL(url);
     const pathParts = parsedUrl.pathname.split('/');
     const agence = pathParts[2]; // Ici, '123'
-    const agences = @json($agence);
 
     window.addEventListener('load', function () {
         const bgImage = new Image();
-        bgImage.src = "/public/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
+        bgImage.src = "/assets/frontend/img/fond2.webp"; // Remplacez par le chemin de votre image
 
         // Ajoutez un écouteur pour vérifier si l'image est bien chargée
         bgImage.onload = function () {
@@ -839,13 +837,65 @@
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Inclut les scripts utilitaires pour le formatage
     });
 
+
     $('#type1').on('change', function() {
         if ($(this).val() === 'Autre') {
-            $('#otherFieldGroup').show();  // Show "Other" input field
+            $('#otherFieldGroup').show();
         } else {
-            $('#otherFieldGroup').hide();  // Hide "Other" input field
+            $('#otherFieldGroup').hide();
+
+            if ($(this).val() === 'Je rencontre un problème technique (Application, site )') {
+                $("#commentaire").prop('required',true);
+                $("#compte").prop('required',false);
+                $("#montant").prop('required',false);
+                $("#code").prop('required',false);
+                $("#date_transac").prop('required',false);
+            }
+            if ($(this).val() === 'Frais bancaires inattendus ou incompréhensifs' || $(this).val() === 'Transactions inquiétantes sur mon compte'
+                || $(this).val() === 'Je souhaite faire opposition à une transaction' ) {
+                $("#commentaire").prop('required',false);
+                $("#compte").prop('required',true);
+                $("#montant").prop('required',true);
+                $("#date_transac").prop('required',true);
+                $("#code").prop('required',false);
+
+            }
+            if ($(this).val() === 'Ma carte bancaire est bloquée') {
+                $("#commentaire").prop('required',false);
+                $("#compte").prop('required',true);
+                $("#montant").prop('required',false);
+                $("#date_transac").prop('required',true);
+                $("#code").prop('required',false);
+
+            }
+            if ($(this).val() === 'Je trouve le délai de traitement de ma demande trop long') {
+                $("#code").prop('required',true);
+                $("#commentaire").prop('required',false);
+                $("#compte").prop('required',false);
+                $("#montant").prop('required',false);
+                $("#date_transac").prop('required',false);
+            }
+
         }
     });
+
+   let compte =  document.getElementById("compte")
+   let montant =  document.getElementById("montant")
+
+    const accountRegex = /^[0-9]{8,12}$/;
+    const amountRegex = /^[1-9][0-9]*$/;
+
+    compte.addEventListener('blur', function () {
+        if (!accountRegex.test(compte)) {
+            compte.classList.add('is-invalid');
+        }
+    })
+
+    montant.addEventListener('blur', function () {
+        if (!accountRegex.test(montant)) {
+            montant.classList.add('is-invalid');
+        }
+    })
 
     function showStep(step) {
         document.querySelectorAll('.step').forEach((el) => {
@@ -890,7 +940,7 @@
     // Initially show the first step
     showStep(currentStep);
 
-    const INACTIVITY_TIME = agences.delais * 1000; // 10 secondes
+    const INACTIVITY_TIME = 10000; // 10 secondes
     let inactivityTimer;
     let swalInstance = null;
     let shouldRedirect = true;
@@ -969,6 +1019,12 @@
         }
 
         let formData = $(this).serializeArray()
+
+        formData.forEach(item => {
+            if (item.name === "avis") {
+                item.value = $('#otherNationality').val();
+            }
+        });
 
         $.ajax({
             url: '/agence/'+ agence +'/reclamation',

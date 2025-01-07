@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ConfirmationReception;
+use App\Mail\SendAvisMail;
+use App\Mail\SendReclamationMail;
 use App\Models\Agence;
 use App\Models\ChampFormulaire;
 use App\Models\Consultation;
@@ -14,9 +16,11 @@ use App\Models\ReponseAvis;
 use App\Models\ReponseFaq;
 use App\Models\ReponseReclamation;
 use App\Models\Setting;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class WelcomeController extends Controller
@@ -59,6 +63,21 @@ class WelcomeController extends Controller
         return view('dashboard.faq.view', compact('agence', 'Faq'));
     }
 
+    public function indexConsulter(Request $request, $nom) {
+
+        $agence  = Agence::where('libelle', $nom)->first();
+        $param = Setting::where('agence_id', $agence->id)->first();
+
+        $agence_id = Agence::where('libelle', $nom)->first()->id;
+
+
+        return view('dashboard.formulaire.consultationFormView', compact('agence'));
+    }
+    public function retournevalue(Request $request, $nom) {
+
+        // requetes à BGFi
+    }
+
     /**
      * @param Request $request
      * @param $nom
@@ -68,11 +87,12 @@ class WelcomeController extends Controller
 
         $agence  = Agence::where('libelle', $nom)->first();
 
-        $form = Formulaire::where('agence_id', $agence->id)->where('type', 'avis')->first();
+        $form = Formulaire::where('status', 1)->where('type', 'avis')->first();
 
         // Récupérer les champs et leurs options associés via Eloquent
         $formFields = ChampFormulaire::with('options')
             ->where('id_formulaire', $form->id)
+            ->where('status', 1)
             ->orderBy('position', 'asc')
             ->get();
 
@@ -93,7 +113,7 @@ class WelcomeController extends Controller
 
         $agence  = Agence::where('libelle', $nom)->first();
 
-        $form = Formulaire::where('agence_id', $agence->id)->where('type', 'reclamation')->first();
+        $form = Formulaire::where('status', 1)->where('type', 'reclamation')->first();
 
         // Récupérer les champs et leurs options associés via Eloquent
         $fields = ChampFormulaire::with('options')
@@ -123,6 +143,8 @@ class WelcomeController extends Controller
     public function saveAvis(Request $request, $nom) {
         $data = $request->all();
 
+        $data_array = [];
+
         $numero = ReponseAvis::all()->groupBy('sender_no')->count() + 1;
 
         $formFields = [];
@@ -145,7 +167,7 @@ class WelcomeController extends Controller
             $fieldValue = $formFields[$fieldKey]; // Obtenir la valeur correspondante
 
             if (is_null($fieldValue)) {
-                continue;
+                $fieldValue = '-';
             }
 
             if (is_array($fieldValue)) {
@@ -153,6 +175,8 @@ class WelcomeController extends Controller
             }
 
             // Insertion dans la table "reponses_formulaires"
+            $data_array[$fieldKey] = $fieldValue;
+
             ReponseAvis::create([
                 'sender_no' => $numero,
                 'reponse' => $fieldValue,
@@ -162,6 +186,14 @@ class WelcomeController extends Controller
                 'status' => 1,
             ]);
         }
+
+        // TODO : send mail on all responsable users
+
+//        $users = User::where('role', 'responsable')->get();
+//
+//        foreach ($users as $user) {
+//            Mail::to($user->email)->send(new SendAvisMail($data_array, $user));
+//        }
 
         return response()->json(['status' => 200, 'success' => 'Formulaire soumis avec succès !']);
 
@@ -175,6 +207,8 @@ class WelcomeController extends Controller
         $fields = $request->except('_token', 'field_id');
         $field_ids = $request->input('field_id');
 
+        $data_array = [];
+
 //        dd($fields, $field_ids);
 
         foreach ($fields as $key => $value) {
@@ -182,7 +216,7 @@ class WelcomeController extends Controller
 
             // Skip if value is null or empty
             if (empty($value)) {
-                continue;
+                $value = '-';
             }
 
 //            if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -193,6 +227,9 @@ class WelcomeController extends Controller
             if (is_array($value)) {
                 $value = json_encode($value);
             }
+
+            // Insertion dans la table "reponses_formulaires"
+            $data_array[$key] = $value;
 
             // Insert or update the value in the database
             ReponseReclamation::create([
@@ -205,6 +242,13 @@ class WelcomeController extends Controller
             ]);
         }
 
+//        $users = User::where('role', 'responsable')->get();
+//
+//        foreach ($users as $user) {
+//            Mail::to($user->email)->send(new SendReclamationMail($data_array, $user));
+//        }
+
+        Log::info($data_array);
 
         return response()->json(['status' => 200, 'success' => 'Formulaire soumis avec succès !']);
     }

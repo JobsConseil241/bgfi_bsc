@@ -505,7 +505,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="cursor: default; color: #105095;">
                         <h1 class="bienvenu">
-                            JE DONNE MON AVIS
+                            JE CONSULTE MON SOLDE
                         </h1>
                     </a>
                 </li>
@@ -514,125 +514,19 @@
         <br><br>
         <div class="position-relative overflow-hidden p-md-5 text-center row bg-yother h-100" id="bg-other">
             <div class="col-8 mx-auto my-auto text-center card p-5">
-                <form id="dynamicForm" action="" method="POST">
+                <form id="dynamicForm" action="#" method="POST">
                     @csrf
-
-                    @foreach($formFields as $index => $field)
-                        <div class="step" id="step{{ $index+1 }}" style="display: {{ $index === 0 ? 'block' : 'none' }};">
-                            <div align="center">
-                                <label style="color: #0D437A;font-weight: bold;font-size:25px" for="">{{ ucfirst($field->intitulé) }}</label>
-
-                                <input type="hidden" name="field_id_{{ $field->id }}" value="{{ $field->id }}">
-                            </div>
-                            <div align="center" class="mb-3">
-
-                                <img src="{{url('assets/frontend/img/Tarait.png')}}" class="mb-5 mt-3" width="250px" height="4px" style="margin-left: -50px;">
-                            </div>
-                            <div class="form-group">
-
-                                @if($field->type == 'select')
-                                    @if($field->name == "nationalite")
-                                        @php
-                                            // indiqué le chemin de votre fichier JSON, il peut s'agir d'une URL
-                                            $str_json = file_get_contents("assets/backend/countries-FR.json");
-
-                                            $parsed_json = json_decode($str_json,true);
-
-                                        @endphp
-                                    @endif
-                                    <select name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px" required>
-                                        @foreach($parsed_json as $sv)
-                                            @if($sv == 'Gabon')
-                                                <option selected>{{ $sv }}</option>
-                                            @else
-                                                <option>{{ $sv }}</option>
-                                            @endif
-                                        @endforeach
-                                        <!-- Ajouter les options ici -->
-                                    </select>
-                                @elseif($field->type === 'radio')
-                                    <div class="checkbox-grid-container">
-                                        <div class="checkbox-grid mx-auto">
-                                            @foreach($field->options as $option)
-                                                <div>
-                                                    <input type="radio" name="{{ $field->name }}" class="form-check-input" value="{{ $option->libelle }}" id="{{ $option->libelle }}">
-                                                    <label class="form-check-label" for="{{ $option->libelle }}">{{ $option->libelle }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif($field->type === 'checkbox')
-                                    <div class="checkbox-grid-container">
-                                        <div class="checkbox-grid mx-auto">
-                                            @foreach($field->options as $option)
-                                                <div>
-                                                    <input type="checkbox" class="form-check-input" name="{{ $field->name }}[]" value="{{ $option->libelle }}" id="{{ $option->libelle }}">
-                                                    <label class="form-check-label" for="{{ $option->libelle }}">{{ $option->libelle }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif($field->type === 'emoji')
-                                    <div class="custom-radio-grid-container">
-                                        <div class="custom-radio-grid">
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_1" name="emoji" value="Decevant">
-                                                <label for="radio_1">
-                                                    <img src=" {{url('assets/frontend/img/decevant_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/decevant_on.png') }} " class="checked">
-                                                    <span>Decevant</span>
-                                                </label>
-                                            </div>
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_2" name="emoji" value="Mediocre">
-                                                <label for="radio_2">
-                                                    <img src=" {{url('assets/frontend/img/mediocre_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/mediocre_on.png') }} " class="checked">
-                                                    <span>Mediocre</span>
-                                                </label>
-                                            </div>
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_3" name="emoji" value="Bien">
-                                                <label for="radio_3">
-                                                    <img src=" {{url('assets/frontend/img/bien_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/bien_on.png') }} " class="checked">
-                                                    <span>Bien</span>
-                                                </label>
-                                            </div>
-                                            <div class="custom-radio">
-                                                <input type="radio" id="radio_4" name="emoji" value="Parfait">
-                                                <label for="radio_4">
-                                                    <img src=" {{url('assets/frontend/img/parfait_off.png') }} " class="unchecked">
-                                                    <img src=" {{url('assets/frontend/img/parfait_on.png') }} " class="checked">
-                                                    <span>Parfait</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @elseif($field->type === 'textarea')
-                                    <textarea placeholder="Renseignez ce champ" name="avis" rows="5" class="form-control" style="border-color: #0F5095;margin-top: -20px"></textarea>
-                                @elseif($field->type === 'tel')
-                                    <input  type="tel" id="{{ $field->type }}"  name="{{ $field->name }}" class="form-control" maxlength="9" style="border-color: #0F5095;height:50px; width: 100% !important" required>
-                                @elseif($field->name === 'age')
-                                    <input  type="number" id="{{ $field->type }}"  name="{{ $field->name }}" class="form-control" style="border-color: #0F5095;height:50px; width: 100% !important" required min="18" max="100">
-                                @else
-                                    <input type="{{ $field->type }}" name="{{ $field->name }}" class="form-control" class="form-control" required style="border-color: #0F5095;height:50px">
-                                @endif
-                            </div>
-
-                            <div class="navigation-buttons mt-5">
-                                @if($index > 0)
-                                    <button type="button" class="btn btn-outline-secondary btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);"  onclick="prevStep({{ $index+1 }})">Précédent</button>
-                                @endif
-
-                                @if($index < count($formFields) - 1)
-                                    <button type="button" class="btn btn-outline-primary btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);" onclick="nextStep({{ $index+1 }})">Suivant</button>
-                                @else
-                                    <button type="submit" class="btn btn-outline-success btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);" >Soumettre</button>
-                                @endif
-                            </div>
+                    <div>
+                        <div align="center">
+                            <label style="color: #0D437A;font-weight: bold;font-size:25px; margin-bottom: 15px" for="account_number">Numéro de compte</label>
+                            <input  type="text" id="account_number"  name="" class="form-control" style="border-color: #0F5095;height:50px; width: 100% !important" required>
                         </div>
-                    @endforeach
+
+                        <div class="mt-4">
+                            <button type="reset" class="btn btn-outline-primary btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);">Annuler</button>
+                            <button type="submit" class="btn btn-outline-success btn-rounded border-0 m-1 bienvenu btn-lg" style="width: 150px; color: #1266f1; background: rgb(193, 212, 236);" >Soumettre</button>
+                        </div>
+                    </div>
                 </form>
 
                 <div id="successMessage" style="display:none;">
@@ -707,47 +601,7 @@
         };
     });
 
-    const input = document.querySelector("#tel");
-    const iti = window.intlTelInput(input, {
-        initialCountry: "auto", // Détecte automatiquement le pays de l'utilisateur
-        strictMode: true,
-        geoIpLookup: callback => {
-            fetch("https://ipapi.co/json")
-                .then(res => res.json())
-                .then(data => callback(data.country_code))
-                .catch(() => callback("us"));
-        },
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Inclut les scripts utilitaires pour le formatage
-    });
-
     // Fonction pour passer à l'étape suivante
-    function nextStep(currentStep) {
-        // Sélectionner tous les champs de l'étape actuelle
-        const step = document.getElementById('step' + currentStep);
-        const inputs = step.querySelectorAll('input, select, textarea');
-
-        let allValid = true;
-
-        // Valider chaque champ
-        inputs.forEach(input => {
-            if (!input.checkValidity()) {
-                input.reportValidity();  // Affiche le message d'erreur du navigateur
-                allValid = false;
-            }
-        });
-
-        // Si tous les champs sont valides, on passe à l'étape suivante
-        if (allValid) {
-            step.style.display = 'none';
-            document.getElementById('step' + (currentStep + 1)).style.display = 'block';
-        }
-    }
-
-    // Fonction pour revenir à l'étape précédente
-    function prevStep(currentStep) {
-        document.getElementById('step' + currentStep).style.display = 'none';
-        document.getElementById('step' + (currentStep - 1)).style.display = 'block';
-    }
 
     jQuery( document ).ready(function() {
 
@@ -767,28 +621,78 @@
 
         // Soumission du formulaire via AJAX
         $("#dynamicForm").submit(function (event) {
+
             event.preventDefault(); // Empêche le rechargement de la page
 
             // Collecte des données du formulaire
             var formData = $(this).serialize();
+            var compteBancaire = document.getElementById("account_number").value;
+
+            console.log(compteBancaire.length)
+            if (compteBancaire.length === 12 && !isNaN(compteBancaire)) {
+                Swal.fire({
+                    title: "Rentrer votre numero de telephone",
+                    input: "text",
+                    inputAttributes: {
+                        autocapitalize: "off"
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "Verifier",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async (login) => {
+                        try {
+                            const githubUrl = `
+                                https://api.github.com/users/${login}
+                              `;
+                            const response = await fetch(githubUrl);
+                            if (!response.ok) {
+                                return Swal.showValidationMessage(`
+                                  ${JSON.stringify(await response.json())}
+                                `);
+                            }
+                            return response.json();
+                        } catch (error) {
+                            Swal.showValidationMessage(`
+                                Request failed: ${error}
+                              `);
+                        }
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: `${result.value.login}'s avatar`,
+                            imageUrl: result.value.avatar_url
+                        });
+                    }
+                });
+            } else {
+                // Sinon, afficher un message d'erreur
+                Swal.fire({
+                    icon: 'error',  // 'error' pour une alerte de type danger
+                    title: 'Action ratée',  // Titre de l'alerte
+                    text: 'Entrez un numero de compte valide.',  // Message d'erreur
+                    confirmButtonText: 'Essayer à nouveau',  // Texte du bouton de confirmation
+                });
+            }
 
             // Soumission AJAX
-            $.ajax({
-                type: 'POST',
-                url: '/agence/' + agence + '/avis', // Remplace par l'URL de ton endpoint
-                data: formData,
-                success: function (response) {
-                    if (response.status === 200) {
-                        $('#dynamicForm').hide();
-                        $('#successMessage').show();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // Gérer l'erreur ici
-                    alert('Erreur lors de la soumission du formulaire: ' + error);
-                    console.error(xhr);
-                }
-            });
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/agence/' + agence + '/avis', // Remplace par l'URL de ton endpoint
+            //     data: formData,
+            //     success: function (response) {
+            //         if (response.status === 200) {
+            //             $('#dynamicForm').hide();
+            //             $('#successMessage').show();
+            //         }
+            //     },
+            //     error: function (xhr, status, error) {
+            //         // Gérer l'erreur ici
+            //         alert('Erreur lors de la soumission du formulaire: ' + error);
+            //         console.error(xhr);
+            //     }
+            // });
         });
     })
 

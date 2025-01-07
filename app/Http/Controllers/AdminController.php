@@ -37,9 +37,8 @@ class AdminController extends Controller
         $no_res_recla = ReponseReclamation::groupBy('sender_no')->select('sender_no', DB::raw('count(*) as total'))->get();
 
         $data_ad = DB::table('formulaires')
-            ->join('agences', 'formulaires.agence_id', '=', 'agences.id')
-            ->select('agences.libelle as agence_libelle', 'formulaires.type', DB::raw('COUNT(*) as formulaire_count'))
-            ->groupBy('agences.libelle', 'formulaires.type')
+            ->select( 'formulaires.type', DB::raw('COUNT(*) as formulaire_count'))
+            ->groupBy('formulaires.type')
             ->get();
 
         $agencies = FaqStatistiques::with('agence')

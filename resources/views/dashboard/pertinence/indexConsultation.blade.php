@@ -339,6 +339,12 @@
                         return;
                     }
 
+
+                    if (dateDebut > dateFin) {
+                        alert('Veuillez selectionner un intervalle valide.');
+                        return;
+                    }
+
                     // Envoi de la requête AJAX
                     $.ajax({
                         url: "{{ route('consultationStatReloads') }}", // Route Laravel pour le filtre

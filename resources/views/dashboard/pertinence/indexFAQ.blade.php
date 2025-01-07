@@ -21,6 +21,7 @@
                 <div class="mt-4 px-4">
                     <label for="agence">Choisir une agence:</label>
                     <select name="agence_id" id="agence" class="form-select-sm">
+                        <option value="0">Toutes les Agences</option>
                         @foreach($agences as $age)
                             <option value="{{$age->id}}">{{$age->libelle}}</option>
                         @endforeach
@@ -316,13 +317,14 @@
 
                     let val = $('#agence').val();
 
+
                     $.ajax({
-                        url: "{{ route('faqStatReload') }}", // Laravel route
-                        type: "GET",                     // HTTP method
+                        url: "{{ route('faqStatReload') }}",
+                        type: "GET",
                         data: {
-                            key: val               // Query parameters
+                            key: val
                         },
-                        dataType: "json",              // Expected response format
+                        dataType: "json",
                         success: function(data) {
                             // Update the page with the response
                             if(data.status){
@@ -349,6 +351,11 @@
                     // Validation côté client
                     if (!dateDebut || !dateFin) {
                         alert('Veuillez sélectionner les deux dates.');
+                        return;
+                    }
+
+                    if (dateDebut > dateFin) {
+                        alert('Veuillez selectionner un intervalle valide.');
                         return;
                     }
 

@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/agence/{nom}', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('/agence/{nom}/faq', [WelcomeController::class, 'indexFAQ'])->name('welcomeFAQ');
+Route::get('/agence/{nom}/consulter-solde', [WelcomeController::class, 'indexConsulter'])->name('welcomeConsulter');
+Route::post('/agence/{nom}/consulter-solde', [WelcomeController::class, 'retournevalue'])->name('postConsultation');
 Route::get('/agence/{nom}/avis', [WelcomeController::class, 'indexAvis'])->name('welcomeAvis');
 Route::post('/agence/{nom}/avis', [WelcomeController::class, 'saveAvis'])->name('saveAvis');
 Route::get('/agence/{nom}/reclamation', [WelcomeController::class, 'indexReclamation'])->name('welcomeReclamation');
@@ -93,10 +95,13 @@ Route::post('/dashboard/formulaire/avis/edition', [FormulaireController::class, 
 
 Route::get('/dashboard/formulaire/avis/{id}', [ChampFormulaireController::class, 'indexAvise'])->name('indexFormAvise');
 Route::post('/dashboard/formulaire/avis/{id}', [ChampFormulaireController::class, 'storeAvise'])->name('addFormAvise');
+Route::post('/dashboard/formulaire/avis/{id}/delete', [ChampFormulaireController::class, 'deleteAvise'])->name('deleteFormAvise');
+Route::post('/dashboard/formulaire/avis/{id}/champs/{champ}/delete', [ChampFormulaireController::class, 'deleteAviseChamp'])->name('deleteChampFormAvise');
 Route::post('/dashboard/formulaire/avis/{id}/edit', [ChampFormulaireController::class, 'editAvise'])->name('editFormAvise');
 
 Route::get('/dashboard/formulaire/avis/{id}/options/{champ}', [optionChampController::class, 'indexChampOption'])->name('indexFormAvisChamp');
 Route::post('/dashboard/formulaire/avis/{id}/options/{champ}', [optionChampController::class, 'storeChampOption'])->name('addFormAvisChamp');
+Route::post('/dashboard/formulaire/avis/{id}/options/{champ}/value/{val}/delete', [optionChampController::class, 'deleteChampOption'])->name('deleteFormAvisChamp');
 Route::post('/dashboard/formulaire/avis/{id}/options/{champ}/edit', [optionChampController::class, 'editChampOption'])->name('editFormAvisChamp');
 
 // avis reclamation
@@ -108,15 +113,18 @@ Route::post('/dashboard/formulaire/reclamation/edition', [FormulaireController::
 
 Route::get('/dashboard/formulaire/reclamation/{id}', [ChampFormulaireController::class, 'indexReclae'])->name('indexFormReclae');
 Route::post('/dashboard/formulaire/reclamation/{id}', [ChampFormulaireController::class, 'storeReclae'])->name('addFormReclae');
+Route::post('/dashboard/formulaire/reclamation/{id}/delete', [ChampFormulaireController::class, 'deleteReclae'])->name('deleteFormReclae');
+Route::post('/dashboard/formulaire/reclamation/{id}/champs/{champ}/delete', [ChampFormulaireController::class, 'deleteReclaeChamp'])->name('deleteChampFormReclae');
 Route::post('/dashboard/formulaire/reclamation/{id}/edit', [ChampFormulaireController::class, 'editReclae'])->name('editFormReclae');
 
 Route::get('/dashboard/formulaire/reclamation/{id}/options/{champ}', [optionChampController::class, 'indexChampOptionRecla'])->name('indexFormReclaChamp');
 Route::post('/dashboard/formulaire/reclamation/{id}/options/{champ}', [optionChampController::class, 'storeChampOptionRecla'])->name('addFormReclaChamp');
 Route::post('/dashboard/formulaire/reclamation/{id}/options/{champ}/edit', [optionChampController::class, 'editChampOptionRecla'])->name('editFormReclaChamp');
+Route::post('/dashboard/formulaire/reclamation/{id}/options/{champ}/value/{val}/delete', [optionChampController::class, 'deleteChampOption'])->name('deleteFormReclaeChamp');
 
 // recapitulatifs
 Route::get('/dashboard/recapitulatifs/avis/data', [RecapitulatifController::class, 'indexAvisData'])->name('RecapitulatifAvisData');
-Route::get('/dashboard/recapitulatifs/reclamation/data', [RecapitulatifController::class, 'indexReclamationData'])->name('RecapitulatifReclaData');
+Route::get('/dashboard/recapitulatifs/reclamation/data', [RecapitulatifController::class, 'indexReclamationDatas'])->name('RecapitulatifReclaData');
 Route::get('/dashboard/recapitulatifs/avis', [RecapitulatifController::class, 'indexAvis'])->name('RecapitulatifAvis');
 Route::get('/dashboard/recapitulatifs/reclamations', [RecapitulatifController::class, 'indexReclamation'])->name('RecapitulatifReclamation');
 
@@ -130,6 +138,12 @@ Route::get('/dashboard/marketing-manage/reload', [MarketingController::class, 'g
 Route::get('/dashboard/pertinence/faq', [PertinenceController::class, 'indexFaq'])->name('faqStat');
 Route::get('/dashboard/pertinence/faq/reload', [PertinenceController::class, 'getVisitsFaq'])->name('faqStatReload');
 Route::get('/dashboard/pertinence/faq/reloads', [PertinenceController::class, 'getVisitsFaqs'])->name('faqStatReloads');
+Route::get('/dashboard/pertinence/avis', [PertinenceController::class, 'indexAvis'])->name('avisStat');
+Route::get('/dashboard/pertinence/avis/reload', [PertinenceController::class, 'getVisitAvis'])->name('avisStatReload');
+Route::get('/dashboard/pertinence/avis/reloads', [PertinenceController::class, 'getVisitsAvis'])->name('avisStatReloads');
+Route::get('/dashboard/pertinence/reclamations', [PertinenceController::class, 'indexReclamatio'])->name('reclaStat');
+Route::get('/dashboard/pertinence/reclamations/reload', [PertinenceController::class, 'getVisitReclae'])->name('reclaStatReload');
+Route::get('/dashboard/pertinence/reclamations/reloads', [PertinenceController::class, 'getVisitsReclaes'])->name('reclaStatReloads');
 Route::get('/dashboard/pertinence/espace-client', [PertinenceController::class, 'indexConsultation'])->name('consultationStatReload');
 Route::get('/dashboard/pertinence/espace-client/reloads', [PertinenceController::class, 'getVisitsConsultations'])->name('consultationStatReloads');
 

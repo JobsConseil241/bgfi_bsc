@@ -29,7 +29,7 @@ class FormulaireController extends Controller
     public function indexAvis()
     {
         $formavis = 'active';
-        $datas = Formulaire::where('type', 'avis')->get();
+        $datas = Formulaire::where('type', 'avis')->where('status', 1)->get();
         $title = "Gestion Formulaires";
         $agences = Agence::all();
         $form = 'open';
@@ -51,7 +51,6 @@ class FormulaireController extends Controller
             'libelle' => $request->libelle,
             'description' => $request->description,
             'type' => $request->type,
-            'agence_id' => $request->agence,
             'status' =>1,
         ]);
 
@@ -76,7 +75,6 @@ class FormulaireController extends Controller
             'libelle' => $request->libelle,
             'description' => $request->description,
             'type' => $request->type,
-            'agence_id' => $request->agence,
             'status' =>1,
         ]);
 
@@ -97,7 +95,7 @@ class FormulaireController extends Controller
     public function indexRecla()
     {
         $formrecla = 'active';
-        $datas = Formulaire::where('type', 'reclamation')->get();
+        $datas = Formulaire::where('type', 'reclamation')->where('status', 1)->get();
         $title = "Gestion Formulaires";
         $agences = Agence::all();
         $form = 'open';

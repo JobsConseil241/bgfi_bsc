@@ -20,7 +20,7 @@
                         <div class="col-5 text-center text-sm-left">
                             <div class="card-body pb-0 px-0 px-md-4">
                                 <img
-                                    src="{{url('/public/assets/backend/img/illustrations/card-advance-sale.png')}}"
+                                    src="{{url('assets/backend/img/illustrations/card-advance-sale.png')}}"
                                     height="140"
                                     alt="view sales" />
                             </div>
@@ -172,7 +172,7 @@
                                         const chartDatasds = @json($data_ad);
 
                                         // Transformation des données pour le graphique
-                                        const labels = chartDatasds.map(item => `${item.agence_libelle} - ${item.type}`);
+                                        const labels = chartDatasds.map(item => `${item.type}`);
                                         const counts = chartDatasds.map(item => item.formulaire_count);
 
                                         // Couleurs dynamiques
@@ -345,11 +345,11 @@
                             </div>
                             <div class="col-md-12 position-relative p-4">
                                 <div class="card-header p-0 text-wrap">
-                                    <h5 class="m-0 card-title">Consultations Par agence</h5>
+                                    <h5 class="m-0 mb-4 card-title">Consultations Par agence</h5>
                                 </div>
-                                <div class="d-flex flex-row gap-3">
+                                <div class="d-flex flex-row gap-3 mt-4" style="display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap">
                                     @foreach($chartsData as $agencyName => $data)
-                                        <div style="width: 300px; height: 300px">
+                                        <div style="width: 280px; height: 300px">
                                             <div style="">
                                                 <span>{{ $agencyName }}</span>
                                                 <canvas id="chart-{{ Str::slug($agencyName) }}" ></canvas>

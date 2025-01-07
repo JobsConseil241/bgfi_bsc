@@ -510,8 +510,59 @@
 
                 // Delete Record
                 $('.datatables-basic tbody').on('click', '.delete-record', function () {
-                    dt_basic.row($(this).parents('tr')).remove().draw();
-                });
+                    var row = $(this).closest('tr');
+                    var rowData = $('.datatables-basic').DataTable().row(row).data();
+
+                    //
+                    var token = $('meta[name="csrf-token"]').attr('content');
+
+                    Swal.fire({
+                        title: "Êtes-vous sûr?",
+                        text: " Vouloir supprimer cet option formulaire",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#162738",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Oui, Supprimer!",
+                        preConfirm: async (login) => {
+                            try{
+                                const url = '/dashboard/formulaire/avis/'+ rowData.id_form + '/options/' + rowData.id_champ + '/value/' + rowData.id +  '/delete';
+
+                                // Envoi de la requête POST avec le CSRF token
+                                const response = await fetch(url, {
+                                    method: 'POST', // Méthode POST
+                                    headers: {
+                                        'Content-Type': 'application/json', // Spécifie le type des données
+                                        'X-CSRF-TOKEN': token // En-tête pour le token CSRF
+                                    },
+                                });
+
+                                // Vérifie si la réponse est correcte (statut 200-299)
+                                if (!response.ok) {
+                                    const errorResponse = await response.json(); // Récupère la réponse d'erreur
+                                    return Swal.showValidationMessage(`Erreur : ${JSON.stringify(errorResponse)}`);
+                                }
+
+                                // Si tout est correct, retourne les données JSON
+                                return response.json();
+                            } catch (error) {
+                                // Gestion des erreurs
+                                Swal.showValidationMessage(`La requête a échoué : ${error.message} veuillez ressayer`);
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Supprimé!",
+                                text: "Cette valeur a été supprimé",
+                                icon: "success"
+                            });
+
+                            location.reload();
+                        }
+                    });
+                })
 
 
                 // Filter form control to default size
