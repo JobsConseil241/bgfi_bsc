@@ -7,6 +7,7 @@ use App\Models\ChampFormulaire;
 use App\Models\Formulaire;
 use App\Models\ReponseAvis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RecapitulatifController extends Controller
 {
@@ -72,7 +73,7 @@ class RecapitulatifController extends Controller
         // Regrouper les réponses par `sender_no`
         $groupedResponses = $responses->groupBy('sender_no');
 
-//        dd($groupedResponses);
+        Log::info($groupedResponses);
 
 
         // Construire les données finales
@@ -97,40 +98,52 @@ class RecapitulatifController extends Controller
         });
 
 
-//        $groupedResponses = $responses->groupBy('sender_no')->map(function ($group) use ($responses) {
-//            $formatted = [];
-//            $agence = '';
-//
-//            // Lister tous les champs possibles pour garantir qu'ils sont inclus
-//            $fields = $responses->pluck('name')->unique();
-//
-//            foreach ($fields as $field) {
-//                $fieldValue = $group->firstWhere('name', $field)?->reponse ?? '-'; // Valeur ou "-"
-//                $formatted[$field] = $fieldValue;
-//
-//            }
-//            return $formatted;
-//        });
-//
-//        // Récupérer tous les libellés pour les colonnes
-////        $columns = $responses->pluck('name')->unique();
-//        $columns = $responses->pluck('name', 'intitulé')->unique()->map(function ($name, $intitule) {
-//            return [
-//                'data' => $name, // Transformer en clé unique, ex. "nom_utilisateur"
-//                'title' => $intitule
-//            ];
-//        })->unique();
-//        $columns->push((object)[
-//            'data' => 'agence',
-//            'title' => 'Agence'
-//        ]);
+
+        return response()->json([
+            'columns' => $columns,
+            'data' => $data
+        ]);
+
+    }
+
+    public function indexReclamationDatas () {
+        $responses = DB::table('reponse_reclamations')
+            ->join('champ_formulaires', 'reponse_reclamations.id_champs', '=', 'champ_formulaires.id')
+            ->select('reponse_reclamations.sender_no', 'reponse_reclamations.id_champs', 'reponse_reclamations.reponse', 'reponse_reclamations.agence', 'champ_formulaires.intitulé', 'champ_formulaires.name')
+            ->get();
+
+        // Grouper par `sender_no` et organiser par libellé
+        $groupedResponses = $responses->groupBy('sender_no')->map(function ($group) {
+            $formatted = [];
+            $agence = '';
+            foreach ($group as $response) {
+                $formatted[$response->name] = $response->reponse;
+                $agence = $response->agence;
+            }
+            $formatted["agence"] = Agence::where('id', $agence)->first()->libelle;
+            return $formatted;
+        });
+
+        // Récupérer tous les libellés pour les colonnes
+//        $columns = $responses->pluck('name')->unique();
+        $columns = $responses->pluck('name', 'intitulé')->unique()->map(function ($name, $intitule) {
+            return [
+                'data' => $name,
+                'title' => $intitule
+            ];
+        })->unique();
+        $columns->push((object)[
+            'data' => 'agence',
+            'title' => 'Agence'
+        ]);
 //        $columns = array_push($columns, (object)[
 //            'data' => 'agence',
 //            'title' => 'Agence'
 //        ]);
+
         return response()->json([
-            'columns' => $columns,
-            'data' => $data
+            'columns' => $columns->values(),
+            'data' => $groupedResponses
         ]);
 
     }

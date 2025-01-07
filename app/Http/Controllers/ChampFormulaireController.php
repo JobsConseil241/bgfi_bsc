@@ -56,6 +56,61 @@ class ChampFormulaireController extends Controller
         }
     }
 
+    public function deleteAvise(Request $request, $id){
+
+        $update = ChampFormulaire::where('id',$id)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Champ du Formulaire supprimé avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Champ du Formulaire pas supprumie     avec succès !']);
+        }
+
+    }
+
+    public function deleteReclae(Request $request, $id){
+
+        $update = Formulaire::where('id',$id)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Champ du Formulaire supprimé avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Champ du Formulaire pas supprumie     avec succès !']);
+        }
+
+    }
+    public function deleteAviseChamp(Request $request, $id, $champ){
+
+        $update = ChampFormulaire::where('id',$champ)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Champ du Formulaire supprimé avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Champ du Formulaire pas supprumie     avec succès !']);
+        }
+
+    }
+
+    public function deleteReclaeChamp(Request $request, $id, $champ){
+
+        $update = ChampFormulaire::where('id',$champ)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Champ du Formulaire supprimé avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Champ du Formulaire pas supprumie     avec succès !']);
+        }
+
+    }
+
     /**
      * @param Request $request
      * @param $id
@@ -91,7 +146,7 @@ class ChampFormulaireController extends Controller
     {
         $formrecla = 'active';
         $title = "Gestion Formulaires";
-        $champs = ChampFormulaire::where('id_formulaire', $id)->get();
+        $champs = ChampFormulaire::where('id_formulaire', $id)->where('status', 1)->get();
         $formulaire =  Formulaire::where('id', $id)->first();
         $count = $champs->count();
         $form = 'open';

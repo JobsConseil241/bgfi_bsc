@@ -26,7 +26,7 @@ class OptionChampController extends Controller
         $title = "Gestion Formulaires";
         $champs = ChampFormulaire::where('id', $champ)->first();
         $formulaire =  Formulaire::where('id', $id)->first();
-        $option = OptionChamp::where('id_champ', $champ)->get();
+        $option = OptionChamp::where('id_champ', $champ)->where('status', 1)->get();
         $count = $champs->count();
         $form = 'open';
 
@@ -55,6 +55,20 @@ class OptionChampController extends Controller
             Session::flash('status', 'danger');
             return redirect()->back();
         }
+    }
+
+    public function deleteChampOption(Request $request, $id, $champ, $val){
+
+        $update = OptionChamp::where('id',$val)->update([
+            'status' => 0
+        ]);
+
+        if($update){
+            return response()->json(['status' => 200, 'success' => 'Option Champ du Formulaire supprimé avec succès !']);
+        } else{
+            return response()->json(['status' => 500, 'danger' => 'Option Champ du Formulaire pas supprumie     avec succès !']);
+        }
+
     }
 
     /**
@@ -90,7 +104,7 @@ class OptionChampController extends Controller
         $title = "Gestion Formulaires";
         $champs = ChampFormulaire::where('id', $champ)->first();
         $formulaire =  Formulaire::where('id', $id)->first();
-        $option = OptionChamp::where('id_champ', $champ)->get();
+        $option = OptionChamp::where('id_champ', $champ)->where('status', 1)->get();
         $count = $champs->count();
         $form = 'open';
 

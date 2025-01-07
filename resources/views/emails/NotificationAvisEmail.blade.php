@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmation de Réception</title>
+    <title>Un Avis Ajouté</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,6 +55,17 @@
             border-radius: 5px;
             font-size: 16px;
         }
+        table {
+             border-collapse: collapse;
+             width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -66,26 +77,46 @@
 
     <!-- Section du Header -->
     <div class="email-header">
-        <h1>Confirmation de Réception</h1>
+        <h1>Avis du Client</h1>
     </div>
 
     <!-- Corps de l'email -->
     <div class="email-body">
-        <h2>Bonjour Cher(e) client(e),</h2>
-        <p>Nous vous remercions d'avoir soumis votre message. Nous l'avons bien reçu et nous vous répondrons dans les plus brefs délais.</p>
+        <h2>Bonjour M/Mme {{ $user->name }} ,</h2>
+        <p>Un nouvel avis a été soumis par un utilisateur, Voici les détails de l'avis :</p>
 
-        <p>Si vous avez des questions supplémentaires ou besoin d'une assistance immédiate,contactez-nous au <b>8888</b> ou <b>+241 74038175</b> ou par
-            <a href="mailto:eqc@bgfi.com">mail</a> .</p>
+        <table>
+            <thead>
+            <tr>
+                <th>Champ</th>
+                <th>Valeur</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($data as $key => $value)
+                <tr>
+                    <td>{{ ucfirst($key) }}</td>
+                    <td>
+                        @if(is_array(json_decode($value, true)))
+                            {{ implode(', ', json_decode($value, true)) }}
+                        @else
+                            {{ $value }}
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
 
-{{--        <p>En attendant, vous pouvez visiter notre site web en cliquant sur le bouton ci-dessous :</p>--}}
+        <p>vous pouvez visiter cela sur votre dashboard en cliquant sur le bouton ci-dessous :</p>
 
-{{--        <p style="text-align: center;">--}}
-{{--            <a href="https://votresiteweb.com" class="button">Visiter notre site web</a>--}}
-{{--        </p>--}}
+        <p style="text-align: center;">
+            <a href="{{ route('RecapitulatifAvis') }}" class="button" style="text-decoration: none; color: white">Tableau de Board</a>
+        </p>
 
         <p>Merci encore pour votre confiance !</p>
 
-        <p>Cordialement, <br> BGFIBank Gabon, Votre partenaire pour l'avenir !</p>
+        <p>Cordialement, <br> BGFIBank Gabon, Votre partenaire pour l'avenir</p>
     </div>
 
     <!-- Section du Footer -->

@@ -33,7 +33,6 @@
                             <th>nom</th>
                             <th>description</th>
                             <th>type</th>
-                            <th>Agence</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -78,14 +77,6 @@
                             <select id="type" class="form-select" name="type">
                                 <option value="avis">Avis</option>
                                 <option value="reclamation">Reclamation</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-12 mt-3">
-                            <label for="agence" class="form-label">Agence Associée</label>
-                            <select id="agence" class="form-select" name="agence">
-                                @foreach($agences as $dt)
-                                    <option value="{{$dt->id}}">{{$dt->libelle}}</option>
-                                @endforeach
                             </select>
                         </div>
                         <div class="col-sm-12 mt-4">
@@ -144,14 +135,6 @@
                                     <select id="type" class="form-select" name="typee">
                                         <option value="avis">Avis</option>
                                         <option value="reclamation">Reclamation</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-12 mt-3">
-                                    <label for="agence" class="form-label">Agence Associée</label>
-                                    <select id="agence" class="form-select" name="agencee">
-                                        @foreach($agences as $dt)
-                                            <option value="{{$dt->id}}">{{$dt->libelle}}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -226,7 +209,6 @@
                             { data: 'libelle' },
                             { data: 'description' },
                             { data: 'type' },
-                            { data: 'agence_id' },
                             { data: 'status' },
                             { data: '' }
                         ],
@@ -283,13 +265,13 @@
                                 visible: false
                             },
                             {
-                                targets: [3,5,6],
+                                targets: [3,5],
                                 render: function (data, type, full, meta) {
                                     return '<span class="" style="font-weight: bold">'+data+'</span>';
                                 }
                             },
                             {
-                                targets: [3,4,5,6],
+                                targets: [3,4,5],
                                 searchable: true,
                                 visible: true
                             },
@@ -301,7 +283,7 @@
                                     var $status = {
                                         1: { title: 'Active', class: 'bg-label-success' },
                                         2: { title: 'Professional', class: ' bg-label-primary' },
-                                        3: { title: 'Rejected', class: ' bg-label-danger' },
+                                        0: { title: 'Supprimé', class: ' bg-label-danger' },
                                         4: { title: 'Resigned', class: ' bg-label-warning' },
                                         5: { title: 'Applied', class: ' bg-label-info' }
                                     };
@@ -343,7 +325,7 @@
                                         text: '<i class="ti ti-printer me-1" ></i>Imprimer',
                                         className: 'dropdown-item',
                                         exportOptions: {
-                                            columns: [3, 4, 5, 6, 7],
+                                            columns: [3, 4, 5, 6],
                                             // prevent avatar to be display
                                             format: {
                                                 body: function (inner, coldex, rowdex) {
@@ -516,8 +498,59 @@
 
                 // Delete Record
                 $('.datatables-basic tbody').on('click', '.delete-record', function () {
-                    dt_basic.row($(this).parents('tr')).remove().draw();
-                });
+                    var row = $(this).closest('tr');
+                    var rowData = $('.datatables-basic').DataTable().row(row).data();
+
+                    //
+                    var token = $('meta[name="csrf-token"]').attr('content');
+
+                    Swal.fire({
+                        title: "Êtes-vous sûr?",
+                        text: " Vouloir supprimer ce formulaire ",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#162738",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Oui, Supprimer!",
+                        preConfirm: async (login) => {
+                            try{
+                                const url = '/dashboard/formulaire/avis/'+ rowData.id +'/delete';
+
+                                // Envoi de la requête POST avec le CSRF token
+                                const response = await fetch(url, {
+                                    method: 'POST', // Méthode POST
+                                    headers: {
+                                        'Content-Type': 'application/json', // Spécifie le type des données
+                                        'X-CSRF-TOKEN': token // En-tête pour le token CSRF
+                                    },
+                                });
+
+                                // Vérifie si la réponse est correcte (statut 200-299)
+                                if (!response.ok) {
+                                    const errorResponse = await response.json(); // Récupère la réponse d'erreur
+                                    return Swal.showValidationMessage(`Erreur : ${JSON.stringify(errorResponse)}`);
+                                }
+
+                                // Si tout est correct, retourne les données JSON
+                                return response.json();
+                            } catch (error) {
+                                // Gestion des erreurs
+                                Swal.showValidationMessage(`La requête a échoué : ${error.message} veuillez ressayer`);
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Supprimé!",
+                                text: "le Formulaire a été supprimé",
+                                icon: "success"
+                            });
+
+                            location.reload();
+                        }
+                    });
+                })
 
 
                 // Filter form control to default size

@@ -12,8 +12,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- MDB -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{url('/public/assets/frontend/img/bgfi.jpg')}}">
-    <link href="{{url('/public/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{url('assets/frontend/img/bgfi.jpg')}}">
+    <link href="{{url('assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
     <!-- Font Awesome -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -29,10 +29,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{url('/public/assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{url('assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/fontawesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/frontend/css/all.min.css')}}">
 
     <style>
         a.disabled {
@@ -87,13 +87,13 @@
         }
 
         .bg-home{
-            background-image: url('{{url('/public/assets/frontend/img/Fond-1.webp') }}');
+            background-image: url('{{url('assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         .bg-other{
-            background-image: url('{{url('/public/assets/frontend/img/fond2.webp') }}');
+            background-image: url('{{url('assets/frontend/img/fond2.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
@@ -110,15 +110,17 @@
         }
         .light-blue{
             color:#48b2c5;
-            left: 185px !important;
+            left: 176px !important;
         }
         .light-blues{
             color:#48b2c5;
-            left: 185px !important;
+            left: 180px !important;
         }
         .light-brown {
-            color:#b2b88f;
-            left: 41px !important;
+            color: #b2b88f;
+            left: 37px !important;
+            line-height: 38px;
+            font-size: 32px;
         }
         .blue{
             color:#2563a2;
@@ -215,7 +217,7 @@
 
         @foreach ($market as $key => $image)
             .carousel-item:nth-child({{ $key + 1 }}) {
-                background-image: url('/public{{ Storage::url($image->thumb_url) }}');
+                background-image: url('{{ Storage::url($image->thumb_url) }}');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center center;
@@ -241,7 +243,7 @@
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a class="navbar-brand nav-link" target="_blank">
-                <img style="" src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
+                <img style="" src="{{url('assets/backend/dist/img/Logo55.png') }}" class="" height="30"
                      loading="lazy" alt="Logo BGFI">
             </a>
             <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarExample01"
@@ -323,7 +325,7 @@
             <div class="col-md-2 p-md-5 mx-auto my-5">
 
                 <div class="img text-start" style="margin-left: -15px; margin-top: -120px">
-                    <img style="margin-top:10px;margin-left:-10px;" src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
+                    <img style="margin-top:10px;margin-left:-10px;" src="{{url('assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
                 </div>
                 <div class="welcome">
                     <div style="position:absolute;top:60%">
@@ -337,22 +339,22 @@
 
                         </div>
 
-                        <img src="{{url('/public/assets/frontend/img/Les certificats.png') }}" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
-                        <p><img src="{{url('/public/assets/frontend/img/Tarait.png')}}" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
+                        <img src="{{url('assets/frontend/img/Les certificats.png') }}" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
+                        <p><img src="{{url('assets/frontend/img/Tarait.png')}}" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
                     </div>
 
                 </div>
             </div>
 
-            <div class="col-md-7 mx-auto pt-5 acCadre">
-                <div class="row">
+            <div class="col-md-7 mx-auto acCadre d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <div class="row mx-auto ">
                     <div style="position:relative" class="col-md-12 mb-2 text-start">
                         <h6 style="margin-left:15%" class="text-light font-weight-bold">{{ $param->titre_service ?? "Veuillez sélectionner un service" }}</h6>
                     </div>
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-3 text-end">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/faq" @if($agence->has_faq === 0) class="tablinks disabled" @endif>
-                            <img style="width:70%" src="@if($param->faq_logo)/{{asset('/settings/'. $param->faq_logo )}} @else{{asset('assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
+                            <img style="width:70%" src="@if(isset($param->faq_logo)) {{asset('/settings/'. $param->faq_logo )}} @else {{asset('assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blues">{{ $param->faq_stitre ?? 'Je cherche des réponses' }}</span>
                         </a>
 
@@ -363,7 +365,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <a href="#" @if($agence->has_consult === 0) class="tablinks disabled" @endif id="consultData">
-                            <img src="@if($param->consult_logo)/{{asset('/settings/'. $param->consult_logo )}} @else {{url('/public/assets/backend/dist/img/Femme-ordi-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if(isset($param->consult_logo))/{{asset('/settings/'. $param->consult_logo )}} @else {{url('/assets/backend/dist/img/Femme-ordi-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-brown">{{ $param->consult_stitre ?? 'Je consulte mon compte' }}</span>
                         </a>
                     </div>
@@ -371,7 +373,7 @@
 
                     <div style="position: relative;visibility:visible"  class="col-6 mb-3 text-end">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/reclamation" @if($agence->has_reclame === 0) class="tablinks disabled" @endif>
-                            <img src="@if($param->recla_logo !== null)/{{asset('/settings/'. $param->recla_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-2-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if(isset($param->recla_logo)) {{asset('/settings/'. $param->recla_logo )}} @else {{url('assets/backend/dist/img/Dame-2-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blue">{{ $param->recla_stitre ?? 'Je fais une réclamation' }} </span>
                         </a>
                     </div>
@@ -379,7 +381,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/avis" @if($agence->has_avis === 0) class="tablinks disabled" @endif>
-                            <img src="@if($param->avis_logo)/{{asset('/settings/'. $param->avis_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-3-sans-texte (1).jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if(isset($param->avis_logo)) {{asset('/settings/'. $param->avis_logo )}} @else {{url('assets/backend/dist/img/Dame-3-sans-texte (1).jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-brown">{{ $param->avis_stitre ?? 'Je donne mon avis sur ma banque' }}</span>
                         </a>
                     </div>
@@ -389,7 +391,7 @@
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="{{url('/public/assets/frontend/js/zoom.js')}}"></script>
+<script src="{{url('assets/frontend/js/zoom.js')}}"></script>
 <!-- MDB -->
 <script
     type="text/javascript"
@@ -426,7 +428,7 @@
             jQuery("#first").hide()
 
             const bgImage = new Image();
-            bgImage.src = "/public/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
 
             // Ajoutez un écouteur pour vérifier si l'image est bien chargée
             bgImage.onload = function () {
@@ -456,7 +458,7 @@
             document.getElementById('loader').style.display = 'flex';
 
             const bgImage = new Image();
-            bgImage.src = "/public/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
 
             // Ajoutez un écouteur pour vérifier si l'image est bien chargée
             bgImage.onload = function () {
@@ -547,7 +549,7 @@
                 data: { feedback: 'view', "_token": token, },
                 success: function(response) {
                     if(response.status === 200) {
-                        window.location.href = 'https://ga.bgfionline.com/ga_retail/index.ebk';
+                        window.location.href = 'http://10.20.20.41:8080/OnlineBankingGB/#!/login?agence='+agence.libelle;
                     }
                 }
             });
