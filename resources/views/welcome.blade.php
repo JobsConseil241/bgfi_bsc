@@ -12,8 +12,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- MDB -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{url('/public/assets/frontend/img/bgfi.jpg')}}">
-    <link href="{{url('/public/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{url('/assets/frontend/img/bgfi.jpg')}}">
+    <link href="{{url('/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
     <!-- Font Awesome -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -29,10 +29,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{url('/public/assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{url('/assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/fontawesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/assets/frontend/css/all.min.css')}}">
 
     <style>
         a.disabled {
@@ -87,13 +87,13 @@
         }
 
         .bg-home{
-            background-image: url('{{url('/public/assets/frontend/img/Fond-1.webp') }}');
+            background-image: url('{{url('/assets/frontend/img/Fond-1.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
         }
         .bg-other{
-            background-image: url('{{url('/public/assets/frontend/img/fond2.webp') }}');
+            background-image: url('{{url('/assets/frontend/img/fond2.webp') }}');
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
@@ -243,7 +243,7 @@
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a class="navbar-brand nav-link" target="_blank">
-                <img style="" src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
+                <img style="" src="{{url('/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
                      loading="lazy" alt="Logo BGFI">
             </a>
             <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarExample01"
