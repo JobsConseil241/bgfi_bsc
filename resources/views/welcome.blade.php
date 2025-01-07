@@ -354,7 +354,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-3 text-end">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/faq" @if($agence->has_faq === 0) class="tablinks disabled" @endif>
-                            <img style="width:70%" src="@if(isset($param->faq_logo)) /{{asset('/settings/'. $param->faq_logo )}} @else {{asset('/public/assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
+                            <img style="width:70%" src="@if(isset($param->faq_logo)) /{{asset('/settings/'. $param->faq_logo )}} @else {{url('/public/assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blues">{{ $param->faq_stitre ?? 'Je cherche des réponses' }}</span>
                         </a>
 
