@@ -13,7 +13,7 @@
 
     <!-- MDB -->
     <link rel="shortcut icon" type="image/x-icon" href="{{url('/assets/frontend/img/bgfi.jpg')}}">
-    <link href="{{url('/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
+    <link href="{{url('/public/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
     <!-- Font Awesome -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -29,10 +29,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{url('/assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{url('/public/assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{url('/assets/frontend/css/fontawesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('/assets/frontend/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/all.min.css')}}">
 
     <style>
         a.disabled {
