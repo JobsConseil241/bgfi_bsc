@@ -325,7 +325,7 @@
             <div class="col-md-2 p-md-5 mx-auto my-5">
 
                 <div class="img text-start" style="margin-left: -15px; margin-top: -120px">
-                    <img style="margin-top:10px;margin-left:-10px;" src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
+                    <img style="margin-top:10px;margin-left:-10px;" src="{{url('public/assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
                 </div>
                 <div class="welcome">
                     <div style="position:absolute;top:60%">
