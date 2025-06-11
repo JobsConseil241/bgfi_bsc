@@ -13,12 +13,14 @@
 
     <!-- MDB -->
     <link rel="shortcut icon" type="image/x-icon" href="{{url('/assets/frontend/img/bgfi.jpg')}}">
-    <link href="{{url('/public/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
+    <link href="{{url('/assets/frontend/css/mdb.min.css')}}" rel="stylesheet" />
     <!-- Font Awesome -->
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         rel="stylesheet"
     />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
@@ -29,10 +31,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
         rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{url('/public/assets/frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{url('/assets/frontend/css/style.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/fontawesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('/public/assets/frontend/css/all.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/assets/frontend/css/fontawesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('/assets/frontend/css/all.min.css')}}">
 
     <style>
         a.disabled {
@@ -217,7 +219,7 @@
 
         @foreach ($market as $key => $image)
             .carousel-item:nth-child({{ $key + 1 }}) {
-                background-image: url('/public/{{ Storage::url($image->thumb_url) }}');
+                background-image: url('{{ Storage::url($image->thumb_url) }}');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center center;
@@ -243,7 +245,7 @@
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a class="navbar-brand nav-link" target="_blank">
-                <img style="" src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
+                <img style="" src="{{url('/assets/backend/dist/img/Logo55.png') }}" class="" height="30"
                      loading="lazy" alt="Logo BGFI">
             </a>
             <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarExample01"
@@ -325,7 +327,7 @@
             <div class="col-md-2 p-md-5 mx-auto my-5">
 
                 <div class="img text-start" style="margin-left: -15px; margin-top: -120px">
-                    <img style="margin-top:10px;margin-left:-10px;" src="{{url('/public/assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
+                    <img style="margin-top:10px;margin-left:-10px;" src="{{url('/assets/backend/dist/img/Logo55.png') }}" class="img-fluid logo" alt="Fissure in Sandstone">
                 </div>
                 <div class="welcome">
                     <div style="position:absolute;top:60%">
@@ -339,8 +341,8 @@
 
                         </div>
 
-                        <img src="{{url('/public/assets/frontend/img/Les certificats.png') }}" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
-                        <p><img src="{{url('/public/assets/frontend/img/Tarait.png')}}" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
+                        <img src="{{url('/assets/frontend/img/Les certificats.png') }}" class="text-start mb-3 mt-3" width="250px" style="margin-left: 0px;">
+                        <p><img src="{{url('/assets/frontend/img/Tarait.png')}}" class="text-start mb-5" width="250px" style="margin-left: 0px;"></p>
                     </div>
 
                 </div>
@@ -354,7 +356,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-3 text-end">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/faq" @if($agence->has_faq === 0) class="tablinks disabled" @endif>
-                            <img style="width:70%" src="@if(isset($param->faq_logo)) /{{asset('/settings/'. $param->faq_logo )}} @else {{url('/public/assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
+                            <img style="width:70%" src="@if(isset($param->faq_logo)) {{asset('/settings/'. $param->faq_logo )}} @else {{url('/assets/backend/dist/img/Homme-sans-texte.jpg')}} @endif" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blues">{{ $param->faq_stitre ?? 'Je cherche des réponses' }}</span>
                         </a>
 
@@ -365,7 +367,7 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <a href="#" @if($agence->has_consult === 0) class="tablinks disabled" @endif id="consultData">
-                            <img src="@if(isset($param->consult_logo))/{{asset('/settings/'. $param->consult_logo )}} @else {{url('/public/assets/backend/dist/img/Femme-ordi-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if(isset($param->consult_logo)){{asset('/settings/'. $param->consult_logo )}} @else {{url('/assets/backend/dist/img/Femme-ordi-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-brown">{{ $param->consult_stitre ?? 'Je consulte mon compte' }}</span>
                         </a>
                     </div>
@@ -373,7 +375,7 @@
 
                     <div style="position: relative;visibility:visible"  class="col-6 mb-3 text-end">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/reclamation" @if($agence->has_reclame === 0) class="tablinks disabled" @endif>
-                            <img src="@if(isset($param->recla_logo)) /{{asset('/settings/'. $param->recla_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-2-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if(isset($param->recla_logo)) {{asset('/settings/'. $param->recla_logo )}} @else {{url('/assets/backend/dist/img/Dame-2-sans-texte.jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-blue">{{ $param->recla_stitre ?? 'Je fais une réclamation' }} </span>
                         </a>
                     </div>
@@ -381,9 +383,42 @@
 
                     <div style="position: relative;visibility:visible" class="col-6 mb-2 text-start">
                         <a href="/agence/{{ strtolower($agence->libelle) }}/avis" @if($agence->has_avis === 0) class="tablinks disabled" @endif>
-                            <img src="@if(isset($param->avis_logo)) /{{asset('/settings/'. $param->avis_logo )}} @else {{url('/public/assets/backend/dist/img/Dame-3-sans-texte (1).jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
+                            <img src="@if(isset($param->avis_logo)) {{asset('/settings/'. $param->avis_logo )}} @else {{url('/assets/backend/dist/img/Dame-3-sans-texte (1).jpg')}} @endif" style="width:70%" class="img-fluid" alt="Fissure in Sandstone">
                             <span class="card-sbtitle light-brown">{{ $param->avis_stitre ?? 'Je donne mon avis sur ma banque' }}</span>
                         </a>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">informations du Compte</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" id="form-check">
+                                        <!-- Email input -->
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="text" id="compte" class="form-control form-control-lg" />
+                                            <label class="form-label" for="compte">Numero de Compte</label>
+                                        </div>
+
+                                        <!-- Password input -->
+                                        <!-- <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="tel" id="tel" class="form-control form-control-lg" />
+                                            <label class="form-label" for="tel">Numero de telephone</label>
+                                        </div> -->
+
+                                        <!-- Submit button -->
+                                        <button data-mdb-ripple-init type="submit" id="compte" class="btn btn-primary btn-block">Consulter Mon Compte</button>
+                                    </form>
+                                </div>
+{{--                                <div class="modal-footer">--}}
+{{--                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--}}
+{{--                                    <button type="button" class="btn btn-primary">Save changes</button>--}}
+{{--                                </div>--}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -391,13 +426,14 @@
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="{{url('/public/assets/frontend/js/zoom.js')}}"></script>
+<script src="{{url('/assets/frontend/js/zoom.js')}}"></script>
 <!-- MDB -->
 <script
     type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"
 ></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 
 <script>
 
@@ -413,8 +449,31 @@
         }
     });
 
+    let accounts = {
+        "1000123456": {
+            name: "Prime Clet",
+            phone: "24176546985",
+            balance: 2450000,
+            currency: "XAF"
+        },
+        "1000234567": {
+            name: "Jeff BOUNDAMAS",
+            phone: "24177750737",
+            balance: 8750000,
+            currency: "XAF"
+        },
+        "1000345678": {
+            name: "Paul OBAMA",
+            phone: "24107345678",
+            balance: 1200000,
+            currency: "XAF"
+        }
+    };
+
     // A $( document ).ready() block.
     jQuery( document ).ready(function() {
+
+        console.log(accounts)
 
         const INACTIVITY_TIME = agence.delais * 1000; // 10 secondes
         let inactivityTimer;
@@ -428,7 +487,7 @@
             jQuery("#first").hide()
 
             const bgImage = new Image();
-            bgImage.src = "/public/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
 
             // Ajoutez un écouteur pour vérifier si l'image est bien chargée
             bgImage.onload = function () {
@@ -458,7 +517,7 @@
             document.getElementById('loader').style.display = 'flex';
 
             const bgImage = new Image();
-            bgImage.src = "/public/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
+            bgImage.src = "/assets/frontend/img/Fond-1.webp"; // Remplacez par le chemin de votre image
 
             // Ajoutez un écouteur pour vérifier si l'image est bien chargée
             bgImage.onload = function () {
@@ -538,24 +597,267 @@
             window.addEventListener("touchstart", resetInactivityTimer);
         }
 
+        function masquerNumero(phone) {
+            if (phone.length < 6) return phone; 
+
+            const start = phone.slice(0, 2);              
+            const end = phone.slice(-2);                 
+            const masked = "*".repeat(phone.length - 4);
+
+            return `${start}${masked}${end}`;
+        }
+
         jQuery("#consultData").click(function(e) {
             e.preventDefault()
 
-            var token = $('meta[name="csrf-token"]').attr('content');
-            // Remplacez par un véritable appel AJAX ici
-            $.ajax({
-                url: '/save-feedback/' + agence.libelle + '/consultation',
-                method: 'POST',
-                data: { feedback: 'view', "_token": token, },
-                success: function(response) {
-                    if(response.status === 200) {
-                        window.location.href = 'http://10.20.20.41:8080/OnlineBankingGB/#!/login?agence='+agence.libelle;
-                    }
-                }
-            });
-        })
+            jQuery('#exampleModal').modal('show');
 
-    });
+            const form = document.getElementById('form-check');
+            const modalBody = document.querySelector('#exampleModal .modal-body');
+            let originalFormContent = modalBody.innerHTML;
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+               
+                const compte = document.getElementById('compte').value;
+               
+
+               
+                if (!compte) {
+                    alert('Veuillez remplir tous les champs');
+                    return;
+                }
+
+                let account;
+
+                if (accounts.hasOwnProperty(compte)) {
+                    account = accounts[compte];
+                } else {
+                    alert("❌ Compte introuvable.");
+                    return;
+                }
+                
+                
+                modalBody.innerHTML = `
+                                        <div class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Chargement...</span>
+                                            </div>
+                                            <p class="mt-2">Envoi du code OTP en cours...</p>
+                                        </div>
+                                    `;
+                
+                
+                fetch('/send-otp-verification', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                    },
+                    body: JSON.stringify({
+                        phone: '+' + account.phone
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+
+                    // Afficher le formulaire OTP
+                    modalBody.innerHTML = `
+                                        <div class="text-center mb-4">
+                                            <p>Un code de vérification a été envoyé au ${masquerNumero(account.phone)}</p>
+                                        </div>
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <input type="text" id="otp" class="form-control form-control-lg" style="border: 1px solid black; border-top: none" />
+                                            <label class="form-label" for="otp">Code OTP</label>
+                                        </div>
+                                        <button data-mdb-ripple-init type="button" id="validateOtp" class="btn btn-primary btn-block">Valider</button>
+                                    `;
+
+
+                        // Ajouter un écouteur d'événement au bouton de validation OTP
+                        document.getElementById('validateOtp').addEventListener('click', function() {
+                        const otp = document.getElementById('otp').value;
+
+                        if (!otp) {
+                            alert('Veuillez entrer le code OTP');
+                            return;
+                        }
+
+                        // Afficher un indicateur de chargement
+                        modalBody.innerHTML = `
+                                        <div class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Vérification...</span>
+                                            </div>
+                                            <p class="mt-2">Vérification du code en cours...</p>
+                                        </div>
+                                    `;
+
+                        // Envoyer une requête AJAX pour vérifier l'OTP
+                        fetch('/verify-otp', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            body: JSON.stringify({
+                                phone: "+" + account.phone,
+                                code: otp
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.error) {
+                                    throw new Error(data.error);
+                                }
+
+                                console.log(data)
+
+                                // Afficher le solde (vous pouvez faire une autre requête pour obtenir les détails du compte)
+                                // fetch('/get-account-details', {
+                                //     method: 'POST',
+                                //     headers: {
+                                //         'Content-Type': 'application/json',
+                                //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                //     },
+                                //     body: JSON.stringify({
+                                //         account_number: compte
+                                //     })
+                                // })
+                                // .then(response => response.json())
+                                // .then(accountData => {
+                                //     // Afficher les détails du compte
+                                //     modalBody.innerHTML = `
+                                //                             <div class="text-center">
+                                //                                 <h3>Détails du compte</h3>
+                                //                                 <p>Numéro de compte: ${compte}</p>
+                                //                                 <p>Solde actuel: <strong>${accountData.balance || '350 000'} FCFA</strong></p>
+                                //                                 <p>Dernière opération: ${accountData.last_transaction || '27/04/2025'}</p>
+                                //                             </div>
+                                //                             <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                                //                         `;
+                                //
+                                //     // Ajouter un écouteur pour le bouton retour
+                                //     document.getElementById('retour').addEventListener('click', function() {
+                                //         modalBody.innerHTML = originalFormContent;
+                                //         // Réinitialiser les écouteurs d'événements
+                                //         // init();
+                                //     });
+                                // })
+                                // .catch(error => {
+                                //     // En cas d'erreur, afficher un message et un bouton pour réessayer
+                                //     modalBody.innerHTML = `
+                                //                             <div class="alert alert-danger" role="alert">
+                                //                                 Une erreur s'est produite lors de la récupération des détails du compte: ${error.message}
+                                //                             </div>
+                                //                             <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                                //                         `;
+                                //
+                                //     document.getElementById('retour').addEventListener('click', function() {
+                                //         modalBody.innerHTML = originalFormContent;
+                                //         // init();
+                                //     });
+                                // });
+
+                                fetch('/send-account-sms', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify({
+                                        compte: compte,
+                                        phone: "+" + account.phone,
+                                        nom: account.name,
+                                        solde: account.balance
+                                    })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        modalBody.innerHTML = `
+                                                                    <div class="text-center">
+                                                                        <div class="alert alert-success" role="alert">
+                                                                            <h4 class="alert-heading">SMS envoyé!</h4>
+                                                                            <p>Les détails du compte ont été envoyés au numéro associé.</p>
+                                                                        </div>
+                                                                        <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                                                                    </div>
+                                                                `;
+
+                                        // Ajouter un écouteur pour le bouton retour
+                                        document.getElementById('retour').addEventListener('click', function() {
+                                            modalBody.innerHTML = originalFormContent;
+                                            // Réinitialiser les écouteurs d'événements
+                                            // init();
+                                        });
+                                    })
+                                    .catch(error => {
+                                        // En cas d'erreur, afficher un message et un bouton pour réessayer
+                                        modalBody.innerHTML = `
+                                                                    <div class="alert alert-danger" role="alert">
+                                                                        Une erreur s'est produite lors de l'envoi du SMS: ${error.message}
+                                                                    </div>
+                                                                    <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                                                                `;
+
+                                        document.getElementById('retour').addEventListener('click', function() {
+                                            modalBody.innerHTML = originalFormContent;
+                                            // init();
+                                        });
+                                    });
+                            })
+                            .catch(error => {
+                                // En cas d'erreur, afficher un message et un bouton pour réessayer
+                                modalBody.innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                                Erreur lors de la vérification du code OTP: ${error.message}
+                            </div>
+                            <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                        `;
+
+                                document.getElementById('retour').addEventListener('click', function() {
+                                    modalBody.innerHTML = originalFormContent;
+                                    // init();
+                                });
+                            });
+                    });
+                })
+                .catch(error => {
+                    // En cas d'erreur, afficher un message et un bouton pour réessayer
+                    modalBody.innerHTML = `
+                                    <div class="alert alert-danger" role="alert">
+                                        Erreur lors de l'envoi du code OTP: ${error.message}
+                                    </div>
+                                    <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                                `;
+
+                    document.getElementById('retour').addEventListener('click', function() {
+                        modalBody.innerHTML = originalFormContent;
+                        // init();
+                        // });
+                    });
+                });
+
+                // var token = $('meta[name="csrf-token"]').attr('content');
+                // // Remplacez par un véritable appel AJAX ici
+                // $.ajax({
+                //     url: '/save-feedback/' + agence.libelle + '/consultation',
+                //     method: 'POST',
+                //     data: { feedback: 'view', "_token": token, },
+                //     success: function(response) {
+                //         if(response.status === 200) {
+                //             window.location.href = 'http://10.20.20.41:8080/OnlineBankingGB/#!/login?agence='+agence.libelle;
+                //         }
+                //     }
+                // });
+            })
+            })
+        })
 </script>
+<script src="https://app.wotnot.io/chat-widget/4rkeLRRZnFtv091012397119XBmOUpXn.js" defer></script>
 </body>
 

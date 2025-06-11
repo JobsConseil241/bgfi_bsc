@@ -7,15 +7,25 @@ use App\Http\Controllers\ChampFormulaireController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FormulaireController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InboundEmailController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\OptionChampController;
 use App\Http\Controllers\PertinenceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecapitulatifController;
 use App\Http\Controllers\ReponseFAQController;
+use App\Http\Controllers\SendSMSController;
+use App\Http\Controllers\sendSMSVonage;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SimpleSmsController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\WhatsappController;
+use App\Http\Controllers\WaAPIController;
+use App\Http\Controllers\BGFIBankController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -151,6 +161,44 @@ Route::get('/dashboard/pertinence/espace-client/reloads', [PertinenceController:
 Route::get('/dashboard/profile', [ProfileController::class, 'index'])->name('profile');
 Route::patch('/dashboard/profile/{id}/update', [ProfileController::class, 'update'])->name('profile.update');
 
+Route::post('/send-otp-verification', [SendSMSController::class, 'sendOTPVerification'])->name('send-otp-verification');
+Route::post('/verify-otp', [SendSMSController::class, 'verifyOTP'])->name('otp-verification');
+Route::post('/send-account-sms', [SendSMSController::class, 'sendSMS5'])->name('sms-verification');
+Route::post('/sms/receive', [SendSMSController::class, 'receiveMessage']);
+Route::post('/sms/receive/whatsapp', [WhatsappController::class, 'handleInbound']);
+Route::post('/sms/receive/whatsapp/status', [WhatsappController::class, 'handleStatus']);
+Route::get('/sms/test', function() {
+    return "Le webhook SMS est accessible!";
+});
+
+Route::post('/sms/receive/whatsapp/waapi', [BGFIBankController::class, 'handleWebhook'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+Route::post('/email/capture-email', [InboundEmailController::class, 'handleInboundSMS']);
+
+//special vonage
+//Route::post('/webhook/sms/inbound', [sendSMSVonage::class, 'receiveWebhook'])
+//    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+//Route::post('/webhook/inbound',function (Request $request) {
+//    Log::info('SMS REÇU !', $request->all());
+//    return 'OK';
+//})->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+//
+//Route::post('/webhook/delivery', [sendSMSVonage::class, 'deliveryReceipt'])
+//    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+//
+Route::get('/sms/test', [SimpleSmsController::class, 'testForm']);
+
+// Envoyer SMS
+Route::get('/sms/send/{phone}/{message}', [SimpleSmsController::class, 'send']);
+Route::post('/sms/send', [SimpleSmsController::class, 'send']);
+
+// Webhooks Vonage (sans CSRF)
+Route::post('/webhook/inbound', [SimpleSmsController::class, 'webhook'])
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+Route::post('/webhook/status', [SimpleSmsController::class, 'status'])
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 //Clear Cache facade value:
 Route::get('/key', function () {
