@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'bulksms' => [
+        'url' => env('BULKSMS_BASE_URL', 'https://api.bulksms.com/v1'),
+        'token' => env('BULKSMS_TOKEN'),
+    ],
+
+
 ];

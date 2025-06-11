@@ -17,6 +17,8 @@ use App\Models\ReponseFaq;
 use App\Models\ReponseReclamation;
 use App\Models\Setting;
 use App\Models\User;
+use BeyondCode\Mailbox\Facades\Mailbox;
+use BeyondCode\Mailbox\InboundEmail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +32,15 @@ class WelcomeController extends Controller
         $agence  = Agence::where('libelle', $nom)->first();
         $param = Setting::where('agence_id', $agence->id)->first();
         $market = Marketing::where('active', 1)->latest('created_at')->get();
+
+//        Mailbox::from('jeff@jobs-conseil.com', function (InboundEmail $email, $username) {
+//            // Access email attributes and content
+////            $subject = $email->subject();
+////
+////            $email->reply(new ReplyMailable);
+//
+//            Log::info($email, $username);
+//        });
 
         return view('welcome', compact('agence', 'param', 'market'));
     }
