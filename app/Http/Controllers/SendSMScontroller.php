@@ -22,7 +22,6 @@ class SendSMSController extends Controller
      */
     public function sendSMS()
     {
-        // Récupération des identifiants Twilio à partir des variables d'environnement
         $accountSid = env('TWILIO_SID');
 
         $authToken = env('TWILIO_TOKEN');
@@ -30,10 +29,8 @@ class SendSMSController extends Controller
         $twilioNumber = '+12542695467';
         $twilio_number = "+12542695467";
 
-        // Initialisation du client Twilio
         $client = new Client($accountSid, $authToken);
 
-        // Envoi du SMS
         $sms = $client->messages->create(
             '+24176546985', // Numéro du destinataire
             [
