@@ -171,7 +171,7 @@ Route::get('/sms/test', function() {
     return "Le webhook SMS est accessible!";
 });
 
-Route::post('/sms/receive/whatsapp/waapi', [BGFIBankController::class, 'handleWebhook'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::post('/sms/receive/whatsapp/whapi', [BGFIBankController::class, 'handleWebhook'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::post('/email/capture-email', [InboundEmailController::class, 'handleInboundSMS']);
 
