@@ -84,6 +84,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6 col-6 mt-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="badge rounded-pill bg-label-warning me-3 p-2">
+                                        <i class="ti ti-eye ti-sm"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h5 class="mb-0">{{$no_consultations}}</h5>
+                                        <small>Consultations de solde</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-6 mt-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="badge rounded-pill bg-label-secondary me-3 p-2">
+                                        <i class="ti ti-message ti-sm"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h5 class="mb-0">{{$no_messages}}</h5>
+                                        <small>Messages SMS envoyés</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

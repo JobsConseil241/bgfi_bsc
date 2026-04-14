@@ -15,6 +15,7 @@ use App\Models\Marketing;
 use App\Models\ReponseAvis;
 use App\Models\ReponseFaq;
 use App\Models\ReponseReclamation;
+use App\Models\BgfiCompte;
 use App\Models\Setting;
 use App\Models\User;
 use BeyondCode\Mailbox\Facades\Mailbox;
@@ -42,7 +43,19 @@ class WelcomeController extends Controller
 //            Log::info($email, $username);
 //        });
 
-        return view('welcome', compact('agence', 'param', 'market'));
+        $accounts = new \stdClass();
+        foreach (BgfiCompte::all() as $c) {
+            $key = (string) $c->numero_compte;
+            $accounts->$key = [
+                'name' => $c->nom_complet,
+                'phone' => $c->telephone,
+                'balance' => (float) $c->solde,
+                'currency' => $c->devise,
+                'sexe' => $c->sexe,
+            ];
+        }
+
+        return view('welcome', compact('agence', 'param', 'market', 'accounts'));
     }
 
     /**

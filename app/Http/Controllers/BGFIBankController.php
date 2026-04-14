@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BgfiCompte;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -18,28 +19,6 @@ class BGFIBankController extends Controller
     private string $apiToken;
     private string $instanceId;
     private string $twilioVerifyServiceSid;
-    
-    // Base de données des comptes BGFI
-    private array $accounts = [
-        '1000123456' => [
-            'name' => 'Prime Clet',
-            'phone' => '24176546985',
-            'balance' => 2450000,
-            'currency' => 'XAF'
-        ],
-        '1000234567' => [
-            'name' => 'Jeff Boundamas', 
-            'phone' => '24177750737',
-            'balance' => 8750000,
-            'currency' => 'XAF'
-        ],
-        '1000345678' => [
-            'name' => 'Paul OBAMA',
-            'phone' => '24107345678', 
-            'balance' => 1200000,
-            'currency' => 'XAF'
-        ]
-    ];
     
     public function __construct()
     {
@@ -163,9 +142,11 @@ class BGFIBankController extends Controller
             return;
         }
         
-        if (!isset($this->accounts[$account])) {
+        $compte = BgfiCompte::where('numero_compte', $account)->first();
+
+        if (!$compte) {
             $attempts = ($session['attempts'] ?? 0) + 1;
-            
+
             if ($attempts >= 3) {
                 $this->sendMessage($from,
                     "🚫 Trop de tentatives. Contactez le *880*.\n\nRetour au menu..."
@@ -174,14 +155,19 @@ class BGFIBankController extends Controller
                 $this->updateSession($from, ['state' => 'menu']);
                 return;
             }
-            
+
             $this->sendMessage($from, "❌ Compte introuvable. Tentative {$attempts}/3");
             $this->updateSession($from, ['state' => 'waiting_account', 'attempts' => $attempts]);
             return;
         }
-        
-        
-        $accountData = $this->accounts[$account];
+
+        $accountData = [
+            'name' => $compte->nom_complet,
+            'phone' => $compte->telephone,
+            'balance' => $compte->solde,
+            'currency' => $compte->devise,
+            'sexe' => $compte->sexe,
+        ];
         $otpSent = $this->sendTwilioOtp($accountData['phone']);
         
         if (!$otpSent) {
@@ -223,7 +209,14 @@ class BGFIBankController extends Controller
         $result = $this->verifyTwilioOtp($phone, $code);
         
         if ($result === 'approved') {
-            $accountData = $this->accounts[$account];
+            $compte = BgfiCompte::where('numero_compte', $account)->first();
+            $accountData = [
+                'name' => $compte->nom_complet,
+                'phone' => $compte->telephone,
+                'balance' => $compte->solde,
+                'currency' => $compte->devise,
+                'sexe' => $compte->sexe,
+            ];
             $this->showBalance($from, $accountData, $account);
             $this->showMenu($from);
             $this->updateSession($from, ['state' => 'menu']);
@@ -291,10 +284,16 @@ class BGFIBankController extends Controller
     private function showBalance(string $from, array $account, string $accountNumber): void
     {
         $balance = number_format($account['balance'], 0, ',', ' ');
-        
+        $civilite = match ($account['sexe'] ?? null) {
+            'M' => 'Monsieur',
+            'F' => 'Madame',
+            default => '',
+        };
+        $greeting = $civilite ? "Bonjour {$civilite} {$account['name']}" : "Bonjour {$account['name']}";
+
         $this->sendMessage($from,
             "💰 **SOLDE COMPTE**\n\n" .
-            "👤 {$account['name']}\n" .
+            "👤 {$greeting}\n" .
             "🏦 " . $this->maskAccount($accountNumber) . "\n\n" .
             "💵 **{$balance} {$account['currency']}**\n\n" .
             "📅 " . date('d/m/Y à H:i') . "\n" .
@@ -437,19 +436,20 @@ class BGFIBankController extends Controller
                 }
             }
             
+            $comptes = BgfiCompte::all()->mapWithKeys(function ($c) {
+                return [$c->numero_compte => "{$c->nom_complet} - " . number_format($c->solde, 0, ',', ' ') . " {$c->devise}"];
+            });
+
             return response()->json([
                 'success' => true,
-                'message' => 'BGFI Bank Chatbot opérationnel ! 🏦',
+                'message' => 'BGFI Bank Chatbot opérationnel !',
                 'services' => [
                     'whatsapp' => 'Actif',
                     'twilio_verify' => $verifyStatus,
                     'security' => '3 tentatives max'
                 ],
-                'comptes_test' => [
-                    '1000123456' => 'Jean MBONGO - 2,450,000 XAF',
-                    '1000234567' => 'Marie EYENGA - 875,000 XAF', 
-                    '1000345678' => 'Paul OBAMA - 1,200,000 XAF'
-                ]
+                'comptes_en_base' => $comptes,
+                'total_comptes' => BgfiCompte::count(),
             ]);
             
         } catch (\Exception $e) {

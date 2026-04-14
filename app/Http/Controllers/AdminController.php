@@ -35,6 +35,8 @@ class AdminController extends Controller
         $agences = Agence::where('status', 1)->get();
         $no_res_avis = ReponseAvis::groupBy('sender_no')->select('sender_no', DB::raw('count(*) as total'))->get();
         $no_res_recla = ReponseReclamation::groupBy('sender_no')->select('sender_no', DB::raw('count(*) as total'))->get();
+        $no_consultations = Consultation::where('module', 'consultation')->sum('visite');
+        $no_messages = Consultation::where('module', 'message')->sum('visite');
 
         $data_ad = DB::table('formulaires')
             ->select( 'formulaires.type', DB::raw('COUNT(*) as formulaire_count'))
@@ -122,7 +124,7 @@ class AdminController extends Controller
             ];
         }
 
-        return view('dashboard.index', compact('title', 'stats', 'agences', 'modules', 'data_ad', 'agencies', 'agencyNames', 'likes', 'faqTitles',  'agencyName', 'lik', 'faqTitle',  'visites', 'interesses', 'pas_interesses', 'chartsData', 'no_agences', 'no_faqs', 'no_res_avis', 'no_res_recla'));
+        return view('dashboard.index', compact('title', 'stats', 'agences', 'modules', 'data_ad', 'agencies', 'agencyNames', 'likes', 'faqTitles',  'agencyName', 'lik', 'faqTitle',  'visites', 'interesses', 'pas_interesses', 'chartsData', 'no_agences', 'no_faqs', 'no_res_avis', 'no_res_recla', 'no_consultations', 'no_messages'));
     }
 
     /**

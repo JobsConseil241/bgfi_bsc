@@ -12,7 +12,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Import des comptes BGFI toutes les heures entre 12h et 16h
+        $schedule->command('bgfi:import')->hourly()->between('12:00', '16:00');
+
+        // Import supplémentaire à 7h, 9h et 13h
+        $schedule->command('bgfi:import')->dailyAt('07:00');
+        $schedule->command('bgfi:import')->dailyAt('09:00');
+        $schedule->command('bgfi:import')->dailyAt('13:00');
     }
 
     /**

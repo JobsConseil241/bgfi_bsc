@@ -21,6 +21,11 @@ return [
         'scheme' => 'https',
     ],
 
+    'msg91' => [
+        'auth_key' => env('MSG91_AUTH_KEY'),
+        'sender_id' => env('MSG91_SENDER_ID'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
@@ -36,5 +41,17 @@ return [
         'token' => env('BULKSMS_TOKEN'),
     ],
 
+    'airtel' => [
+        'base_url' => env('AIRTEL_BASE_URL', 'https://messaging.airtel.ga:9002/smshttp/qs/'),
+        'username' => env('AIRTEL_USERNAME', 'BGFI'),
+        'password' => env('AIRTEL_PASSWORD'),
+        'origin_addr' => env('AIRTEL_ORIGIN_ADDR', 'BGFI'),
+    ],
+
+    'otp' => [
+        'length' => env('OTP_LENGTH', 6),
+        'expiry_minutes' => env('OTP_EXPIRY_MINUTES', 10),
+        'max_attempts' => env('OTP_MAX_ATTEMPTS', 3),
+    ],
 
 ];

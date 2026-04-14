@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\helpers\SMSBulk;
+use App\Models\Consultation;
+use App\Services\AirtelSmsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Twilio\Rest\Client;
@@ -390,5 +392,67 @@ class SendSMSController extends Controller
 
 
         return response()->json(['error' => __('Invalid OTP or phone number.')], 400);
+    }
+
+    /**
+     * Envoie un SMS normal via l'API Airtel
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendAirtelSms(Request $request)
+    {
+        $request->validate([
+            'phone' => ['required', 'string', 'regex:/^(\+?241|0)?[0-9]{8,9}$/']
+        ]);
+
+        try {
+            $airtelService = app(AirtelSmsService::class);
+
+            $civilite = match ($request->sexe) {
+                'M' => 'Monsieur',
+                'F' => 'Madame',
+                default => 'Monsieur/Madame',
+            };
+
+            $result = $airtelService->sendSms($request->phone, "Bonjour {$civilite} ". $request->nom ." votre solde actuel est de ". number_format( $request->solde, 0, ',', ' '). " FCFA. \nMerci de votre fidelite.");
+
+            if ($result['success']) {
+                // Enregistrer la consultation avec module='message'
+                if ($request->agence_id) {
+                    Consultation::create([
+                        'agences_id' => $request->agence_id,
+                        'module' => 'message',
+                        'visite' => 1,
+                        'ip_address' => request()->ip(),
+                    ]);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => $result['message'],
+                    'data' => $result['data'] ?? null
+                ], 200);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+                'error' => $result['error'] ?? null,
+                'status_code' => $result['status_code'] ?? 500
+            ], $result['status_code'] ?? 500);
+
+        } catch (\Exception $e) {
+            Log::error('Erreur envoi SMS Airtel via contrôleur', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de l\'envoi du SMS',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

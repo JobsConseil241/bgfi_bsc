@@ -13,7 +13,7 @@
                     {{--                    <li class="breadcrumb-item">--}}
                     {{--                        <a href="javascript:void(0);">Library</a>--}}
                     {{--                    </li>--}}
-                    <li class="breadcrumb-item active">Pertinences FAQ</li>
+                    <li class="breadcrumb-item active">Pertinences Consultations & Messages</li>
                 </ol>
             </nav>
             <!-- DataTable with Buttons -->
@@ -290,7 +290,7 @@
                             }
                         }
                     });
-                    $('div.head-label').html('<h5 class="card-title mb-0">Statistiques FAQs</h5>');
+                    $('div.head-label').html('<h5 class="card-title mb-0">Statistiques Consultations & Messages</h5>');
                 }
 
                 $.ajaxSetup({

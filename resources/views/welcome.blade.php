@@ -392,25 +392,22 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">informations du Compte</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Informations du compte</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="post" id="form-check">
-                                        <!-- Email input -->
-                                        <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="text" id="compte" class="form-control form-control-lg" />
+                                    <form method="post" id="form-check" autocomplete="off">
+                                        <div data-mdb-input-init class="form-outline mb-1">
+                                            <input type="text" id="compte" class="form-control form-control-lg"
+                                                   inputmode="numeric" pattern="[0-9]*" maxlength="11"
+                                                   autocomplete="off" />
                                             <label class="form-label" for="compte">Numero de Compte</label>
                                         </div>
+                                        <small class="text-muted d-block mb-4">
+                                            Saisir uniquement les 11 chiffres du compte (sans la clé)
+                                        </small>
 
-                                        <!-- Password input -->
-                                        <!-- <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="tel" id="tel" class="form-control form-control-lg" />
-                                            <label class="form-label" for="tel">Numero de telephone</label>
-                                        </div> -->
-
-                                        <!-- Submit button -->
-                                        <button data-mdb-ripple-init type="submit" id="compte" class="btn btn-primary btn-block">Consulter Mon Compte</button>
+                                        <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">Consulter Mon Compte</button>
                                     </form>
                                 </div>
 {{--                                <div class="modal-footer">--}}
@@ -449,26 +446,7 @@
         }
     });
 
-    let accounts = {
-        "1000123456": {
-            name: "Prime Clet",
-            phone: "24176546985",
-            balance: 2450000,
-            currency: "XAF"
-        },
-        "1000234567": {
-            name: "Jeff BOUNDAMAS",
-            phone: "24177750737",
-            balance: 8750000,
-            currency: "XAF"
-        },
-        "1000345678": {
-            name: "Paul OBAMA",
-            phone: "24107345678",
-            balance: 1200000,
-            currency: "XAF"
-        }
-    };
+    let accounts = @json($accounts);
 
     // A $( document ).ready() block.
     jQuery( document ).ready(function() {
@@ -543,6 +521,10 @@
 
             shouldRedirect = true;
 
+            if (jQuery('#exampleModal').hasClass('show')) {
+                jQuery('#exampleModal').modal('hide');
+            }
+
             swalInstance  =  Swal.fire({
                 title: "Inactivité détectée",
                 html: "Vous serez redirigé dans <b></b> secondes...",
@@ -607,256 +589,232 @@
             return `${start}${masked}${end}`;
         }
 
-        jQuery("#consultData").click(function(e) {
-            e.preventDefault()
+        const exampleModalEl = document.getElementById('exampleModal');
+        const modalBody = exampleModalEl.querySelector('.modal-body');
+        // Capturer un HTML "propre" sans les éléments injectés par MDB (form-notch, etc.)
+        const _cleanWrapper = document.createElement('div');
+        _cleanWrapper.innerHTML = modalBody.innerHTML;
+        _cleanWrapper.querySelectorAll('.form-notch').forEach(el => el.remove());
+        const originalFormContent = _cleanWrapper.innerHTML;
 
-            jQuery('#exampleModal').modal('show');
+        // Réinitialiser le contenu du modal à chaque fermeture (croix, backdrop, inactivité, retour)
+        exampleModalEl.addEventListener('hidden.bs.modal', function () {
+            modalBody.innerHTML = originalFormContent;
+            initFormListeners();
+        });
 
+        // Ré-initialise les composants MDB form-outline (sinon le label s'affiche mal après restauration du HTML)
+        function reinitMdbInputs() {
+            if (typeof mdb !== 'undefined' && mdb.Input) {
+                modalBody.querySelectorAll('.form-outline').forEach((el) => {
+                    try { new mdb.Input(el).init(); } catch (e) { /* noop */ }
+                });
+            }
+        }
+
+        // Fonction pour initialiser les écouteurs d'événements
+        function initFormListeners() {
             const form = document.getElementById('form-check');
-            const modalBody = document.querySelector('#exampleModal .modal-body');
-            let originalFormContent = modalBody.innerHTML;
+            if (!form) return;
 
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); 
+            // Retirer l'ancien écouteur s'il existe
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
 
-               
-                const compte = document.getElementById('compte').value;
-               
+            // Restreindre la saisie aux chiffres uniquement (max 11)
+            const compteInput = newForm.querySelector('#compte');
+            if (compteInput) {
+                compteInput.value = '';
+                compteInput.addEventListener('input', function () {
+                    this.value = this.value.replace(/\D/g, '').slice(0, 11);
+                });
+            }
 
-               
-                if (!compte) {
-                    alert('Veuillez remplir tous les champs');
-                    return;
-                }
+            reinitMdbInputs();
 
-                let account;
+            newForm.addEventListener('submit', function(event) {
+                    event.preventDefault(); 
 
-                if (accounts.hasOwnProperty(compte)) {
-                    account = accounts[compte];
-                } else {
-                    alert("❌ Compte introuvable.");
-                    return;
-                }
-                
-                
-                modalBody.innerHTML = `
-                                        <div class="text-center">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Chargement...</span>
-                                            </div>
-                                            <p class="mt-2">Envoi du code OTP en cours...</p>
-                                        </div>
-                                    `;
-                
-                
-                fetch('/send-otp-verification', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                    },
-                    body: JSON.stringify({
-                        phone: '+' + account.phone
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
+                    const compte = document.getElementById('compte').value;
+
+                    if (!compte) {
+                        alert('Veuillez remplir tous les champs');
+                        return;
                     }
 
-                    // Afficher le formulaire OTP
+                    let account;
+
+                    if (accounts.hasOwnProperty(compte)) {
+                        account = accounts[compte];
+                    } else {
+                        alert("❌ Compte introuvable.");
+                        return;
+                    }
+                    
                     modalBody.innerHTML = `
-                                        <div class="text-center mb-4">
-                                            <p>Un code de vérification a été envoyé au ${masquerNumero(account.phone)}</p>
-                                        </div>
-                                        <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="text" id="otp" class="form-control form-control-lg" style="border: 1px solid black; border-top: none" />
-                                            <label class="form-label" for="otp">Code OTP</label>
-                                        </div>
-                                        <button data-mdb-ripple-init type="button" id="validateOtp" class="btn btn-primary btn-block">Valider</button>
-                                    `;
-
-
-                        // Ajouter un écouteur d'événement au bouton de validation OTP
-                        document.getElementById('validateOtp').addEventListener('click', function() {
-                        const otp = document.getElementById('otp').value;
-
-                        if (!otp) {
-                            alert('Veuillez entrer le code OTP');
-                            return;
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Chargement...</span>
+                            </div>
+                            <p class="mt-2">Envoi du code OTP en cours...</p>
+                        </div>
+                    `;
+                    
+                    fetch('/otp/send', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                        },
+                        body: JSON.stringify({
+                            phone: '+' + account.phone
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            throw new Error(data.error);
                         }
 
-                        // Afficher un indicateur de chargement
                         modalBody.innerHTML = `
-                                        <div class="text-center">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Vérification...</span>
-                                            </div>
-                                            <p class="mt-2">Vérification du code en cours...</p>
-                                        </div>
-                                    `;
+                            <div class="text-center mb-4">
+                                <p>Un code de vérification a été envoyé au ${masquerNumero(account.phone)}</p>
+                            </div>
+                            <div data-mdb-input-init class="form-outline mb-4">
+                                <input type="text" id="otp" class="form-control form-control-lg" style="border: 1px solid black; border-top: none" />
+                                <label class="form-label" for="otp">Code OTP</label>
+                            </div>
+                            <button data-mdb-ripple-init type="button" id="validateOtp" class="btn btn-primary btn-block">Valider</button>
+                        `;
 
-                        // Envoyer une requête AJAX pour vérifier l'OTP
-                        fetch('/verify-otp', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            body: JSON.stringify({
-                                phone: "+" + account.phone,
-                                code: otp
+                        document.getElementById('validateOtp').addEventListener('click', function() {
+                            const otp = document.getElementById('otp').value;
+
+                            if (!otp) {
+                                alert('Veuillez entrer le code OTP');
+                                return;
+                            }
+
+                            modalBody.innerHTML = `
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Vérification...</span>
+                                    </div>
+                                    <p class="mt-2">Vérification du code en cours...</p>
+                                </div>
+                            `;
+
+                            fetch('/otp/verify', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                                },
+                                body: JSON.stringify({
+                                    phone: "+" + account.phone,
+                                    code: otp
+                                })
                             })
-                        })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.error) {
                                     throw new Error(data.error);
                                 }
 
-                                console.log(data)
-
-                                // Afficher le solde (vous pouvez faire une autre requête pour obtenir les détails du compte)
-                                // fetch('/get-account-details', {
-                                //     method: 'POST',
-                                //     headers: {
-                                //         'Content-Type': 'application/json',
-                                //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                //     },
-                                //     body: JSON.stringify({
-                                //         account_number: compte
-                                //     })
-                                // })
-                                // .then(response => response.json())
-                                // .then(accountData => {
-                                //     // Afficher les détails du compte
-                                //     modalBody.innerHTML = `
-                                //                             <div class="text-center">
-                                //                                 <h3>Détails du compte</h3>
-                                //                                 <p>Numéro de compte: ${compte}</p>
-                                //                                 <p>Solde actuel: <strong>${accountData.balance || '350 000'} FCFA</strong></p>
-                                //                                 <p>Dernière opération: ${accountData.last_transaction || '27/04/2025'}</p>
-                                //                             </div>
-                                //                             <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
-                                //                         `;
-                                //
-                                //     // Ajouter un écouteur pour le bouton retour
-                                //     document.getElementById('retour').addEventListener('click', function() {
-                                //         modalBody.innerHTML = originalFormContent;
-                                //         // Réinitialiser les écouteurs d'événements
-                                //         // init();
-                                //     });
-                                // })
-                                // .catch(error => {
-                                //     // En cas d'erreur, afficher un message et un bouton pour réessayer
-                                //     modalBody.innerHTML = `
-                                //                             <div class="alert alert-danger" role="alert">
-                                //                                 Une erreur s'est produite lors de la récupération des détails du compte: ${error.message}
-                                //                             </div>
-                                //                             <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
-                                //                         `;
-                                //
-                                //     document.getElementById('retour').addEventListener('click', function() {
-                                //         modalBody.innerHTML = originalFormContent;
-                                //         // init();
-                                //     });
-                                // });
-
-                                fetch('/send-account-sms', {
+                                fetch('/send-airtel-sms', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                        'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                                     },
                                     body: JSON.stringify({
                                         compte: compte,
                                         phone: "+" + account.phone,
                                         nom: account.name,
-                                        solde: account.balance
+                                        solde: account.balance,
+                                        sexe: account.sexe,
+                                        agence_id: agence.id
                                     })
                                 })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        modalBody.innerHTML = `
-                                                                    <div class="text-center">
-                                                                        <div class="alert alert-success" role="alert">
-                                                                            <h4 class="alert-heading">SMS envoyé!</h4>
-                                                                            <p>Les détails du compte ont été envoyés au numéro associé.</p>
-                                                                        </div>
-                                                                        <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
-                                                                    </div>
-                                                                `;
+                                .then(response => response.json())
+                                .then(data => {
+                                    modalBody.innerHTML = `
+                                        <div class="text-center">
+                                            <div class="alert alert-success" role="alert">
+                                                <h4 class="alert-heading">SMS envoyé!</h4>
+                                                <p>Les détails du compte ont été envoyés au numéro associé.</p>
+                                            </div>
+                                            <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                                        </div>
+                                    `;
 
-                                        // Ajouter un écouteur pour le bouton retour
-                                        document.getElementById('retour').addEventListener('click', function() {
-                                            modalBody.innerHTML = originalFormContent;
-                                            // Réinitialiser les écouteurs d'événements
-                                            // init();
-                                        });
-                                    })
-                                    .catch(error => {
-                                        // En cas d'erreur, afficher un message et un bouton pour réessayer
-                                        modalBody.innerHTML = `
-                                                                    <div class="alert alert-danger" role="alert">
-                                                                        Une erreur s'est produite lors de l'envoi du SMS: ${error.message}
-                                                                    </div>
-                                                                    <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
-                                                                `;
-
-                                        document.getElementById('retour').addEventListener('click', function() {
-                                            modalBody.innerHTML = originalFormContent;
-                                            // init();
-                                        });
+                                    document.getElementById('retour').addEventListener('click', function() {
+                                        modalBody.innerHTML = originalFormContent;
+                                        initFormListeners(); // ✅ RÉINITIALISER LES ÉCOUTEURS
                                     });
+                                })
+                                .catch(error => {
+                                    modalBody.innerHTML = `
+                                        <div class="alert alert-danger" role="alert">
+                                            Une erreur s'est produite lors de l'envoi du SMS: ${error.message}
+                                        </div>
+                                        <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                                    `;
+
+                                    document.getElementById('retour').addEventListener('click', function() {
+                                        modalBody.innerHTML = originalFormContent;
+                                        initFormListeners(); // ✅ RÉINITIALISER LES ÉCOUTEURS
+                                    });
+                                });
                             })
                             .catch(error => {
-                                // En cas d'erreur, afficher un message et un bouton pour réessayer
                                 modalBody.innerHTML = `
-                            <div class="alert alert-danger" role="alert">
-                                Erreur lors de la vérification du code OTP: ${error.message}
-                            </div>
-                            <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
-                        `;
-
-                                document.getElementById('retour').addEventListener('click', function() {
-                                    modalBody.innerHTML = originalFormContent;
-                                    // init();
-                                });
-                            });
-                    });
-                })
-                .catch(error => {
-                    // En cas d'erreur, afficher un message et un bouton pour réessayer
-                    modalBody.innerHTML = `
                                     <div class="alert alert-danger" role="alert">
-                                        Erreur lors de l'envoi du code OTP: ${error.message}
+                                        Erreur lors de la vérification du code OTP veuillez réessayer plutard.
                                     </div>
                                     <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
                                 `;
 
-                    document.getElementById('retour').addEventListener('click', function() {
-                        modalBody.innerHTML = originalFormContent;
-                        // init();
-                        // });
-                    });
-                });
+                                document.getElementById('retour').addEventListener('click', function() {
+                                    modalBody.innerHTML = originalFormContent;
+                                    initFormListeners(); // ✅ RÉINITIALISER LES ÉCOUTEURS
+                                });
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        modalBody.innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                                Erreur lors de l'envoi du code OTP, Veuillez réessayer plutard
+                            </div>
+                            <button type="button" id="retour" class="btn btn-secondary btn-block mt-3">Retour</button>
+                        `;
 
-                // var token = $('meta[name="csrf-token"]').attr('content');
-                // // Remplacez par un véritable appel AJAX ici
-                // $.ajax({
-                //     url: '/save-feedback/' + agence.libelle + '/consultation',
-                //     method: 'POST',
-                //     data: { feedback: 'view', "_token": token, },
-                //     success: function(response) {
-                //         if(response.status === 200) {
-                //             window.location.href = 'http://10.20.20.41:8080/OnlineBankingGB/#!/login?agence='+agence.libelle;
-                //         }
-                //     }
-                // });
-            })
-            })
-        })
+                        document.getElementById('retour').addEventListener('click', function() {
+                            modalBody.innerHTML = originalFormContent;
+                            initFormListeners(); // ✅ RÉINITIALISER LES ÉCOUTEURS
+                        });
+                    });
+            });
+        }
+
+        jQuery("#consultData").click(function(e) {
+            e.preventDefault();
+            jQuery('#exampleModal').modal('show');
+
+            // Enregistrer la consultation (module='consultation')
+            fetch('/save-feedback/' + agence.libelle.toLowerCase() + '/consultation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                body: JSON.stringify({ feedback: 'view' })
+            }).catch(err => console.log('Erreur tracking consultation:', err));
+
+            initFormListeners();
+        });
+    })
 </script>
 <script src="https://app.wotnot.io/chat-widget/4rkeLRRZnFtv091012397119XBmOUpXn.js" defer></script>
 </body>

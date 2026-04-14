@@ -18,10 +18,14 @@ use App\Http\Controllers\SendSMSController;
 use App\Http\Controllers\sendSMSVonage;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SimpleSmsController;
+use App\Http\Controllers\SMSalaController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\WaAPIController;
+use App\Http\Controllers\WhapiController;
+use App\Http\Controllers\AmieController;
 use App\Http\Controllers\BGFIBankController;
+use App\Http\Controllers\OtpController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
@@ -164,6 +168,15 @@ Route::patch('/dashboard/profile/{id}/update', [ProfileController::class, 'updat
 Route::post('/send-otp-verification', [SendSMSController::class, 'sendOTPVerification'])->name('send-otp-verification');
 Route::post('/verify-otp', [SendSMSController::class, 'verifyOTP'])->name('otp-verification');
 Route::post('/send-account-sms', [SendSMSController::class, 'sendSMS5'])->name('sms-verification');
+Route::post('/send-airtel-sms', [SendSMSController::class, 'sendAirtelSms'])->name('send-airtel-sms');
+
+// Routes OTP avec Airtel
+Route::prefix('otp')->name('otp.')->group(function () {
+    Route::post('/send', [OtpController::class, 'send'])->name('send');
+    Route::post('/verify', [OtpController::class, 'verify'])->name('verify');
+    Route::post('/check', [OtpController::class, 'check'])->name('check');
+    Route::post('/invalidate', [OtpController::class, 'invalidate'])->name('invalidate');
+});
 Route::post('/sms/receive', [SendSMSController::class, 'receiveMessage']);
 Route::post('/sms/receive/whatsapp', [WhatsappController::class, 'handleInbound']);
 Route::post('/sms/receive/whatsapp/status', [WhatsappController::class, 'handleStatus']);
@@ -175,6 +188,16 @@ Route::post('/sms/receive/whatsapp/whapi', [BGFIBankController::class, 'handleWe
 
 Route::post('/email/capture-email', [InboundEmailController::class, 'handleInboundSMS']);
 
+Route::patch('/webhook/whapi/messages', [WhapiController::class, 'handleMessages']);
+Route::post('/webhook/whapi/chats', [WhapiController::class, 'handleChats']);
+
+// Route::post('/webhook/whapi', [WhapiController::class, 'handle']);
+
+// Route::get('/releve/pdf', [WhapiController::class, 'generateReleve']);
+
+Route::post('/webhook/whapi', [AmieController::class, 'handleMessages']);
+
+Route::get('/releve/pdf', [AmieController::class, 'generateReleve']);
 //special vonage
 //Route::post('/webhook/sms/inbound', [sendSMSVonage::class, 'receiveWebhook'])
 //    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
@@ -199,6 +222,11 @@ Route::post('/webhook/inbound', [SimpleSmsController::class, 'webhook'])
 
 Route::post('/webhook/status', [SimpleSmsController::class, 'status'])
     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+//SMSALA INTEGRATION
+Route::get('/smsala/otp', [SMSalaController::class, 'index']);
+Route::get('/smsala/message', [SMSalaController::class, 'index_message']);
+Route::post('/smsala/status', [SMSalaController::class, 'status'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 //Clear Cache facade value:
 Route::get('/key', function () {

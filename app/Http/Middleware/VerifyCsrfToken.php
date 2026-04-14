@@ -14,7 +14,13 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'sms/receive',
         'sms/receive/whatsapp',
+        '/webhook/whapi/messages',
+        '/webhook/whapi/chats',
+        '/webhook/whapi',
         'sms/receive/whatsapp/status',
         'email/capture-email',
+        'otp/*',
+        'send-airtel-sms',
+        'save-feedback/*',
     ];
 }

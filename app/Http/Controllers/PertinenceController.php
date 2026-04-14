@@ -234,14 +234,14 @@ class PertinenceController extends Controller
 
     public function indexConsultation() {
         $ptnec = 'active';
-        $title = "Gestion Statistiques Consultation";
+        $title = "Gestion Statistiques Consultation & Messages";
         $perti = 'open';
         $agences = Agence::where('status', 1)->get();
 
         $stats = DB::table('consultations as c')
             ->join('agences as a', 'c.agences_id', '=', 'a.id')
             ->select('a.libelle as agence_name', 'c.module as module', DB::raw('SUM(c.visite) as total_views'))
-            ->where('c.module', 'consultation')
+            ->whereIn('c.module', ['consultation', 'message'])
             ->groupBy('a.libelle','c.module')
             ->get();
 
@@ -253,7 +253,7 @@ class PertinenceController extends Controller
         $stats = DB::table('consultations as c')
             ->join('agences as a', 'c.agences_id', '=', 'a.id')
             ->select('a.libelle as agence_name', 'c.module as module', DB::raw('SUM(c.visite) as total_views'))
-            ->where('c.module', 'consultation')
+            ->whereIn('c.module', ['consultation', 'message'])
             ->whereBetween('c.created_at', [$request->query('dateDebut'), $request->query('dateFin')])
             ->groupBy('a.libelle','c.module')
             ->get();
